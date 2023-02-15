@@ -47,7 +47,8 @@
             </span>
         @enderror
     </div>
-    <div class="form-group col-12">
+    <div class="form-group col-6">
+        <br>
         <label for="roles">Roles</label>
         @foreach ($roles as $role)
             <div class="checkbox">
@@ -59,6 +60,13 @@
                 </label>
             </div>
         @endforeach
-
+    </div>
+    <div class="col-6">
+        <br>
+        <label for="avatar">Avatar</label>
+        <input type="file" name="avatar" class="form-control form-control-sm" id="avatar" accept="image/*">
+        @error('avatar')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
     </div>
 </div>

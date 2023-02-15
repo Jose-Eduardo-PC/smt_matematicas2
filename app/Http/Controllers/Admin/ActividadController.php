@@ -2,11 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
+
+use App\Models\Actividad;
+use Yajra\Datatables\Datatables;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Actividad\StoreRequest;
+use App\Http\Requests\Actividad\UpdateRequest;
+use App\Models\Curso;
 
 class ActividadController extends Controller
 {
+    public function datatables()
+    {
+        return DataTables::of(Actividad::select('id', 'nombre', 'descripcion'))
+            ->addColumn('btn', 'admin.actividades.partials.btn')
+            ->rawColumns(['btn'])
+            ->toJson();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,8 @@ class ActividadController extends Controller
      */
     public function index()
     {
-        //
+        $actividades = Actividad::all();
+        return view('admin.actividades.index', compact('actividades'));
     }
 
     /**
@@ -24,7 +37,9 @@ class ActividadController extends Controller
      */
     public function create()
     {
-        //
+        $cursos = Curso::all();
+        $actividad = new Actividad();
+        return view('admin.actividades.create', compact('actividad', 'cursos'));
     }
 
     /**
@@ -33,9 +48,11 @@ class ActividadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $actividad = (new Actividad())->fill($request->validated());
+        $actividad->save();
+        return redirect()->route('actividades.index');
     }
 
     /**
@@ -44,9 +61,9 @@ class ActividadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Actividad $actividade)
     {
-        //
+        return view('admin.actividades.show', compact('actividade'));
     }
 
     /**
@@ -55,9 +72,10 @@ class ActividadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Actividad $actividade)
     {
-        //
+        $cursos = Curso::all();
+        return view('admin.actividades.edit', compact('actividade', 'cursos'));
     }
 
     /**
@@ -67,9 +85,10 @@ class ActividadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Actividad $actividad)
     {
-        //
+        $actividad->update($request->validated());
+        return redirect()->route('actividades.index');
     }
 
     /**
@@ -78,8 +97,9 @@ class ActividadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Actividad $actividad)
     {
-        //
+        $actividad->delete();
+        return redirect()->route('actividades.index')->with('eliminar', 'ok');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Yajra\Datatables\Datatables;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\User\StoreRequest;
@@ -18,7 +19,7 @@ class UserController extends Controller
             ->addColumn('role', function (User $user) {
                 $return = '';
                 foreach ($user->roles as $role) {
-                    $return .= '<span class="badge badge-primary mr-1">' . $role->name . '</span>';
+                    $return = '<span class="badge badge-primary mr-1">' . $role->name . '</span>';
                 }
                 return $return;
             })
@@ -57,10 +58,13 @@ class UserController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $user = User::create($request->validated());
+        $user = (new User)->fill($request->validated());
         if ($request->filled('roles')) {
             $user->assignRole($request->roles);
         }
+        $user->password = Hash::make($request->password);
+        $user->avatar = $request->file('avatar')->store('public/imagenes/imgavatars/');
+        $user->save();
         return redirect()->route('users.index');
     }
 
@@ -97,10 +101,17 @@ class UserController extends Controller
      */
     public function update(UpdateRequest $request, User $user)
     {
-        $user->update($request->validated());
+        $request->validated();
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+        if ($request->hasFile('avatar')) {
+            $user->avatar = $request->file('avatar')->store('public/imagenes/imgavatars/');
+        }
         if ($request->filled('roles')) {
             $user->assignRole($request->roles);
         }
+        $user->update();
         return redirect()->route('users.index');
     }
 

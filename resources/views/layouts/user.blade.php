@@ -24,7 +24,7 @@
     <!-- Main content -->
     <div class="main-content" id="panel">
         <!-- Topnav -->
-        @include('layouts.admin.navbar')
+        @include('layouts.user.navbar')
         <!-- Page content -->
         <div class="container-fluid mt-3">
             @yield('content')

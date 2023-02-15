@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Models\Curso;
-use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Curso\StoreRequest;
 use App\Http\Requests\Curso\UpdateRequest;
-use PhpParser\Node\Expr\New_;
 
 class CursoController extends Controller
 {
 
     public function datatables()
     {
-        return DataTables::of(Curso::select('id', 'titulo', 'descripcion'))
+        return DataTables::of(Curso::select('id', 'titulo', 'descripcion', 'visitas'))
             ->addColumn('btn', 'admin.cursos.partials.btn')
             ->rawColumns(['btn'])
             ->toJson();
@@ -39,6 +37,7 @@ class CursoController extends Controller
      */
     public function create()
     {
+
         $curso = new Curso();
         return view('admin.cursos.create', compact('curso'));
     }
@@ -51,18 +50,9 @@ class CursoController extends Controller
      */
     public function store(StoreRequest $request)
     {
-
-        $request->validated();
-        $curso = new Curso();
-        $curso->titulo = $request->titulo;
-        $curso->descripcion = $request->descripcion;
-        $curso->contenido = $request->contenido;
-        $curso->ejemplo = $request->ejemplo;
-        $curso->link = $request->link;
-        $imagec = $request->file('imagenc')->store('public/imagenes/imgcontenido/');
-        $curso->imagenc = Storage::url($imagec);
-        $imagee = $request->file('imagene')->store('public/imagenes/imgcontenido/');
-        $curso->imagene = Storage::url($imagee);
+        $curso = (new Curso)->fill($request->validated());
+        $curso->imagenc = $request->file('imagenc')->store('public/imagenes/imgcontenido/');
+        $curso->imagene = $request->file('imagene')->store('public/imagenes/imgcontenido/');
         $curso->save();
         return redirect()->route('cursos.index');
     }
@@ -75,7 +65,9 @@ class CursoController extends Controller
      */
     public function show(Curso $curso)
     {
-        return view('admin.cursos.show', compact('curso'));
+        $curso->visitas = $curso->visitas + 1;
+        $curso->save();
+        return view('admin.cursos.show', compact('curso',));
     }
 
     /**
@@ -96,18 +88,18 @@ class CursoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, Curso $curso)
     {
         $request->validated();
-        $curso = Curso::findOrFail($id);
-        $imagenc = $request->file('imagenc')->store('public/imagenes/imgcontenido');
-        $curso->imagenc = Storage::url($imagenc);
-        $imagene = $request->file('imagene')->store('public/imagenes/imgcontenido');
-        $curso->imagene = Storage::url($imagene);
+        if ($request->hasFile('imagenc')) {
+            $curso->imagenc = $request->file('imagenc')->store('public/imagenes/imgcontenido/');
+        }
+        if ($request->hasFile('imagene')) {
+            $curso->imagene = $request->file('imagene')->store('public/imagenes/imgcontenido/');
+        }
         $curso->update($request->only('titulo', 'descripcion', 'contenido', 'ejemplo', 'link'));
         return redirect()->route('cursos.index');
     }
-
 
     /**
      * Remove the specified resource from storage.

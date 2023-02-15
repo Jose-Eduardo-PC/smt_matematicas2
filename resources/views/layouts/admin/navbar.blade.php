@@ -53,12 +53,10 @@
                         aria-expanded="false">
                         <div class="media align-items-center">
                             <span class="avatar avatar-sm rounded-circle">
-                                <img alt="Image placeholder" src="/admin/assets/img/theme/team-4.jpg">
+                                <img alt="Image placeholder" src="{{ Storage::url(Auth::user()->avatar) }}">
                             </span>
                             <div class="media-body  ml-2  d-none d-lg-block">
                                 <span class="mb-0 text-sm  font-weight-bold">{{ Auth::user()->name }}</span>
-                                <br>
-                                <span class="mb-0 text-sm">Rol: {{ Auth::user()->roles->first()->name }}</span>
                             </div>
                         </div>
                     </a>
@@ -68,21 +66,13 @@
                         </div>
                         <a href="{{ route('users.show', Auth::user()->id) }}" class="dropdown-item">
                             <i class="ni ni-single-02"></i>
-                            <span>My profile</span>
-                        </a>
-                        <a href="#!" class="dropdown-item">
-                            <i class="ni ni-settings-gear-65"></i>
-                            <span>Settings</span>
-                        </a>
-                        <a href="#!" class="dropdown-item">
-                            <i class="ni ni-calendar-grid-58"></i>
-                            <span>Activity</span>
+                            <span>MI Perfil</span>
                         </a>
                         <div class="dropdown-divider"></div>
                         <div class="col-md">
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
-                                <button class="col-12 btn btn-danger" type="submit">Logout</button>
+                                <button class="col-12 btn btn-danger" type="submit">Cerrar sesion</button>
                             </form>
                             </a>
                         </div>

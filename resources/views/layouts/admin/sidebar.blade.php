@@ -3,7 +3,11 @@
         <!-- Brand -->
         <div class="sidenav-header  align-items-center">
             <a class="navbar-brand" href="javascript:void(0)">
-                <img src="/admin/assets/img/brand/blue.png" class="navbar-brand-img" alt="...">
+                <img src="\storage\imagenes\admin.png" class="navbar-brand-img" alt="..." width="100"
+                    height="200">
+                <div class="text-center">
+                    <span class="">{{ Auth::user()->roles->first()->name }}</span>
+                </div>
             </a>
         </div>
         <div class="navbar-inner">
@@ -12,7 +16,7 @@
                 <!-- Nav items -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">
+                        <a class="nav-link active" href="/home">
                             <i class="ni ni-tv-2 text-primary"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
@@ -30,21 +34,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="profile.html">
+                        <a class="nav-link" href="{{ route('actividades.index') }}">
                             <i class="ni ni-book-bookmark text-blue"></i>
                             <span class="nav-link-text">Actividades</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="profile.html">
+                        <a class="nav-link" href="{{ route('examenes.index') }}">
                             <i class="ni ni-single-copy-04 text-blue"></i>
                             <span class="nav-link-text">Examenes</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="tables.html">
-                            <i class="ni ni-bullet-list-67 text-default"></i>
-                            <span class="nav-link-text">Notas</span>
                         </a>
                     </li>
                 </ul>

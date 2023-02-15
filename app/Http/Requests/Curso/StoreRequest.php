@@ -27,6 +27,7 @@ class StoreRequest extends FormRequest
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string|max:255',
             'contenido' => 'required|string|max:255',
+            'visitas' => 'string|max:255',
             'ejemplo' => 'required|string|max:255',
             'link' => 'required|string|max:255',
             'imagenc' => 'required|image',

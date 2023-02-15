@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Actividad extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nombre',
+        'descripcion',
+        'link',
+        'curso_id',
+
+    ];
 }

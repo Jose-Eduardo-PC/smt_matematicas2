@@ -28,6 +28,14 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    protected function redirectTo()
+    {
+        if (auth()->user()->roles->first()->name == 'SuperAdministrador') {
+            return '/home';
+        } else if (auth()->user()->roles->first()->name == 'Estudiante') {
+            return '/dashboard';
+        }
+    }
     /**
      * Create a new controller instance.
      *

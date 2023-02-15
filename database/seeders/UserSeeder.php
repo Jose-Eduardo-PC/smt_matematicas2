@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
             'email' => 'jose777@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'),
+            'avatar' => ('public/imagenes/imgavatars//ejem.jpg'),
             'remember_token' => Str::random(10),
         ])->assignRole('SuperAdministrador');
 

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Actividad;
+use App\Models\User;
+use App\Models\Curso;
+use App\Models\Examen;
+use Yajra\Datatables\Datatables;
 
 class HomeController extends Controller
 {
@@ -21,8 +25,16 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
     public function index()
     {
-        return view('home');
+        $user = User::count();
+        $curso = Curso::count();
+        $actividad = Actividad::count();
+        $examen = Examen::count();
+        return view('home', compact('user', 'curso', 'actividad', 'examen'));
+
+        $cursos = Curso::all();
+        return view('admin.cursos.index', compact('cursos'));
     }
 }

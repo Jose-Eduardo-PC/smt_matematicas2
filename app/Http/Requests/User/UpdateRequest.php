@@ -30,7 +30,8 @@ class UpdateRequest extends FormRequest
             'email' => [
                 'required', 'email', 'max:255',
                 Rule::unique('users')->ignore($this->route('user')->id)
-            ]
+            ],
+            'avatar' => 'image',
         ];
         if ($this->filled('password')) {
             $rules['password'] = ['confirmed', 'min:8'];

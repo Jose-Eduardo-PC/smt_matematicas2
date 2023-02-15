@@ -20,7 +20,7 @@
 </div>
 <div class="form-group">
     <label for="contenido">Contenido</label>
-    <textarea name="contenido" id="contenido" rows="10">{{ old('descripcion', $curso->contenido) }}</textarea>
+    <textarea name="contenido" id="contenido" rows="10">{{ old('contenido', $curso->contenido) }}</textarea>
     @error('contenido')
         <small class="text-danger">{{ $message }}</small>
     @enderror

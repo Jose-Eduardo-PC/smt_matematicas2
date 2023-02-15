@@ -27,6 +27,7 @@ class UpdateRequest extends FormRequest
             'titulo' => 'string', 'max:255',
             'descripcion' => 'string', 'max:255',
             'contenido' => 'string', 'max:255',
+            'visitas' => 'string', 'max:255',
             'ejemplo' => 'string', 'max:255',
             'link' => 'string', 'max:255',
             'imagenc' => 'image',

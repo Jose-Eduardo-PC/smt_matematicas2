@@ -18,6 +18,7 @@ class CreateCursosTable extends Migration
             $table->string('titulo')->nullable();
             $table->string('descripcion')->nullable();
             $table->string('contenido', 255)->nullable();
+            $table->string('visitas')->nullable();
             $table->string('ejemplo', 255)->nullable();
             $table->string('link')->nullable();
             $table->string('imagenc')->nullable();
