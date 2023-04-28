@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Yajra\Datatables\Datatables;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 
 class RolController extends Controller
 {
+    public function datatables()
+    {
+        return DataTables::of(Role::select('id', 'name'))
+            ->toJson();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +22,7 @@ class RolController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.roles.index');
     }
 
     /**

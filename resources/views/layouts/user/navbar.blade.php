@@ -1,8 +1,6 @@
-<nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+<nav class="navbar navbar-top navbar-expand navbar-dark p-3 mb-2 bg-info text-white border-bottom">
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-
             <div class="media align-items-center">
                 <span class="avatar avatar-sm rounded-circle">
                     <img alt="Image placeholder" src="/storage/imagenes/EscudoUajms.png">
@@ -42,8 +40,15 @@
                                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <div class="media align-items-center">
                                                             <span class="avatar avatar-sm rounded-circle">
-                                                                <img alt="Image placeholder"
-                                                                    src="{{ Storage::url(Auth::user()->avatar) }}">
+                                                                <img>
+                                                                @if (Auth::user()->avatar)
+                                                                    <img alt="Image placeholder"
+                                                                        src="{{ Storage::url(Auth::user()->avatar) }}"
+                                                                        onerror="this.src='/storage/imagenes/avatar.gif'">
+                                                                @else
+                                                                    <img alt="Image placeholder"
+                                                                        src="/storage/imagenes/avatar.gif">
+                                                                @endif
                                                             </span>
                                                             <div class="media-body  ml-2  d-none d-lg-block">
                                                                 <span
@@ -92,17 +97,20 @@
                                                 </li>
                                             </ul>
                                         @else
-                                            <div class="row">
-                                                <div class="col-4">
-                                                    <a href="{{ route('login') }}"
-                                                        class="text-white font-weight-bold"class="text-white font-weight-bold">acceso</a>
-                                                </div>
-                                                @if (Route::has('register'))
-                                                    <div class="col-4">
-                                                        <a href="{{ route('register') }}"
-                                                            class="text-white font-weight-bold ">Registrarse</a>
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-7">
+                                                        <a href="{{ route('login') }}"
+                                                            class="text-white font-weight-bold"class="text-white font-weight-bold">Iniciar
+                                                            Sesion</a>
                                                     </div>
-                                                @endif
+                                                    @if (Route::has('register'))
+                                                        <div class="col-5">
+                                                            <a href="{{ route('register') }}"
+                                                                class="text-white font-weight-bold ">Registrarse</a>
+                                                        </div>
+                                                    @endif
+                                                </div>
                                             </div>
                                         @endauth
                                     </div>

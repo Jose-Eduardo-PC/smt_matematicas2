@@ -3,55 +3,70 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Examen;
-use App\Models\Nota;
-use App\Models\User;
+use App\Models\Content;
+use App\Models\Media_resource;
+use App\Models\Test;
+use App\Models\Test_user;
+use App\Models\Theme;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-
-    public function index()
+    //recursos multimedia
+    public function index_media()
     {
-        $examenes = Examen::all();
-        return view('web.examen.index', compact('examenes'));
+        $resources = Media_resource::with('theme')->get();
+        return view('web.recursos.index', compact('resources'));
     }
 
-    public function show(Examen $examene)
+    public function show_media(Media_resource $media_resource, $resource)
+    {
+        $media_resource = Media_resource::find($resource);
+        return view('web.recursos.show', compact('media_resource'));
+    }
+    //test
+    public function index_theme()
+    {
+        $themes = Theme::all();
+        return view('web.tema.index', compact('themes'));
+    }
+    public function show_theme(Theme $theme)
+    {
+        $theme = Theme::with('contents')->find($theme->id);
+        return view('web.tema.show', compact('theme'));
+    }
+    //examen
+    public function index_test()
+    {
+        $tests = Test::all();
+        return view('web.examen.index', compact('tests'));
+    }
+
+    public function show_test(Test $test)
     {
         return view('web.examen.show', [
-            'examene' => $examene,
-            'nota' => Nota::where('examen_id', $examene->id)->first()
+            'test' => $test,
+            'test_user' => Test_user::where('test_id', $test->id)->first()
         ]);
-    }
-
-    public function showexamens(Examen $examene)
-    {
-        return view('web.examen.show');
     }
 
     public function store_examen(Request $request)
     {
-        $examen = Examen::find($request->id);
+        $test = Test::find($request->id);
         $user = auth()->user()->id;
         $puntuacion = 0;
-        foreach ($examen->preguntas as $pregunta) {
-            if ($pregunta->incisoCorrecto == $request->get("pregunta_correcta_$pregunta->id")) {
+        foreach ($test->questions as $question) {
+            if ($question->correct_paragraph == $request->get("correct_paragraph_$question->id")) {
                 $puntuacion += 10;
             }
         }
-        $nota = new Nota();
-        $nota->nota = $puntuacion;
-        $nota->user_id = $user;
-        $nota->examen_id = $examen->id;
 
-        if ($puntuacion >= 51) {
-            $nota->estado = "aprobado";
-        } else {
-            $nota->estado = "reprobado";
-        }
-        $nota->save();
-
+        Test_user::create([
+            'user_id' => $user,
+            'test_id' => $test->id,
+            'points' => $puntuacion,
+            'status' => $puntuacion >= 51 ? 'aprobado' : 'reprobado'
+        ]);
         return redirect()->route('menu');
     }
 }

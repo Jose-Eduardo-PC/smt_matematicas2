@@ -24,18 +24,15 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-
-        $rules = [
-            'name' => 'required', 'max:255',
+        return [
+            'name' => ['required', 'max:255'],
+            'surname' => ['required', 'max:255'],
+            'avatar' => 'dimensions:min_width=200,max_width=500,min_height=200,max_height=500',
             'email' => [
                 'required', 'email', 'max:255',
                 Rule::unique('users')->ignore($this->route('user')->id)
             ],
-            'avatar' => 'image',
+
         ];
-        if ($this->filled('password')) {
-            $rules['password'] = ['confirmed', 'min:8'];
-        }
-        return $rules;
     }
 }

@@ -5,11 +5,11 @@
         <div class="card-body">
             <h2>Listado de Examenes</h2>
             <div class="row">
-                @foreach ($examenes as $examen)
-                    <a href="{{ route('examen_show', $examen) }}" class="col-md-6">
+                @foreach ($tests as $test)
+                    <a href="{{ route('test_show', $test) }}" class="col-md-6">
                         <div class="card">
                             <div class="card-body">
-                                <h4>{{ $examen->title }}</h4>
+                                <h4>{{ $test->name_test }}</h4>
                             </div>
                         </div>
                     </a>

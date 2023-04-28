@@ -7,7 +7,6 @@
         <i class="fa fa-trash"></i>
     </button>
 </form>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $('.formulario-eliminar').submit(function(e) {
         e.preventDefault();
@@ -23,11 +22,6 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 this.submit();
-                Swal.fire(
-                    '¡Eliminado!',
-                    'EL registro ha sido eliminado.',
-                    'success'
-                )
             }
         })
     });

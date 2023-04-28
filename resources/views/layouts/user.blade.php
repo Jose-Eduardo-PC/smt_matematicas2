@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <html lang="es">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
@@ -10,7 +11,7 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('admin/assets/img/brand/favicon.png') }}" type="image/png">
     <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Robota">
     <!-- Icons -->
     <link rel="stylesheet" href="{{ asset('admin/assets/vendor/nucleo/css/nucleo.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('admin/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}"
@@ -29,7 +30,6 @@
         <div class="container-fluid mt-3">
             @yield('content')
             <!-- Footer -->
-            @include('layouts.admin.footer')
         </div>
     </div>
     <!-- Argon Scripts -->
@@ -46,6 +46,13 @@
     <!-- Argon JS -->
     <script src="{{ asset('admin/assets/js/argon.js?v=1.2.0') }}"></script>
     @yield('css')
+    <style>
+        body {
+            background-color: rgba(174, 230, 240, 0.5) !important;
+            font-family: 'Roboto', sans-serif !important;
+            font-size: 14px !important;
+        }
+    </style>
 </body>
 
 </html>

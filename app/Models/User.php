@@ -21,6 +21,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
         'email',
         'password',
         'avatar',
@@ -45,8 +46,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function notas()
+    public function test_user()
     {
-        return $this->hasMany(Nota::class,);
+        return $this->hasMany(Test_user::class,);
+    }
+
+    public function theme_user()
+    {
+        return $this->hasMany(Theme_user::class,);
     }
 }

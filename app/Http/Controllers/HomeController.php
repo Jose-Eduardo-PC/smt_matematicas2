@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Actividad;
+
+use App\Models\Activity;
 use App\Models\User;
-use App\Models\Curso;
-use App\Models\Examen;
-use Yajra\Datatables\Datatables;
+use App\Models\Test;
+use App\Models\Theme;
 
 class HomeController extends Controller
 {
@@ -29,12 +29,12 @@ class HomeController extends Controller
     public function index()
     {
         $user = User::count();
-        $curso = Curso::count();
-        $actividad = Actividad::count();
-        $examen = Examen::count();
-        return view('home', compact('user', 'curso', 'actividad', 'examen'));
+        $theme = Theme::count();
+        $activity = Activity::count();
+        $test = Test::count();
+        return view('home', compact('user', 'theme', 'activity', 'test'));
 
-        $cursos = Curso::all();
-        return view('admin.cursos.index', compact('cursos'));
+        $themes = Theme::all();
+        return view('admin.cursos.index', compact('themes'));
     }
 }

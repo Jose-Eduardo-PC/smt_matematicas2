@@ -1,19 +1,15 @@
-<nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+<nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
     <div class="scrollbar-inner">
-        <!-- Brand -->
         <div class="sidenav-header  align-items-center">
             <a class="navbar-brand" href="javascript:void(0)">
-                <img src="\storage\imagenes\admin.png" class="navbar-brand-img" alt="..." width="100"
-                    height="200">
+                <img src="\storage\imagenes\administration.png" width="150" height="150">
                 <div class="text-center">
                     <span class="">{{ Auth::user()->roles->first()->name }}</span>
                 </div>
             </a>
         </div>
         <div class="navbar-inner">
-            <!-- Collapse -->
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
-                <!-- Nav items -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link active" href="/home">
@@ -28,54 +24,33 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('cursos.index') }}">
+                        <a class="nav-link" href="{{ route('themes.index') }}">
                             <i class="ni ni-books text-blue"></i>
-                            <span class="nav-link-text">Cursos</span>
+                            <span class="nav-link-text">Temas</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('actividades.index') }}">
+                        <a class="nav-link" href="{{ route('activitys.index') }}">
                             <i class="ni ni-book-bookmark text-blue"></i>
                             <span class="nav-link-text">Actividades</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('examenes.index') }}">
+                        <a class="nav-link" href="{{ route('tests.index') }}">
                             <i class="ni ni-single-copy-04 text-blue"></i>
                             <span class="nav-link-text">Examenes</span>
                         </a>
                     </li>
-                </ul>
-                <!-- Divider -->
-                <hr class="my-3">
-                <!-- Heading -->
-                <h6 class="navbar-heading p-0 text-muted">
-                    <span class="docs-normal">Documentacion</span>
-                </h6>
-                <!-- Navigation -->
-                <ul class="navbar-nav mb-md-3">
                     <li class="nav-item">
-                        <a class="nav-link"
-                            href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html"
-                            target="_blank">
-                            <i class="ni ni-spaceship"></i>
-                            <span class="nav-link-text">Getting started</span>
+                        <a class="nav-link" href="{{ route('media_resources.index') }}">
+                            <i class="ni ni-folder-17 text-blue"></i>
+                            <span class="nav-link-text">Recursos Multimedia</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"
-                            href="https://demos.creative-tim.com/argon-dashboard/docs/foundation/colors.html"
-                            target="_blank">
-                            <i class="ni ni-palette"></i>
-                            <span class="nav-link-text">Foundation</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                            href="https://demos.creative-tim.com/argon-dashboard/docs/components/alerts.html"
-                            target="_blank">
-                            <i class="ni ni-ui-04"></i>
-                            <span class="nav-link-text">Components</span>
+                        <a class="nav-link" href="{{ url('tools') }}">
+                            <i class="ni ni-ruler-pencil text-blue"></i>
+                            <span class="nav-link-text">Herramientas</span>
                         </a>
                     </li>
                 </ul>

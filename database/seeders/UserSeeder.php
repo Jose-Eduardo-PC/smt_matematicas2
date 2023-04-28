@@ -18,7 +18,8 @@ class UserSeeder extends Seeder
     {
         //crea un super Usuario
         User::create([
-            'name' => 'José Eduardo Patiño',
+            'name' => 'José Eduardo',
+            'surname' => 'Patiño Cuellar',
             'email' => 'jose777@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'),
@@ -27,8 +28,8 @@ class UserSeeder extends Seeder
         ])->assignRole('SuperAdministrador');
 
         //crea 50 usuarios
-        User::factory()->count(25)->create()->each(function (User $user) {
+        /*User::factory()->count(25)->create()->each(function (User $user) {
             $user->assignRole('Usuario');
-        });
+        });*/
     }
 }
