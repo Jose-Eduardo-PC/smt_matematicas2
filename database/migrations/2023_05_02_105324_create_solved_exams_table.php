@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateThemeUsersTable extends Migration
+class CreateSolvedExamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateThemeUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('theme_users', function (Blueprint $table) {
+        Schema::create('solved_exams', function (Blueprint $table) {
             $table->id();
-            $table->string('visits')->nullable();
-            $table->string('likes')->nullable();
+            $table->string('selected_question');
+            $table->foreignId('question_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('theme_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateThemeUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('theme_users');
+        Schema::dropIfExists('solved_exams');
     }
 }

@@ -18,7 +18,7 @@
                 <option selected>Selecciona un Tema</option>
                 @foreach ($themes as $theme)
                     <option value="{{ $theme->id }}"
-                        {{ old('theme_id', $activity->theme_id) == $theme->id ? 'selected' : '' }}>
+                        {{ old('theme_id', $test->theme_id) == $theme->id ? 'selected' : '' }}>
                         {{ $theme->name_theme }}
                     </option>
                 @endforeach

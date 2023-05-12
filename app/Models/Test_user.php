@@ -22,8 +22,13 @@ class Test_user extends Model
         return $this->belongsTo((User::class));
     }
 
-    public function examen()
+    public function test()
     {
         return $this->belongsTo((Test::class));
+    }
+
+    public function solved_exam()
+    {
+        return $this->hasMany(Solved_exam::class);
     }
 }

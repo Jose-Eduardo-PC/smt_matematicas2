@@ -19,8 +19,12 @@ class Question extends Model
         'test_id',
     ];
 
-    public function examen()
+    public function test()
     {
         return $this->belongsTo((Test::class));
+    }
+    public function solved_exam($user_id)
+    {
+        return $this->hasOne(Solved_exam::class)->where('user_id', $user_id)->first();
     }
 }

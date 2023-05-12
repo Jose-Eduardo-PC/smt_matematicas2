@@ -26,7 +26,7 @@ class UpdateRequest extends FormRequest
         return [
             'name_cont' => 'required|string',
             'text_cont' => 'required|string',
-            'image_cont' => 'required|dimensions:min_width=100,max_width=800,min_height=100,max_height=800',
+            'image_cont' => 'dimensions:min_width=100,max_width=800,min_height=100,max_height=800',
             'theme_id' => 'required|integer',
 
         ];

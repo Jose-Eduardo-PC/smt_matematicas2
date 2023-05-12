@@ -8,32 +8,64 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <label for="sideA">Lado A:</label>
-            <input type="number" id="sideA"><br><br>
+            <div class="row ">
+                <div class="col-xl-3">
+                    <label for="sideA">Lado a:</label>
+                    <input type="number" id="sideA"><br><br>
 
-            <label for="sideB">Lado B:</label>
-            <input type="number" id="sideB"><br><br>
+                    <label for="sideB">Lado b:</label>
+                    <input type="number" id="sideB"><br><br>
 
-            <label for="sideC">Lado C:</label>
-            <input type="number" id="sideC"><br><br>
+                    <label for="sideC">Lado c:</label>
+                    <input type="number" id="sideC"><br><br>
 
-            <label for="angleA">Ángulo A:</label>
-            <input type="number" id="angleA"><br><br>
+                    <label for="angleA">Ángulo A:</label>
+                    <input type="number" id="angleA"><br><br>
 
-            <label for="angleB">Ángulo B:</label>
-            <input type="number" id="angleB"><br><br>
+                    <label for="angleB">Ángulo B:</label>
+                    <input type="number" id="angleB"><br><br>
 
-            <label for="angleC">Ángulo C:</label>
-            <input type="number" id="angleC"><br><br>
+                    <label for="angleC">Ángulo C:</label>
+                    <input type="number" id="angleC"><br><br>
 
-            <button onclick="plot()">Graficar</button>
-            <div id="myDiv"></div>
+                    <div class="button-container">
+                        <button class="btn btn-info" onclick="plot()">Graficar</button>
+                        <button class="btn btn-info" onclick="toggleExampleImage()">Ejemplo</button>
+                    </div>
+                </div>
+                <div class="col-xl-9" id="myDiv"></div>
+            </div>
         </div>
     </div>
 @endsection
 
 @section('js')
     <script>
+        let isImageVisible = false;
+
+        function toggleExampleImage() {
+            if (isImageVisible) {
+                hideExampleImage();
+            } else {
+                showExampleImage();
+            }
+            isImageVisible = !isImageVisible;
+        }
+
+        function showExampleImage() {
+            let img = document.createElement("img");
+            img.src = "/storage/imagenes/Triangulo_Ejemplo.png";
+            img.id = "example-image";
+            document.body.appendChild(img);
+        }
+
+        function hideExampleImage() {
+            let img = document.getElementById("example-image");
+            if (img) {
+                img.parentNode.removeChild(img);
+            }
+        }
+
         function plot() {
             var sideB = parseFloat(document.getElementById("sideB").value);
             var sideA = parseFloat(document.getElementById("sideA").value);
@@ -85,12 +117,13 @@
             var data = [trace1, trace2, trace3];
 
             var layout = {
-                title: 'Gráfico del triángulo',
+                title: 'Gráfico de las funciones',
                 xaxis: {
                     title: 'x'
                 },
                 yaxis: {
-                    title: 'y'
+                    title: 'y',
+                    scaleanchor: 'x'
                 }
             };
 
@@ -100,4 +133,28 @@
 @endsection
 
 @section('css')
+    <style>
+        .button-container button {
+            display: inline-block;
+            margin: 5px;
+        }
+
+        input[type="number"] {
+            border-radius: 5px;
+        }
+
+        label {
+            display: inline-block;
+            width: 80px;
+        }
+
+        #example-image {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 30%;
+            height: auto;
+        }
+    </style>
 @endsection

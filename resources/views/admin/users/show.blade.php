@@ -41,12 +41,12 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    @forelse ($user->theme_user as $nota)
-                        <h4>Examenes realizados</h4>
+                    @forelse ($user->test_user as $nota)
+                        <h5>Examenes realizados</h5>
                         <hr>
-                        <span>{{ $nota->examen->title }}</span><br>
-                        <span>{{ $nota->nota }}</span><br>
-                        <span>{{ $nota->estado }}</span><br>
+                        <span><b>Examen:</b> </span><span>{{ $nota->test->name_test }}</span><br>
+                        <span><b>Nota: </b></span><span>{{ $nota->points }}</span><br>
+                        <span><b>Estado: </b></span><span>{{ $nota->status }}</span><br>
                     @empty
                         <span>No hay examenes realizados</span>
                     @endforelse

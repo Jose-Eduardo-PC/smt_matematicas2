@@ -7,6 +7,7 @@ use App\Models\Activity;
 use App\Models\User;
 use App\Models\Test;
 use App\Models\Theme;
+use Yajra\Datatables\Datatables;
 
 class HomeController extends Controller
 {
@@ -25,7 +26,27 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-
+    public function datatables()
+    {
+        return DataTables::of(
+            Theme::select('id', 'name_theme')
+                ->addSelect(['total_visits' => function ($query) {
+                    $query->from('theme_users')
+                        ->whereColumn('theme_id', 'themes.id')
+                        ->where('visits', '>', 0)
+                        ->selectRaw('count(*)');
+                }])
+                ->addSelect(['total_likes' => function ($query) {
+                    $query->from('theme_users')
+                        ->whereColumn('theme_id', 'themes.id')
+                        ->where('likes', 1)
+                        ->selectRaw('count(*)');
+                }])
+        )
+            ->addColumn('btn', 'admin.themes.partials.btn')
+            ->rawColumns(['btn'])
+            ->toJson();
+    }
     public function index()
     {
         $user = User::count();

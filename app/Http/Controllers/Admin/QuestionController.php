@@ -58,7 +58,7 @@ class QuestionController extends Controller
     public function store(StoreRequest $request)
     {
         $test = Test::find($request->test_id);
-        $questionCount = $test->qusestions()->count();
+        $questionCount = $test->questions()->count();
         $questionLimit = 10;
 
         if ($questionCount < $questionLimit) {

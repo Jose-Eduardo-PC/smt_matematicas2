@@ -22,7 +22,7 @@
                         <td><a href="{{ url('tool1') }}" class="btn btn-success">Usar</a></td>
                     </tr>
                     <tr>
-                        <td>Calculadora Grafica de Funciones Lineales </td>
+                        <td>Calculadora Grafica de Funciones </td>
                         <td>Genera la funcion lineal en el plano cartesiano</td>
                         <td><a href="{{ url('tool2') }}" class="btn btn-success">Usar</a></td>
                     </tr>
@@ -32,7 +32,7 @@
                         <td><a href="{{ url('tool3') }}" class="btn btn-success">Usar</a></td>
                     </tr>
                     <tr>
-                        <td>Calculadora Funciones Trigonometricas</td>
+                        <td>Herramienta por ver</td>
                         <td>Genera la funcion trigonometrica en el plano cartesiano</td>
                         <td><a href="{{ url('tool4') }}" class="btn btn-success">Usar</a></td>
                     </tr>

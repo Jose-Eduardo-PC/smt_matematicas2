@@ -1,5 +1,8 @@
 @extends('layouts.user')
 
+<head>
+    <title>Examen</title>
+</head>
 @section('content')
     <div class="card">
         <div class="card-body">
@@ -7,10 +10,39 @@
             <p>{{ $test->content }}</p>
         </div>
     </div>
-    @if ($test_user == null)
+    @if ($hasTest)
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('examen_create') }}" method="POST" id="questionForm">
+                <h4>Ya diste el examen y tu califiacion fue {{ $test_user->points }}</h4>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                @foreach ($test->questions as $question)
+                    <div class="pregunta">
+                        <p>{{ $question->statement }}</p>
+                        <ul>
+                            <li
+                                class="{{ $question->correct_paragraph == 'A' ? 'correcta' : 'incorrecta' }} {{ $question->solved_exam($user_id)->selected_question == 'A' ? 'seleccionada' : '' }}">
+                                {{ $question->incisoA }}</li>
+                            <li
+                                class="{{ $question->correct_paragraph == 'B' ? 'correcta' : 'incorrecta' }} {{ $question->solved_exam($user_id)->selected_question == 'B' ? 'seleccionada' : '' }}">
+                                {{ $question->incisoB }}</li>
+                            <li
+                                class="{{ $question->correct_paragraph == 'C' ? 'correcta' : 'incorrecta' }} {{ $question->solved_exam($user_id)->selected_question == 'C' ? 'seleccionada' : '' }}">
+                                {{ $question->incisoC }}</li>
+                            <li
+                                class="{{ $question->correct_paragraph == 'D' ? 'correcta' : 'incorrecta' }} {{ $question->solved_exam($user_id)->selected_question == 'D' ? 'seleccionada' : '' }}">
+                                {{ $question->incisoD }}</li>
+                        </ul>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @else
+        <div class="card">
+            <div class="card-body">
+                <form action="{{ route('test_create') }}" method="POST" id="questionForm">
                     @csrf
                     <input type="hidden" name="id" value="{{ $test->id }}">
                     @foreach ($test->questions as $index => $question)
@@ -53,20 +85,50 @@
                         <button class="btn btn-primary" type="submit">Terminar</button>
                     </div>
                 </form>
-            @else
-                <div class="card">
-                    <div class="card-body">
-                        Ya diste el examen y tu califiacion fue
-                        {{ $test_user->points }}
-                    </div>
-                </div>
+            </div>
+        </div>
     @endif
-
 @endsection
 @section('css')
     <style>
+        .pregunta li {
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .seleccionada {
+            background-color: rgb(46, 46, 194);
+            color: white;
+        }
+
+        .correcta {
+            border: 2px solid rgb(34, 214, 34);
+        }
+
+        .incorrecta {
+            border: 2px solid rgb(221, 21, 21);
+        }
+
+        .pregunta li {
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        p {
+            color: #777;
+            font-size: 15px;
+            line-height: 1.5;
+            font-weight: bold;
+        }
+
         body {
             font-family: Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.5;
+            font-weight: bold;
         }
 
         .question {

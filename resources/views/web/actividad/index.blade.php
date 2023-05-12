@@ -1,20 +1,18 @@
 @extends('layouts.user')
 
 <head>
-    <title>Examenes</title>
+    <title>Actividades</title>
 </head>
 @section('content')
     <div class="card">
         <div class="card-body">
-            <h2>Listado de Examenes</h2>
+            <h2>Listado de Actividades</h2>
             <div class="row">
-                @foreach ($tests as $test)
-                    <a href="{{ route('test_show', $test) }}" class="col-md-6">
+                @foreach ($activitys as $activity)
+                    <a href="{{ route('activity_show', $activity) }}" class="col-md-6">
                         <div class="card card-dm">
                             <div class="card-body">
-                                <div style="display: flex;">
-                                    <h4><i class="ni ni-single-copy-04 text-blue">&nbsp</i>{{ $test->name_test }}</h4>
-                                </div>
+                                <i class="ni ni-books text-blue"><b>&nbsp{{ $activity->name_activity }}</b></i>
                             </div>
                         </div>
                     </a>
@@ -23,7 +21,8 @@
         </div>
     </div>
 @endsection
-
+@section('js')
+@endsection
 @section('css')
     <style>
         .card {
@@ -41,6 +40,4 @@
             padding: 15px 15px;
         }
     </style>
-@endsection
-@section('js')
 @endsection

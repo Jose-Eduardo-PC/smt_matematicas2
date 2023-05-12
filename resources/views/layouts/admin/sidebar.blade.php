@@ -14,7 +14,13 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="/home">
                             <i class="ni ni-tv-2 text-primary"></i>
-                            <span class="nav-link-text">Dashboard</span>
+                            <span class="nav-link-text">Panel de Administracion</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/menu">
+                            <i class="ni ni-tv-2 text-primary"></i>
+                            <span class="nav-link-text">Panel de Usuario</span>
                         </a>
                     </li>
                     <li class="nav-item">

@@ -2,7 +2,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <h2>Listado de Temas</h2>
+            <h2>Listado de Recursos Multimedia</h2>
             <div class="row">
                 @foreach ($resources as $resource)
                     @php
@@ -16,7 +16,7 @@
                                 <div class="preview-description">
                                     <img class="thumbnail my-video rounded border border-dark" src="{{ $thumbnailUrl }}"
                                         alt="Vista previa">
-                                    <p>{{ $resource->description }}</p>
+                                    <p>{!! $resource->description !!}</p>
                                 </div>
                             </div>
                         </div>

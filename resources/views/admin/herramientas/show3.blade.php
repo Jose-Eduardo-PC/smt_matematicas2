@@ -1,19 +1,28 @@
-<!DOCTYPE html>
-<html>
+@extends('layouts.user')
 
 <head>
     <title>Calculadora gráfica de funciones trigonométricas</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.min.js"></script>
 </head>
 
-<body>
-
-    <input type="text" id="equation1" placeholder="Ingresa la primera ecuación aquí">
-    <input type="text" id="equation2" placeholder="Ingresa la segunda ecuación aquí">
-    <button onclick="plot()">Graficar</button>
-
-    <div id="myDiv"></div>
-
+@section('content')
+    <div class="card">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-3">
+                    <input type="text" id="equation1" placeholder="Ingresa la primera ecuación aquí"><br><br>
+                    <input type="text" id="equation2" placeholder="Ingresa la segunda ecuación aquí"><br><br>
+                    <button onclick="plot()">Graficar</button>
+                </div>
+                <div class="col-9">
+                    <div id="myDiv"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('js')
     <script>
         function plot() {
             var equation1 = document.getElementById("equation1").value;
@@ -56,7 +65,6 @@
             Plotly.newPlot('myDiv', data, layout);
         }
     </script>
-
-</body>
-
-</html>
+@endsection
+@section('css')
+@endsection

@@ -5,23 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Test extends Model
+class Solved_exam extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name_test',
-        'content',
-        'theme_id',
+        'selected_question',
+        'question_id',
+        'user_id'
     ];
 
-    public function questions()
+    public function question()
     {
-        return $this->hasMany(Question::class);
+        return $this->belongsTo(Question::class);
     }
 
     public function test_user()
     {
-        return $this->hasMany(Test_user::class);
+        return $this->belongsTo(Test_user::class);
     }
 }

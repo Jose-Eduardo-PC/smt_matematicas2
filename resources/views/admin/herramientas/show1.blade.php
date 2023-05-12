@@ -1,23 +1,23 @@
 @extends('layouts.user')
 
 <head>
-    <title>Calculadora gráfica de ecuaciones lineales</title>
+    <title>Calculadora gráfica</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.min.js"></script>
 </head>
 
 @section('content')
     <div class="card">
         <div class="card-body">
-            <h1>Gráfico de Funciones Lineales</h1>
             <div class="row">
                 <div class="col-3">
-                    <input type="text" id="equation1" placeholder="primera ecuación aquí"><br><br>
-                    <input type="text" id="equation2" placeholder="segunda ecuación aquí"><br><br>
-                    <input type="text" id="equation3" placeholder="tercera ecuación aquí"><br><br>
+                    <input type="text" id="equation1" placeholder="primera ecuación" autocomplete="on"><span
+                        style="color: rgb(0, 102, 255);">F1</span><br><br>
+                    <input type="text" id="equation2" placeholder="segunda ecuación"> <span
+                        style="color: rgb(236, 99, 45);">F2</span><br><br>
+                    <input type="text" id="equation3" placeholder="tercera ecuación"> <span
+                        style="color: rgb(26, 129, 16);">F3</span><br><br>
                     <button class="btn btn-info" onclick="plot()">Graficar</button>
-                    <br><br>
-                    <img class="canvastyle" src="\storage\imagenes\planocartesiano.jpg" alt="IMG" width="300"
-                        height="200">
                 </div>
                 <div class="col-9">
                     <div id="myDiv"></div>
@@ -39,9 +39,15 @@
             var yValues3 = [];
             for (var x = -10; x < 10; x += 0.1) {
                 xValues.push(x);
-                yValues1.push(eval(equation1));
-                yValues2.push(eval(equation2));
-                yValues3.push(eval(equation3));
+                yValues1.push(math.evaluate(equation1, {
+                    x: x
+                }));
+                yValues2.push(math.evaluate(equation2, {
+                    x: x
+                }));
+                yValues3.push(math.evaluate(equation3, {
+                    x: x
+                }));
             }
 
             var trace1 = {
@@ -66,15 +72,17 @@
             };
 
             var data = [trace1, trace2, trace3];
-
             var layout = {
                 title: 'Gráfico de las funciones',
                 xaxis: {
-                    title: 'x'
+                    title: '< - -x- - >'
                 },
                 yaxis: {
-                    title: 'y'
-                }
+                    title: '< - -y- - >',
+                    scaleanchor: 'x',
+                    scaleratio: 1
+                },
+                height: 550 // Altura del gráfico en píxeles
             };
 
             Plotly.newPlot('myDiv', data, layout);
@@ -83,4 +91,9 @@
 @endsection
 
 @section('css')
+    <style>
+        input[type="text"] {
+            border-radius: 5px;
+        }
+    </style>
 @endsection

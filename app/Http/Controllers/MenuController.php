@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Actividad;
 use App\Models\Activity;
 use App\Models\User;
-use App\Models\Examen;
 use App\Models\Media_resource;
 use App\Models\Test;
 use App\Models\Theme;
-use Illuminate\Http\Request;
+
 
 class MenuController extends Controller
 {

@@ -21,7 +21,7 @@ class Content extends Model
         return $this->belongsTo((Theme::class));
     }
 
-    public function example()
+    public function examples()
     {
         return $this->hasMany(example::class);
     }

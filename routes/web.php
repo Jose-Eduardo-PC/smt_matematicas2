@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\NoteController;
 use App\Http\Controllers\Admin\RolController;
 use App\Http\Controllers\Admin\TestController;
@@ -41,6 +42,7 @@ Route::group(['middleware' => ['role:SuperAdministrador']], function () {
 });
 
 //rutas para las tablas
+Route::get('api/temas-menu', [HomeController::class, 'datatables']);
 Route::get('api/roles', [RolController::class, 'datatables']);
 Route::get('api/tests', [TestController::class, 'datatables']);
 Route::get('api/notes', [NoteController::class, 'datatables']);
@@ -63,6 +65,7 @@ Route::get('/tool4', [App\Http\Controllers\Admin\HerramientaController::class, '
 //rutas vista usuario
 
 //presentacion y menu
+
 Route::get('/menu', [App\Http\Controllers\MenuController::class, 'index'])->name('menu');
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 //examen
@@ -70,8 +73,12 @@ Route::get('/test', [App\Http\Controllers\Web\UserController::class, 'index_test
 Route::get('/test/{test}', [App\Http\Controllers\Web\UserController::class, 'show_test'])->name('test_show');
 Route::post('/test', [App\Http\Controllers\Web\UserController::class, 'store_test'])->name('test_create');
 //tema
+Route::post('/theme/{theme}/like', [App\Http\Controllers\Web\UserController::class, 'like_theme'])->name('like_theme');
 Route::get('/theme', [App\Http\Controllers\Web\UserController::class, 'index_theme'])->name('theme_index');
 Route::get('/theme/{theme}', [App\Http\Controllers\Web\UserController::class, 'show_theme'])->name('theme_show');
+//actividad
+Route::get('/activity', [App\Http\Controllers\Web\UserController::class, 'index_activity'])->name('activity_index');
+Route::get('/activity/{activity}', [App\Http\Controllers\Web\UserController::class, 'show_activity'])->name('activity_show');
 //recursos multimedia
 Route::get('/media', [App\Http\Controllers\Web\UserController::class, 'index_media'])->name('media_index');
 Route::get('/media/{media}', [App\Http\Controllers\Web\UserController::class, 'show_media'])->name('media_show');
