@@ -6,10 +6,9 @@
                     <img alt="Image placeholder" src="/storage/imagenes/EscudoUajms.png">
                 </span>
                 <div class="media-body  ml-2  d-none d-lg-block">
-                    <span class="text-white font-weight-bold">Sistema Multimedia de Matematicas</span>
+                    <span class="text-white font-weight-bold">SISTEMA MULTIMEDIA DE MATEMATICAS</span>
                 </div>
             </div>
-            <!-- Navbar links -->
             <ul class="navbar-nav align-items-center  ml-md-auto ">
                 <li class="nav-item d-xl-none">
                     <!-- Sidenav toggler -->
@@ -33,7 +32,7 @@
                                         @auth
                                             <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href={{ route('menu') }}>Menu</a>
+                                                    <a class="nav-link font-weight-bold" href={{ route('menu') }}>MENU</a>
                                                 </li>
                                                 <li class="nav-item dropdown">
                                                     <a class="nav-link pr-0" href="#" role="button"
@@ -52,7 +51,8 @@
                                                             </span>
                                                             <div class="media-body  ml-2  d-none d-lg-block">
                                                                 <span
-                                                                    class="mb-0 text-sm  font-weight-bold">{{ Auth::user()->name }}</span>
+                                                                    class="mb-0 text-sm font-weight-bold">{{ Auth::user()->name }}
+                                                                    {{ Auth::user()->surname }}</span>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -60,36 +60,17 @@
                                                         <div class="dropdown-header noti-title">
                                                             <h6 class="text-overflow m-0">Bienvenido!</h6>
                                                         </div>
-                                                        <a href="{{ route('users.show', Auth::user()->id) }}"
+                                                        <a href="{{ route('usuario_show', Auth::user()->id) }}"
                                                             class="dropdown-item">
                                                             <i class="ni ni-single-02"></i>
-                                                            <span>My profile</span>
+                                                            <span>MI PERFIL</span>
                                                         </a>
                                                         <div class="dropdown-divider"></div>
                                                         <div class="col-md">
                                                             <form action="{{ route('logout') }}" method="POST">
                                                                 @csrf
-                                                                <button class="col-12 btn btn-danger"
-                                                                    type="submit">Logout</button>
-                                                            </form>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="dropdown-menu  dropdown-menu-right ">
-                                                        <div class="dropdown-header noti-title">
-                                                            <h6 class="text-overflow m-0">Bienvenido!</h6>
-                                                        </div>
-                                                        <a href="{{ route('users.show', Auth::user()->id) }}"
-                                                            class="dropdown-item">
-                                                            <i class="ni ni-single-02"></i>
-                                                            <span>My profile</span>
-                                                        </a>
-                                                        <div class="dropdown-divider"></div>
-                                                        <div class="col-md">
-                                                            <form action="{{ route('logout') }}" method="POST">
-                                                                @csrf
-                                                                <button class="col-12 btn btn-danger"
-                                                                    type="submit">Logout</button>
+                                                                <button class="col-12 btn btn-danger" type="submit">Cerrar
+                                                                    sesión</button>
                                                             </form>
                                                             </a>
                                                         </div>

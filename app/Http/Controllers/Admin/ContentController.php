@@ -57,10 +57,13 @@ class ContentController extends Controller
     {
         $content = new Content();
         $content->fill($request->validated());
-        $content->image_cont = $request->file('image_cont')->store('public/imagenes/imgavatars/');
+        if ($request->hasFile('image_cont')) {
+            $content->image_cont = $request->file('image_cont')->store('public/imagenes/imgavatars/');
+        }
         $content->save();
         return redirect()->route('themes.show', ['theme' => $content->theme_id]);
     }
+
 
     /**
      * Display the specified resource.
@@ -98,11 +101,9 @@ class ContentController extends Controller
     {
         $request->validated();
         if ($request->hasFile('image_cont')) {
-            // Eliminar el archivo de avatar anterior si existe
             if ($content->image_cont) {
                 Storage::delete($content->image_cont);
             }
-            // Almacenar el nuevo archivo de image_cont y asignar la ruta al usuario
             $content->image_cont = $request->file('image_cont')->store('public/imagenes/imgavatars/');
         }
         $validatedData = $request->validated();

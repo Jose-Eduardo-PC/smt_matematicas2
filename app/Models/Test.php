@@ -24,4 +24,8 @@ class Test extends Model
     {
         return $this->hasMany(Test_user::class);
     }
+    public function theme()
+    {
+        return $this->belongsTo(Theme::class);
+    }
 }

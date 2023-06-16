@@ -25,10 +25,9 @@ class StoreRequest extends FormRequest
     {
         return [
             'name_cont' => 'required|string',
-            'image_cont' => 'required|dimensions:min_width=100,max_width=800,min_height=100,max_height=800',
+            'image_cont' => 'dimensions:min_width=100,max_width=800,min_height=100,max_height=800',
             'text_cont' => 'required|string',
             'theme_id' => 'required|integer',
-
         ];
     }
 }

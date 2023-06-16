@@ -30,7 +30,9 @@
         <div class="container-fluid mt-3">
             @yield('content')
             <!-- Footer -->
+            @include('layouts.user.footer')
         </div>
+
     </div>
     <!-- Argon Scripts -->
     <!-- Core -->

@@ -1,4 +1,4 @@
-@extends('layouts.admin_show')
+@extends('layouts.user')
 
 <Head>
     <title>Ver Usuario</title>

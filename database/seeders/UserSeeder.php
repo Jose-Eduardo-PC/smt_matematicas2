@@ -24,7 +24,6 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'),
             'avatar' => ('public/imagenes/imgavatars//ejem.jpg'),
-            'remember_token' => Str::random(10),
         ])->assignRole('SuperAdministrador');
 
         //crea 50 usuarios

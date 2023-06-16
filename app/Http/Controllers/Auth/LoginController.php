@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -26,13 +26,18 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
+    protected function attemptLogin(Request $request)
+    {
+        return $this->guard()->attempt(
+            $this->credentials($request),
+            $request->filled('remember')
+        );
+    }
     protected function redirectTo()
     {
-        if (auth()->user()->roles->first()->name == 'SuperAdministrador') {
+        if (auth()->user()->roles->first()->name == 'SuperAdministrador' || auth()->user()->roles->first()->name == 'Profesor') {
             return '/home';
-        } else if (auth()->user()->roles->first()->name == 'Estudiante') {
+        } else {
             return '/dashboard';
         }
     }

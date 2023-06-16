@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Media_resource;
 use App\Models\Solved_exam;
-use App\Models\Activity;
 use App\Models\Test_user;
+use App\Models\Activity;
 use App\Models\Theme;
+use App\Models\User;
 use App\Models\Test;
 
 
@@ -76,7 +77,7 @@ class UserController extends Controller
     //examen
     public function index_test()
     {
-        $tests = Test::all();
+        $tests = Test::with('theme')->get();
         return view('web.examen.index', compact('tests'));
     }
     public function show_test(Test $test)
@@ -130,5 +131,9 @@ class UserController extends Controller
     {
         $activity = Activity::find($activity->id);
         return view('web.actividad.show', compact('activity'));
+    }
+    public function show_usuario(User $user)
+    {
+        return view('web.usuario.show', compact('user'));
     }
 }

@@ -13,7 +13,8 @@
                         <div class="card card-dm">
                             <div class="card-body">
                                 <div style="display: flex;">
-                                    <h4><i class="ni ni-single-copy-04 text-blue">&nbsp</i>{{ $test->name_test }}</h4>
+                                    <h4><i class="ni ni-single-copy-04 text-blue">&nbsp</i>
+                                        {{ $test->theme->name_theme }} - {{ $test->name_test }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -21,6 +22,7 @@
                 @endforeach
             </div>
         </div>
+        <a href="{{ route('menu') }}" class="btn btn-warning">Volver</a>
     </div>
 @endsection
 

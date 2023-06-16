@@ -7,6 +7,7 @@ use App\Http\Requests\Example\StoreRequest;
 use App\Http\Requests\Example\UpdateRequest;
 use App\Models\Content;
 use App\Models\Example;
+use Illuminate\Support\Facades\Storage;
 use Yajra\Datatables\Datatables;
 use Illuminate\Http\Request;
 
@@ -52,7 +53,9 @@ class ExampleController extends Controller
     {
         $example = new example();
         $example->fill($request->validated());
-        $example->image_ejm = $request->file('image_ejm')->store('public/imagenes/imgavatars/');
+        if ($request->hasFile('image_ejm')) {
+            $example->image_ejm = $request->file('image_ejm')->store('public/imagenes/imgavatars/');
+        }
         $example->save();
         return redirect()->route('contents.show', ['content' => $example->content_id]);
     }
@@ -76,10 +79,10 @@ class ExampleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Example $sample)
     {
-        $sample = Example::all();
-        return view('admin.contents.edit', compact('content', 'themes'));
+        $content = Content::all();
+        return view('admin.examples.edit', compact('content', 'sample'));
     }
 
     /**
@@ -89,9 +92,19 @@ class ExampleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, Example $sample)
     {
-        //
+        $request->validated();
+        if ($request->hasFile('image_ejm')) {
+            if ($sample->image_ejm) {
+                Storage::delete($sample->image_ejm);
+            }
+            $sample->image_ejm = $request->file('image_ejm')->store('public/imagenes/imgavatars/');
+        }
+        $validatedData = $request->validated();
+        unset($validatedData['image_ejm']);
+        $sample->update($validatedData);
+        return redirect()->route('contents.show', ['content' => $request->content_id]);
     }
 
     /**

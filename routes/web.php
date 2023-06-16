@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::group(['middleware' => ['role:SuperAdministrador']], function () {
+Route::group(['middleware' => ['role:SuperAdministrador|Profesor']], function () {
 
     //rutas generales
     Route::resource('roles', RolController::class);
@@ -65,9 +65,12 @@ Route::get('/tool4', [App\Http\Controllers\Admin\HerramientaController::class, '
 //rutas vista usuario
 
 //presentacion y menu
-
 Route::get('/menu', [App\Http\Controllers\MenuController::class, 'index'])->name('menu');
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+
+//rutas de usuarios
+//usuario
+Route::get('/user/{user}', [App\Http\Controllers\Web\UserController::class, 'show_usuario'])->name('usuario_show');
 //examen
 Route::get('/test', [App\Http\Controllers\Web\UserController::class, 'index_test'])->name('test_index');
 Route::get('/test/{test}', [App\Http\Controllers\Web\UserController::class, 'show_test'])->name('test_show');

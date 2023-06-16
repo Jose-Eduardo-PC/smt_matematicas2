@@ -14,6 +14,7 @@
                     allowfullscreen></iframe>
             </div>
         </div>
+        <a href="{{ route('theme_index') }}" class="btn btn-warning">Volver</a>
     </div>
 @endsection
 

@@ -31,13 +31,9 @@
                         <td>Genera un triangulo cuando le das los valores suficientes</td>
                         <td><a href="{{ url('tool3') }}" class="btn btn-success">Usar</a></td>
                     </tr>
-                    <tr>
-                        <td>Herramienta por ver</td>
-                        <td>Genera la funcion trigonometrica en el plano cartesiano</td>
-                        <td><a href="{{ url('tool4') }}" class="btn btn-success">Usar</a></td>
-                    </tr>
             </table>
         </div>
+        <a href="{{ route('menu') }}" class="btn btn-warning">Volver</a>
     </div>
 @endsection
 

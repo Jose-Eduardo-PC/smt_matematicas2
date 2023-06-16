@@ -11,7 +11,7 @@
                 @csrf
                 @method('put')
                 @include('admin.users.partials._form')
-                <br>
+                <br><br>
                 <div>
                     <a class="btn btn-secondary" href="{{ route('login') }}">Ya registrado?</a>
                     <button class="vrd btn btn-success" type="submit">Registrar</button>
@@ -19,6 +19,15 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('css')
+    <style>
+        .imgPr {
+            border-radius: 15px;
+            box-shadow: 10px 10px 5px grey;
+        }
+    </style>
 @endsection
 
 @section('js')
@@ -35,6 +44,10 @@
             if (file) {
                 reader.readAsDataURL(file);
             }
+        }
+
+        function triggerFileInput() {
+            document.getElementById('avatar').click();
         }
     </script>
 @endsection

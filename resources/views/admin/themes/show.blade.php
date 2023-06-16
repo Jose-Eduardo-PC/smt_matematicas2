@@ -20,22 +20,26 @@
                     <th>Id</th>
                     <th>Nombre del Cotenido</th>
                     <th>Fecha de Creacion</th>
-                    <th>Fecha de Actualizacion</th>
                     <th>Opciones</th>
                 </thead>
             </table>
         </div>
     </div>
-@endsection
+@stop
 
 @section('css')
+    <style>
+        #table-contents tr:nth-child(2) {
+            word-wrap: break-word !important;
+        }
+    </style>
     <!-- Datatables -->
     <link href="{{ asset('admin/assets/vendor/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/vendor/datatables.net-buttons-bs/css/buttons.bootstrap.min.css') }}"
         rel="stylesheet">
     <link href="{{ asset('admin/assets/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.min.css') }}"
         rel="stylesheet">
-@endsection
+@stop
 
 @section('js')
     <!-- Datatables -->
@@ -60,12 +64,6 @@
                 },
                 {
                     data: 'created_at',
-                    render: function(data, type, row) {
-                        return moment(data).format('YYYY-MM-DD HH:mm:ss');
-                    },
-                },
-                {
-                    data: 'updated_at',
                     render: function(data, type, row) {
                         return moment(data).format('YYYY-MM-DD HH:mm:ss');
                     },
@@ -107,4 +105,4 @@
             )
         </script>
     @endif
-@endsection
+@stop

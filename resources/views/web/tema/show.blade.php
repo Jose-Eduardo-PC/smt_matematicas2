@@ -4,6 +4,7 @@
     <title>Ver Temas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 @section('content')
     <div class="card">
         <div class="card-body">
@@ -25,9 +26,11 @@
                         <h2>{{ $content->name_cont }}</h2>
                         <p>{!! $content->text_cont !!}</p>
                     </div>
-                    <div class="image-container">
-                        <img src="{{ Storage::url($content->image_cont) }}" class="responsive-image zoom"><br><br>
-                    </div>
+                    @if ($content->image_cont)
+                        <div class="image-container">
+                            <img src="{{ Storage::url($content->image_cont) }}" class="responsive-image zoom"><br><br>
+                        </div>
+                    @endif
                 </div>
                 @if ($content->examples->count() > 0)
                     <div>
@@ -37,19 +40,23 @@
                         <div class="content-container">
                             <div class="text-container">
                                 <p>{!! $example->text_ejm !!}</p>
-                                <div class="image-container">
-                                    <img src="{{ Storage::url($example->image_ejm) }}" class="responsive-image zoom">
-                                </div>
+                                @if ($example->image_ejm)
+                                    <div class="image-container">
+                                        <img src="{{ Storage::url($example->image_ejm) }}" class="responsive-image zoom">
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     @endforeach
-                @else
-                    <p>no se an agregado ejemplos</p>
                 @endif
             </div>
         </div>
     @endforeach
+    <div class="card">
+        <a href="{{ route('theme_index') }}" class="btn btn-warning">Volver</a>
+    </div>
 @endsection
+
 @section('css')
     <style>
         .content-container {
@@ -122,7 +129,8 @@
 
         p {
             color: #777;
-            font-size: 15px;
+            font-size: 18px;
+            font-weight: 1.5;
             line-height: 1.5;
             font-weight: bold;
         }
@@ -152,5 +160,6 @@
         }
     </style>
 @endsection
+
 @section('js')
 @endsection

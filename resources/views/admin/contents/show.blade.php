@@ -43,6 +43,7 @@
             height: auto;
         }
 
+
         .zoom {
             transition: transform .2s;
             overflow: hidden;

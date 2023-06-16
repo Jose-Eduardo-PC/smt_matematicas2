@@ -69,15 +69,16 @@
     @endif
     <div class="form-group col-6">
         <label for="avatar">Avatar</label>
+
         <div class="custom-file">
             <input type="file" name="avatar" class="custom-file-input" id="avatar" accept="image/*"
-                onchange="previewFile()">
-            @if ($user->avatar)
-                <img id="preview" src="{{ Storage::url(Auth::user()->avatar) }}"
-                    onerror="this.src='/storage/imagenes/avatar.gif'" height="100" alt="Vista previa de la imagen">
-            @else
-                <img id="preview" src="/storage/imagenes/avatar.gif" height="100" alt="Vista previa de la imagen">
-            @endif
+                onchange="previewFile()" style="display: none;">
+            <div>
+                <img class="imgPr" id="preview"
+                    src="{{ $user->avatar ? Storage::url(Auth::user()->avatar) : '/storage/imagenes/avatar.gif' }}"
+                    onerror="this.src='/storage/imagenes/avatar.gif'" height="100" alt="Vista previa de la imagen"
+                    onclick="triggerFileInput()">
+            </div>
         </div>
         @error('avatar')
             <br><br><br><br>

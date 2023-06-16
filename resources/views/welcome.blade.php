@@ -19,13 +19,21 @@
                 </div>
                 <div class="col-6">
                     <div>
-                        <img src="/storage/imagenes/FondoW.jpg" width="550" height="400" align="right">
+                        <img class="imgPr" src="/storage/imagenes/FondoW.jpg" width="550" height="400" align="right">
                     </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('css')
     <style>
+        .imgPr {
+            border-radius: 15px;
+            box-shadow: 10px 10px 5px grey;
+        }
+
         p {
             font-size: 17px;
         }

@@ -25,7 +25,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'text_ejm' => 'required|string',
-            'image_ejm' => 'required|dimensions:min_width=200,max_width=800,min_height=100,max_height=800',
+            'image_ejm' => 'dimensions:min_width=200,max_width=800,min_height=100,max_height=800',
             'content_id' => 'required|integer',
         ];
     }

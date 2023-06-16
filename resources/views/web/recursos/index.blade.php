@@ -1,4 +1,5 @@
 @extends('layouts.user')
+
 @section('content')
     <div class="card">
         <div class="card-body">
@@ -12,7 +13,7 @@
                     <a href="{{ route('media_show', $resource) }}" class="col-md-6">
                         <div class="card">
                             <div class="card-body">
-                                <p>{{ $resource->theme->name_theme }}</p>
+                                <h4>{{ $resource->theme->name_theme }}</h4>
                                 <div class="preview-description">
                                     <img class="thumbnail my-video rounded border border-dark" src="{{ $thumbnailUrl }}"
                                         alt="Vista previa">
@@ -24,14 +25,18 @@
                 @endforeach
             </div>
         </div>
+        <a href="{{ route('menu') }}" class="btn btn-warning">Volver</a>
     </div>
 @endsection
+
 @section('css')
     <style>
         .thumbnail {
             width: 200px;
             height: 150px;
             margin: 10px;
+            border-radius: 15px;
+            box-shadow: 5px 5px 5px grey;
         }
 
         .preview-description {
