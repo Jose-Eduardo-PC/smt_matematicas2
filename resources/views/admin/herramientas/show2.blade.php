@@ -8,125 +8,554 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <div class="row ">
-                <div class="col-xl-3">
-                    <label for="sideA">Lado a:</label>
-                    <input type="number" id="sideA"><br><br>
-
-                    <label for="sideB">Lado b:</label>
-                    <input type="number" id="sideB"><br><br>
-
-                    <label for="sideC">Lado c:</label>
-                    <input type="number" id="sideC"><br><br>
-
-                    <label for="angleA">Ángulo A:</label>
-                    <input type="number" id="angleA"><br><br>
-
-                    <label for="angleB">Ángulo B:</label>
-                    <input type="number" id="angleB"><br><br>
-
-                    <label for="angleC">Ángulo C:</label>
-                    <input type="number" id="angleC"><br><br>
-
-                    <div class="button-container">
-                        <button class="btn btn-info" onclick="plot()">Graficar</button>
-                        <button class="btn btn-info" onclick="toggleExampleImage()">Ejemplo</button>
+            <div class="row">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-6">
+                            <form>
+                                <label for="ladoA">Lado a:</label>
+                                <input type="number" id="ladoA" name="ladoA"><br><br>
+                                <label for="ladoB">Lado b:</label>
+                                <input type="number" id="ladoB" name="ladoB"><br><br>
+                                <label for="ladoC">Lado c:</label>
+                                <input type="number" id="ladoC" name="ladoC"><br><br>
+                            </form>
+                        </div>
+                        <div class="col-6">
+                            <form>
+                                <label for="anguloA">Ángulo A:</label>
+                                <input type="number" id="anguloA" name="anguloA"><br><br>
+                                <label for="anguloB">Ángulo B:</label>
+                                <input type="number" id="anguloB" name="anguloB"><br><br>
+                                <label for="anguloC">Ángulo C:</label>
+                                <input type="number" id="anguloC" name="anguloC"><br><br>
+                            </form>
+                        </div>
+                    </div>
+                    <button class="btn-azul" onclick="resolverTriangulo()">Resolver Triángulo</button>
+                    <br><br>
+                    <p class="p1" id="metodoResolucion"></p>
+                    <div class="row">
+                        <div class="col-6">
+                            <p id="resultado-lados"> </p>
+                        </div>
+                        <div class="col-6">
+                            <p id="resultado-angulos"> </p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-xl-9" id="myDiv"></div>
+                <div class="col-6">
+                    <img class="imgtri" src="storage/imagenes/imagen-cosenos.webp" alt="hubo algun error">
+                </div>
             </div>
+            <div id="myDiv"></div>
         </div>
     </div>
 @endsection
 
 @section('js')
     <script>
-        let isImageVisible = false;
+        //funcional
+        function resolverTriangulo() {
+            const ladoA = parseFloat(document.getElementById("ladoA").value);
+            const ladoB = parseFloat(document.getElementById("ladoB").value);
+            const ladoC = parseFloat(document.getElementById("ladoC").value);
+            const anguloA = parseFloat(document.getElementById("anguloA").value);
+            const anguloB = parseFloat(document.getElementById("anguloB").value);
+            const anguloC = parseFloat(document.getElementById("anguloC").value);
 
-        function toggleExampleImage() {
-            if (isImageVisible) {
-                hideExampleImage();
+            const mensajeError = validarDatos(ladoA, ladoB, ladoC, anguloA, anguloB, anguloC);
+
+            if (mensajeError) {
+                document.getElementById("metodoResolucion").textContent = "Error: " + mensajeError;
+                document.getElementById("metodoResolucion").classList.add("error");
+                console.log("error");
+                return;
+            }
+
+            const valoresIngresados = [];
+            if (!isNaN(ladoA)) valoresIngresados.push("ladoA");
+            if (!isNaN(ladoB)) valoresIngresados.push("ladoB");
+            if (!isNaN(ladoC)) valoresIngresados.push("ladoC");
+            if (!isNaN(anguloA)) valoresIngresados.push("anguloA");
+            if (!isNaN(anguloB)) valoresIngresados.push("anguloB");
+            if (!isNaN(anguloC)) valoresIngresados.push("anguloC");
+
+            let metodoResolucion = "";
+
+            if (valoresIngresados.length >= 3) {
+                if (valoresIngresados.includes("ladoA") && valoresIngresados.includes("ladoB") && valoresIngresados
+                    .includes("ladoC")) {
+                    // Resolver el triángulo con Teorema del Coseno.
+                    metodoResolucion = "Teorema del coseno";
+                    resolverTrianguloConLeyDeCosenos();
+                } else if (valoresIngresados.includes("ladoA") && valoresIngresados.includes("anguloB") && valoresIngresados
+                    .includes("anguloC")) {
+                    // Resolver el triángulo con Teorema del Seno y Ley de Cosenos.
+                    metodoResolucion = "Teorema del seno / Ley de cosenos";
+                    resolverTrianguloConSenoYCoseno2();
+                } else if (valoresIngresados.includes("ladoB") && valoresIngresados.includes("anguloA") && valoresIngresados
+                    .includes("anguloC")) {
+                    // Resolver el triángulo con Teorema del Seno y Ley de Cosenos.
+                    metodoResolucion = "Teorema del seno / Ley de cosenos";
+                    resolverTrianguloConSenoYCoseno();
+                } else if (valoresIngresados.includes("ladoC") && valoresIngresados.includes("anguloA") && valoresIngresados
+                    .includes("anguloB")) {
+                    // Resolver el triángulo con Teorema del Seno y Ley de Cosenos.
+                    metodoResolucion = "Teorema del seno / Ley de cosenos";
+                    resolverTrianguloConSenoYCoseno3();
+                } else if ((valoresIngresados.includes("ladoA") || valoresIngresados.includes("ladoB") || valoresIngresados
+                        .includes("ladoC")) &&
+                    (valoresIngresados.includes("anguloA") || valoresIngresados.includes("anguloB") || valoresIngresados
+                        .includes("anguloC"))) {
+                    if (valoresIngresados.includes("ladoA") && valoresIngresados.includes("ladoB") && valoresIngresados
+                        .includes("anguloC")) {
+                        // Resolver el triángulo con dos lados y un ángulo.
+                        metodoResolucion = "Teorema del seno / Ley de cosenos lA-lB-AC";
+                        resolverTrianguloConDosLadosYAngulo();
+                    } else if (valoresIngresados.includes("ladoB") && valoresIngresados.includes("ladoC") &&
+                        valoresIngresados
+                        .includes("anguloA")) {
+                        metodoResolucion = "Teorema del seno / Ley de cosenos lB-lC-aA";
+                        resolverTrianguloConDosLadosYAngulo2();
+                    }
+                } else {
+                    metodoResolucion = "No se puede determinar un método único";
+                }
             } else {
-                showExampleImage();
+                metodoResolucion = "Faltan datos para resolver el triángulo";
             }
-            isImageVisible = !isImageVisible;
+            document.getElementById("metodoResolucion").textContent = "Método de resolución: " + metodoResolucion;
+
+            // Agrega la clase al párrafo para aplicar el estilo de fondo
+            document.getElementById("metodoResolucion").classList.add("destacado-fondo");
         }
-
-        function showExampleImage() {
-            let img = document.createElement("img");
-            img.src = "/storage/imagenes/Triangulo_Ejemplo.png";
-            img.id = "example-image";
-            document.body.appendChild(img);
-        }
-
-        function hideExampleImage() {
-            let img = document.getElementById("example-image");
-            if (img) {
-                img.parentNode.removeChild(img);
-            }
-        }
-
-        function plot() {
-            var sideB = parseFloat(document.getElementById("sideB").value);
-            var sideA = parseFloat(document.getElementById("sideA").value);
-            var sideC = parseFloat(document.getElementById("sideC").value);
-            var angleA = parseFloat(document.getElementById("angleA").value) * (Math.PI / 180);
-            var angleB = parseFloat(document.getElementById("angleB").value) * (Math.PI / 180);
-            var angleC = parseFloat(document.getElementById("angleC").value) * (Math.PI / 180);
-
-            if (sideA && sideB && angleC) {
-                sideC = Math.sqrt(sideA * sideA + sideB * sideB - 2 * sideA * sideB * Math.cos(angleC));
-                angleA = Math.asin(sideB * Math.sin(angleC) / sideC);
-                angleB = Math.PI - angleA - angleC;
-            } else if (sideA && sideC && angleB) {
-                sideB = Math.sqrt(sideA * sideA + sideC * sideC - 2 * sideA * sideC * Math.cos(angleB));
-                angleA = Math.asin(sideC * Math.sin(angleB) / sideB);
-                angleC = Math.PI - angleA - angleB;
-            } else if (sideB && sideC && angleA) {
-                sideA = Math.sqrt(sideB * sideB + sideC * sideC - 2 * sideB * sideC * Math.cos(angleA));
-                angleB = Math.asin(sideC * Math.sin(angleA) / sideA);
-                angleC = Math.PI - angleA - angleB;
+        //funcional
+        function validarDatos(ladoA, ladoB, ladoC, anguloA, anguloB, anguloC) {
+            if ((isNaN(ladoA) && isNaN(anguloA)) || (isNaN(ladoB) && isNaN(anguloB)) || (isNaN(ladoC) && isNaN(anguloC))) {
+                return "Al menos un lado o un ángulo deben estar presentes para resolver el triángulo. Esto garantiza la consistencia y validez de los datos.";
             }
 
-            var xValues = [0, sideC, sideA * Math.cos(angleB), 0];
-            var yValues = [0, 0, sideA * Math.sin(angleB), 0];
+            if (!isNaN(anguloA) && (anguloA <= 0 || anguloA >= 180)) {
+                return "El ángulo A debe estar en el rango de 0 a 180 grados.";
+            }
 
-            var trace1 = {
-                x: xValues,
-                y: yValues,
-                type: 'scatter',
-                mode: 'lines+markers',
-                fill: 'toself'
-            };
+            if (!isNaN(anguloB) && (anguloB <= 0 || anguloB >= 180)) {
+                return "El ángulo B debe estar en el rango de 0 a 180 grados.";
+            }
 
-            var trace2 = {
-                x: [sideC / 2, sideA * Math.cos(angleB) / 2 + sideC / 2, sideA * Math.cos(angleB) / 2],
-                y: [-0.5, -0.5 + sideA * Math.sin(angleB) / 2, sideA * Math.sin(angleB) / 2 + 0.5],
-                text: ['Lado C: ' + sideC.toFixed(2), 'Lado A: ' + sideA.toFixed(2), 'Lado B: ' + sideB.toFixed(2)],
-                mode: 'text'
-            };
+            if (!isNaN(anguloC) && (anguloC <= 0 || anguloC >= 180)) {
+                return "El ángulo C debe estar en el rango de 0 a 180 grados.";
+            }
 
-            var trace3 = {
-                x: [0.5, sideC - 0.5, sideA * Math.cos(angleB) + 0.5],
-                y: [0.5, 0.5, sideA * Math.sin(angleB) - 0.5],
-                text: ['Ángulo A: ' + (angleA * (180 / Math.PI)).toFixed(2) + '°', 'Ángulo B: ' + (angleB * (180 / Math
-                    .PI)).toFixed(2) + '°', 'Ángulo C: ' + (angleC * (180 / Math.PI)).toFixed(2) + '°'],
-                mode: 'text'
-            };
+            if (!isNaN(anguloA) && !isNaN(anguloB) && !isNaN(anguloC) && anguloA + anguloB + anguloC !== 180) {
+                return "La suma de los ángulos debe ser igual a 180 grados.";
+            }
 
-            var data = [trace1, trace2, trace3];
+            if (!isNaN(ladoA) && ladoA <= 0) {
+                return "El lado A debe ser un valor positivo.";
+            }
 
-            var layout = {
-                title: 'Gráfico de las funciones',
-                xaxis: {
-                    title: 'x'
-                },
-                yaxis: {
-                    title: 'y',
-                    scaleanchor: 'x'
+            if (!isNaN(ladoB) && ladoB <= 0) {
+                return "El lado B debe ser un valor positivo.";
+            }
+
+            if (!isNaN(ladoC) && ladoC <= 0) {
+                return "El lado C debe ser un valor positivo.";
+            }
+
+            // Otras validaciones si es necesario...
+
+            return null;
+        }
+        //funcional
+        function resolverTrianguloConLeyDeCosenos() {
+            // Obtener los valores de los campos del formulario
+            var ladoA = document.getElementById('ladoA').value;
+            var ladoB = document.getElementById('ladoB').value;
+            var ladoC = document.getElementById('ladoC').value;
+
+            // Convertir los valores a números
+            var a = parseFloat(ladoA);
+            var b = parseFloat(ladoB);
+            var c = parseFloat(ladoC);
+
+            // Calcular el ángulo C utilizando la ley de cosenos
+            var C = Math.acos((a * a + b * b - c * c) / (2 * a * b));
+
+            // Calcular el ángulo A utilizando el teorema del seno
+            var A = Math.asin(a * Math.sin(C) / c);
+
+            // Calcular el ángulo B restando la suma de los ángulos A y C a 180°
+            var B = Math.PI - A - C;
+
+            // Convertir los ángulos a grados
+            A = A * 180 / Math.PI;
+            B = B * 180 / Math.PI;
+            C = C * 180 / Math.PI;
+
+            // Redondear los valores a tres decimales
+            a = a.toFixed(3);
+            b = b.toFixed(3);
+            c = c.toFixed(3);
+            A = A.toFixed(3);
+            B = B.toFixed(3);
+            C = C.toFixed(3);
+
+
+            // Asignar los valores calculados al elemento <p id="resultado"></p>
+            document.getElementById('resultado-lados').innerHTML =
+                'Lado a: ' + a + '<br>' +
+                'Lado b: ' + b + '<br>' +
+                'Lado c: ' + c;
+            document.getElementById('resultado-angulos').innerHTML =
+                'Ángulo A: ' + A + '<br>' +
+                'Ángulo B: ' + B + '<br>' +
+                'Ángulo C: ' + C;
+            dibujarTriangulo(a, b, c, A, B, C);
+        }
+        //funcional
+        function resolverTrianguloConSenoYCoseno() {
+            // Obtener los valores de los campos del formulario
+            var ladoB = document.getElementById('ladoB').value;
+            var anguloA = document.getElementById('anguloA').value;
+            var anguloC = document.getElementById('anguloC').value;
+            // Convertir los valores a números
+            var b = parseFloat(ladoB);
+            var A = parseFloat(anguloA);
+            var C = parseFloat(anguloC);
+
+            // Convierte los ángulos a radianes
+            A = A * (Math.PI / 180);
+            C = C * (Math.PI / 180);
+
+            // Calcula el ángulo B utilizando el Teorema de la Suma de Ángulos
+            let B = Math.PI - A - C;
+
+            // Calcula el lado a utilizando el Teorema del Seno
+            let a = (b * Math.sin(A)) / Math.sin(B);
+
+            // Calcula el lado c utilizando la Ley de los Cosenos
+            let c = Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(C));
+
+            // Convierte los ángulos a grados y redondea a 3 decimales
+            A = Number((A * (180 / Math.PI)).toFixed(3));
+            B = Number((B * (180 / Math.PI)).toFixed(3));
+            C = Number((C * (180 / Math.PI)).toFixed(3));
+
+            // Redondea los lados a 3 decimales
+            a = Number(a.toFixed(3));
+            b = Number(b.toFixed(3));
+            c = Number(c.toFixed(3));
+
+            // Asignar los valores calculados al elemento <p id="resultado"></p>
+            document.getElementById('resultado-lados').innerHTML =
+                'Lado a: ' + a + '<br>' +
+                'Lado b: ' + b + '<br>' +
+                'Lado c: ' + c;
+            document.getElementById('resultado-angulos').innerHTML =
+                'Ángulo A: ' + A + '<br>' +
+                'Ángulo B: ' + B + '<br>' +
+                'Ángulo C: ' + C;
+            dibujarTriangulo(a, b, c, A, B, C);
+        }
+        //funcional
+        function resolverTrianguloConSenoYCoseno2() {
+            // Obtener los valores de los campos del formulario
+            var ladoA = document.getElementById('ladoA').value;
+            var anguloB = document.getElementById('anguloB').value;
+            var anguloC = document.getElementById('anguloC').value;
+
+            // Convertir los valores a números
+            var a = parseFloat(ladoA);
+            var B = parseFloat(anguloB);
+            var C = parseFloat(anguloC);
+
+            // Convierte los ángulos a radianes
+            B = B * (Math.PI / 180);
+            C = C * (Math.PI / 180);
+
+            // Calcula el ángulo A utilizando el Teorema de la Suma de Ángulos
+            let A = Math.PI - B - C;
+
+            // Calcula el lado b utilizando el Teorema del Seno
+            let b = (a * Math.sin(B)) / Math.sin(A);
+
+            // Calcula el lado c utilizando la Ley de los Cosenos
+            let c = Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(C));
+
+            // Convierte los ángulos a grados y redondea a 3 decimales
+            A = Number((A * (180 / Math.PI)).toFixed(3));
+            B = Number((B * (180 / Math.PI)).toFixed(3));
+            C = Number((C * (180 / Math.PI)).toFixed(3));
+
+            // Redondea los lados a 3 decimales
+            a = Number(a.toFixed(3));
+            b = Number(b.toFixed(3));
+            c = Number(c.toFixed(3));
+
+            // Asignar los valores calculados al elemento <p id="resultado"></p>
+            document.getElementById('resultado-lados').innerHTML =
+                'Lado a: ' + a + '<br>' +
+                'Lado b: ' + b + '<br>' +
+                'Lado c: ' + c;
+            document.getElementById('resultado-angulos').innerHTML =
+                'Ángulo A: ' + A + '<br>' +
+                'Ángulo B: ' + B + '<br>' +
+                'Ángulo C: ' + C;
+            dibujarTriangulo(a, b, c, A, B, C);
+        }
+        //funcional
+        function resolverTrianguloConSenoYCoseno3() {
+            // Obtener los valores de los campos del formulario
+            var ladoC = document.getElementById('ladoC').value;
+            var anguloA = document.getElementById('anguloA').value;
+            var anguloB = document.getElementById('anguloB').value;
+
+            // Convertir los valores a números
+            var c = parseFloat(ladoC);
+            var A = parseFloat(anguloA);
+            var B = parseFloat(anguloB);
+
+            // Convierte los ángulos a radianes
+            A = A * (Math.PI / 180);
+            B = B * (Math.PI / 180);
+
+            // Calcula el ángulo C utilizando el Teorema de la Suma de Ángulos
+            let C = Math.PI - A - B;
+
+            // Calcula el lado a utilizando el Teorema del Seno
+            let a = (c * Math.sin(A)) / Math.sin(C);
+
+            // Calcula el lado b utilizando la Ley de los Cosenos
+            let b = Math.sqrt(a * a + c * c - 2 * a * c * Math.cos(B));
+
+            // Convierte los ángulos a grados y redondea a 3 decimales
+            A = Number((A * (180 / Math.PI)).toFixed(3));
+            B = Number((B * (180 / Math.PI)).toFixed(3));
+            C = Number((C * (180 / Math.PI)).toFixed(3));
+
+            // Redondea los lados a 3 decimales
+            a = Number(a.toFixed(3));
+            b = Number(b.toFixed(3));
+            c = Number(c.toFixed(3));
+
+            // Asignar los valores calculados al elemento <p id="resultado"></p>
+            document.getElementById('resultado-lados').innerHTML =
+                'Lado a: ' + a + '<br>' +
+                'Lado b: ' + b + '<br>' +
+                'Lado c: ' + c;
+            document.getElementById('resultado-angulos').innerHTML =
+                'Ángulo A: ' + A + '<br>' +
+                'Ángulo B: ' + B + '<br>' +
+                'Ángulo C: ' + C;
+            dibujarTriangulo(a, b, c, A, B, C);
+        }
+        //funcional
+        function resolverTrianguloConDosLadosYAngulo() {
+            // Obtener los valores de los lados y ángulos desde tus variables o campos
+            const ladoA = parseFloat(document.getElementById("ladoA").value);
+            const ladoB = parseFloat(document.getElementById("ladoB").value);
+            const anguloC = parseFloat(document.getElementById("anguloC").value);
+            // Convertir el ángulo de grados a radianes
+            const anguloCRad = anguloC * (Math.PI / 180);
+
+            // Calcular el tercer lado usando la Ley de los Cosenos
+            const ladoC = Math.sqrt(ladoA ** 2 + ladoB ** 2 - 2 * ladoA * ladoB * Math.cos(anguloCRad));
+
+            // Calcular los otros ángulos
+            const anguloA = Math.asin(ladoA * Math.sin(anguloCRad) / ladoC) * (180 / Math.PI);
+            const anguloB = 180 - anguloC - anguloA;
+
+            a = ladoA.toFixed(3);
+            b = ladoB.toFixed(3);
+            c = ladoC.toFixed(3);
+            A = anguloA.toFixed(3);
+            B = anguloB.toFixed(3);
+            C = anguloC.toFixed(3);
+
+            // Asignar los valores calculados al elemento <p id="resultado"></p>
+            document.getElementById('resultado-lados').innerHTML =
+                'Lado a: ' + a + '<br>' +
+                'Lado b: ' + b + '<br>' +
+                'Lado c: ' + c;
+            document.getElementById('resultado-angulos').innerHTML =
+                'Ángulo A: ' + A + '<br>' +
+                'Ángulo B: ' + B + '<br>' +
+                'Ángulo C: ' + C;
+            // Aquí puedes utilizar bibliotecas de gráficos para dibujar el triángulo
+            dibujarTriangulo(a, b, c, A, B, C);
+        }
+
+        function resolverTrianguloConDosLadosYAngulo2() {
+            // Obtener los valores de los lados y ángulos desde tus variables o campos
+            const ladoB = parseFloat(document.getElementById("ladoB").value);
+            const ladoC = parseFloat(document.getElementById("ladoC").value);
+            const anguloA = parseFloat(document.getElementById("anguloA").value);
+            // Convertir el ángulo de grados a radianes
+            const anguloARad = anguloA * (Math.PI / 180);
+
+            // Calcular el tercer lado usando la Ley de los Cosenos
+            const ladoA = Math.sqrt(ladoB ** 2 + ladoC ** 2 - 2 * ladoB * ladoC * Math.cos(anguloARad));
+
+            // Calcular los otros ángulos
+            const anguloB = Math.asin(ladoB * Math.sin(anguloARad) / ladoA) * (180 / Math.PI);
+            const anguloC = 180 - anguloA - anguloB;
+
+            a = ladoA.toFixed(3);
+            b = ladoB.toFixed(3);
+            c = ladoC.toFixed(3);
+            A = anguloA.toFixed(3);
+            B = anguloB.toFixed(3);
+            C = anguloC.toFixed(3);
+
+            // Asignar los valores calculados al elemento <p id="resultado"></p>
+            document.getElementById('resultado-lados').innerHTML =
+                'Lado a: ' + a + '<br>' +
+                'Lado b: ' + b + '<br>' +
+                'Lado c: ' + c;
+            document.getElementById('resultado-angulos').innerHTML =
+                'Ángulo A: ' + A + '<br>' +
+                'Ángulo B: ' + B + '<br>' +
+                'Ángulo C: ' + C;
+            // Aquí puedes utilizar bibliotecas de gráficos para dibujar el triángulo
+            dibujarTriangulo(a, b, c, A, B, C);
+        }
+
+        function dibujarTriangulo(a, b, c, A, B, C) {
+
+            var a = parseFloat(a);
+            var b = parseFloat(b);
+            var c = parseFloat(c);
+            var A = parseFloat(A);
+            var B = parseFloat(B);
+            var C = parseFloat(C);
+
+            var s = (a + b + c) / 2;
+            var area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
+            var areaTexto = 'Área: ' + area.toFixed(2) + ' cm²';
+
+            var x1 = 0;
+            var y1 = 0;
+            var x2 = a;
+            var y2 = 0;
+            var x3 = b * Math.cos(C * Math.PI / 180);
+            var y3 = b * Math.sin(C * Math.PI / 180);
+
+            var tempX = x1;
+            var tempY = y1;
+            x1 = x3;
+            y1 = y3;
+            x3 = tempX;
+            y3 = tempY;
+
+            var centroidX = (x1 + x2 + x3) / 3;
+            var centroidY = (y1 + y2 + y3) / 3;
+
+            var anguloA = {
+                x: [x1 + 0.1],
+                y: [y1 + 0.4],
+                mode: 'text',
+                text: ['A'],
+                textposition: 'bottom left',
+                textfont: {
+                    size: 18
                 }
             };
 
+            var anguloB = {
+                x: [x2 + 0.3],
+                y: [y2 + 0.2],
+                mode: 'text',
+                text: ['B'],
+                textposition: 'bottom rigt',
+                textfont: {
+                    size: 18
+                }
+            };
+
+            var anguloC = {
+                x: [x3 - 0.3],
+                y: [y3 - 0.2],
+                mode: 'text',
+                text: ['C'],
+                textposition: 'top center',
+                textfont: {
+                    size: 18
+                }
+            };
+
+            var ladoA = {
+                x: [(x2 + x3) / 2],
+                y: [(y2 + y3) / 2],
+                mode: 'text',
+                text: ['a'],
+                textposition: 'top center',
+                textfont: {
+                    size: 18
+                }
+            };
+
+            var ladoB = {
+                x: [((x1 + x3) / 2) - 0.2],
+                y: [(y1 + y3) / 2],
+                mode: 'text',
+                text: ['b'],
+                textposition: 'bottom left',
+                textfont: {
+                    size: 18
+                }
+            };
+
+            var ladoC = {
+                x: [((x1 + x2) / 2) + 0.2],
+                y: [(y1 + y2) / 2],
+                mode: 'text',
+                text: ['c'],
+                textposition: 'bottom right',
+                textfont: {
+                    size: 18
+                }
+            };
+
+            var trace1 = {
+                x: [x1, x2, x3, x1],
+                y: [y1, y2, y3, y1],
+                mode: 'lines',
+                line: {
+                    color: 'rgb(0, 0, 255)',
+                    width: 3
+                }
+            };
+
+            var trace2 = {
+                x: [x1, x2, x3, centroidX],
+                y: [y1, y2, y3, centroidY],
+                mode: 'markers+text',
+                text: ['', '', '', areaTexto],
+                textposition: 'bottom center',
+                textfont: {
+                    size: 20
+                },
+                marker: {
+                    size: 10,
+                    color: 'rgb(255, 0, 0)'
+                }
+            };
+
+            var data = [trace1, trace2];
+
+            var layout = {
+                title: 'Triángulo',
+                xaxis: {
+                    range: [-1, Math.max(a, b) + 1]
+                },
+                yaxis: {
+                    scaleanchor: "x",
+                    scaleratio: 1
+                }
+            };
+            var data = [trace1, trace2, anguloA, anguloB, anguloC, ladoA, ladoB, ladoC];
             Plotly.newPlot('myDiv', data, layout);
         }
     </script>
@@ -134,27 +563,53 @@
 
 @section('css')
     <style>
-        .button-container button {
-            display: inline-block;
-            margin: 5px;
+        .form-row {
+            display: table;
         }
 
-        input[type="number"] {
+        .form-label,
+        .form-input {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .imgtri {
+            max-width: 70%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .destacado-fondo {
+            background-color: #073a7c;
+            padding: 10px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .p1 {
+            color: rgb(255, 255, 255);
+        }
+
+        p {
+            font-weight: normal;
+        }
+
+        .btn-azul {
+            color: white;
+            background-color: skyblue;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
             border-radius: 5px;
         }
 
-        label {
-            display: inline-block;
-            width: 80px;
-        }
-
-        #example-image {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            max-width: 30%;
-            height: auto;
+        .error {
+            background-color: red;
+            font-size: 16px;
         }
     </style>
 @endsection

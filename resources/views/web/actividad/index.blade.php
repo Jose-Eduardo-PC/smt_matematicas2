@@ -12,7 +12,8 @@
                     <a href="{{ route('activity_show', $activity) }}" class="col-md-6">
                         <div class="card card-dm">
                             <div class="card-body">
-                                <i class="ni ni-books text-blue"><b>&nbsp{{ $activity->name_activity }}</b></i>
+                                <i class="ni ni-books text-blue"><b>&nbsp{{ $activity->name_activity }}
+                                        {{ $activity->theme->name_theme }}</b></i>
                             </div>
                         </div>
                     </a>

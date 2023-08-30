@@ -7,11 +7,11 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
-                <h2>Listado de Examenes</h2>
+                <h1>Listado de Examenes</h1>
                 <a href="{{ route('tests.create') }}" class="btn btn-success">Crear nuevo</a>
             </div>
             <br>
-            <table id="table" class="table">
+            <table id="table" class="table table-sm table-hover">
                 <thead>
                     <tr>
                         <th>Id</th>

@@ -18,11 +18,10 @@
                 <a href="{{ route('question.create-form', ['testId' => $test->id]) }}" class="btn btn-success">Crear
                     nuevo</a>
             </div>
-            <table class="table" id="table">
+            <table id="table" class="table table-sm table-hover">
                 <thead>
                     <th>Id</th>
                     <th>Enunciado</th>
-                    <th>Incisos</th>
                     <th>Inciso Correcto</th>
                     <th>Opciones</th>
                 </thead>
@@ -41,9 +40,6 @@
             },
             {
                 data: 'statement'
-            },
-            {
-                data: 'paragraph'
             },
             {
                 data: 'correct_paragraph'

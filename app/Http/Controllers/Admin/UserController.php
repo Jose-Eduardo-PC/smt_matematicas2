@@ -112,7 +112,7 @@ class UserController extends Controller
             $user->avatar = $request->file('avatar')->store('public/imagenes/imgavatars/');
         }
         if ($request->filled('roles')) {
-            $user->assignRole($request->roles);
+            $user->syncRoles($request->roles);
         }
         $validatedData = $request->validated();
         unset($validatedData['avatar']);

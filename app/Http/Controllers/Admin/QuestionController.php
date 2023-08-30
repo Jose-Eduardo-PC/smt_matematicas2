@@ -15,15 +15,12 @@ class QuestionController extends Controller
 
     public function datatables(Test $test)
     {
-        return DataTables::of(Question::where('test_id', $test->id)->select('id', 'statement', 'correct_paragraph', 'incisoA', 'incisoB', 'incisoC', 'incisoD'))
-            ->addColumn('paragraph', function (Question $question) {
-                return '<b>A)</b> ' . $question->incisoA . '<br><b>B)</b> '  . $question->incisoB . '<br><b>C)</b> ' . $question->incisoC . '<br><b>D)</b> ' . $question->incisoD . '<br>';
-            })
+        return DataTables::of(Question::where('test_id', $test->id)->select('id', 'statement', 'correct_paragraph'))
             ->addColumn('correct_paragraph', function (Question $question) {
                 return '<b>' . $question->correct_paragraph . '</b>';
             })
             ->addColumn('btn', 'admin.questions.partials.btn')
-            ->rawColumns(['paragraph', 'btn', 'correct_paragraph'])
+            ->rawColumns(['btn', 'correct_paragraph'])
             ->toJson();
     }
     /**

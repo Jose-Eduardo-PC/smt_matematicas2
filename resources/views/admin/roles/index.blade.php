@@ -11,7 +11,7 @@
                 <a href="{{ route('themes.create') }}" class="btn btn-success">Crear nuevo</a>
             </div>
             <br>
-            <table id="table" class="table">
+            <table id="table" class="table table-sm table-hover">
                 <thead>
                     <tr>
                         <th>Id</th>

@@ -109,7 +109,7 @@ class ContentController extends Controller
         $validatedData = $request->validated();
         unset($validatedData['image_cont']);
         $content->update($validatedData);
-        return redirect()->route('themes.show', ['theme' => $content->theme_id]);
+        return redirect()->route('themes.index');
     }
 
     /**

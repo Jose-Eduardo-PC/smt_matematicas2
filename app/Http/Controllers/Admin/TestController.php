@@ -75,7 +75,7 @@ class TestController extends Controller
     public function edit(Test $test)
     {
         $themes = Theme::all();
-        return view('admin.tests.edit', compact('test'));
+        return view('admin.tests.edit', compact('test', 'themes'));
     }
 
     /**

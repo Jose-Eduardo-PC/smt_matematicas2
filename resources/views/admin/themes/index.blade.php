@@ -7,16 +7,16 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
-                <h2>Listado de Temas</h2>
+                <h1>Listado de Temas</h1>
                 <a href="{{ route('themes.create') }}" class="btn btn-success">Crear nuevo</a>
             </div>
             <br>
-            <table id="table" class="table">
+            <table id="table" class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Temas</th>
-                        <th>Opciones</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Temas</th>
+                        <th class="centrado" scope="col">Opciones</th>
                     </tr>
                 </thead>
             </table>
@@ -48,4 +48,9 @@
 @section('sweetalert-script')
 @endsection
 @section('css')
+    <style>
+        .centrado {
+            text-align: center !important;
+        }
+    </style>
 @endsection

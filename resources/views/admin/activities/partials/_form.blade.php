@@ -8,7 +8,7 @@
         @enderror
     </div>
     <div class="form-group col-md-3">
-        <label for="theme_id">Curso</label>
+        <label for="theme_id">Tema</label>
         <select id="theme_id" class="form-control form-control-sm" name="theme_id">
             <option selected>Selecciona un tema</option>
             @foreach ($themes as $theme)

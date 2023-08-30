@@ -11,15 +11,15 @@
                 <a href="{{ route('users.create') }}" class="btn btn-success">Crear nuevo Usuario</a>
             </div>
             <br>
-            <table id="table" class="table table-sm">
+            <table id="table" class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Nombres</th>
-                        <th>Apellidos</th>
-                        <th>Email</th>
-                        <th>Roles</th>
-                        <th>Opciones</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Nombres</th>
+                        <th scope="col">Apellidos</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Roles</th>
+                        <th class="centrado" scope="col">Opciones</th>
                     </tr>
                 </thead>
             </table>
@@ -59,4 +59,9 @@
 @section('sweetalert-script')
 @endsection
 @section('css')
+    <style>
+        .centrado {
+            text-align: center;
+        }
+    </style>
 @endsection

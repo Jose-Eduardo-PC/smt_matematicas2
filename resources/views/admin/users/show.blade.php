@@ -17,7 +17,7 @@
                         <div class="col-md-6">
                             @if ($user->avatar)
                                 <img class="imgPr" id="preview" alt="Image placeholder" height="100"
-                                    src="{{ Storage::url(Auth::user()->avatar) }}"
+                                    src="{{ Storage::url($user->avatar) }}"
                                     onerror="this.src='/storage/imagenes/avatar.gif'">
                             @else
                                 <img class="imgPr" id="preview" src="/storage/imagenes/avatar.gif" height="100"
