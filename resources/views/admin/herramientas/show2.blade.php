@@ -69,7 +69,6 @@
             if (mensajeError) {
                 document.getElementById("metodoResolucion").textContent = "Error: " + mensajeError;
                 document.getElementById("metodoResolucion").classList.add("error");
-                console.log("error");
                 return;
             }
 
@@ -125,9 +124,8 @@
             } else {
                 metodoResolucion = "Faltan datos para resolver el triángulo";
             }
+            document.getElementById("metodoResolucion").classList.remove("error");
             document.getElementById("metodoResolucion").textContent = "Método de resolución: " + metodoResolucion;
-
-            // Agrega la clase al párrafo para aplicar el estilo de fondo
             document.getElementById("metodoResolucion").classList.add("destacado-fondo");
         }
         //funcional
@@ -456,6 +454,7 @@
                 x: [x1 + 0.1],
                 y: [y1 + 0.4],
                 mode: 'text',
+                name: 'angulo A',
                 text: ['A'],
                 textposition: 'bottom left',
                 textfont: {
@@ -467,6 +466,7 @@
                 x: [x2 + 0.3],
                 y: [y2 + 0.2],
                 mode: 'text',
+                name: 'angulo B',
                 text: ['B'],
                 textposition: 'bottom rigt',
                 textfont: {
@@ -478,6 +478,7 @@
                 x: [x3 - 0.3],
                 y: [y3 - 0.2],
                 mode: 'text',
+                name: 'angulo C',
                 text: ['C'],
                 textposition: 'top center',
                 textfont: {
@@ -490,6 +491,7 @@
                 y: [(y2 + y3) / 2],
                 mode: 'text',
                 text: ['a'],
+                name: 'lado A',
                 textposition: 'top center',
                 textfont: {
                     size: 18
@@ -500,6 +502,7 @@
                 x: [((x1 + x3) / 2) - 0.2],
                 y: [(y1 + y3) / 2],
                 mode: 'text',
+                name: 'lado B',
                 text: ['b'],
                 textposition: 'bottom left',
                 textfont: {
@@ -511,6 +514,7 @@
                 x: [((x1 + x2) / 2) + 0.2],
                 y: [(y1 + y2) / 2],
                 mode: 'text',
+                name: 'lado C',
                 text: ['c'],
                 textposition: 'bottom right',
                 textfont: {
@@ -522,6 +526,7 @@
                 x: [x1, x2, x3, x1],
                 y: [y1, y2, y3, y1],
                 mode: 'lines',
+                name: 'Triángulo',
                 line: {
                     color: 'rgb(0, 0, 255)',
                     width: 3
@@ -532,6 +537,7 @@
                 x: [x1, x2, x3, centroidX],
                 y: [y1, y2, y3, centroidY],
                 mode: 'markers+text',
+                name: 'Puntos d Ref',
                 text: ['', '', '', areaTexto],
                 textposition: 'bottom center',
                 textfont: {
@@ -553,6 +559,20 @@
                 yaxis: {
                     scaleanchor: "x",
                     scaleratio: 1
+                },
+                legend: {
+                    title: {
+                        text: 'Leyendas'
+                    },
+                    x: 1.02,
+                    y: 0.5,
+                    valign: 'middle',
+                    bgcolor: 'rgba(255, 255, 255, 0.8)',
+                    bordercolor: 'blue',
+                    borderwidth: 2,
+                    font: {
+                        size: 16
+                    }
                 }
             };
             var data = [trace1, trace2, anguloA, anguloB, anguloC, ladoA, ladoB, ladoC];

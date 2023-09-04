@@ -18,8 +18,8 @@
                     </a>
                 @endforeach
             </div>
+            <a href="{{ route('menu') }}" class="btn btn-warning">Volver</a>
         </div>
-        <a href="{{ route('menu') }}" class="btn btn-warning">Volver</a>
     </div>
 @endsection
 @section('js')

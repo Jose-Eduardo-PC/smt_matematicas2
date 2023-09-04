@@ -2,20 +2,21 @@
 
 <head>
     <title>Ver Temas</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 @section('content')
     <div class="card">
         <div class="card-body">
-            <h2>{{ $theme->name_theme }}</h2>
-            <p>{!! $theme->description !!}</p>
+            <h2 class="text-to-read">{{ $theme->name_theme }}</h2>
+            <p class="text-to-read"> {{ strip_tags($theme->description) }}</p>
             <form action="{{ route('like_theme', ['theme' => $theme->id]) }}" method="POST">
                 @csrf
                 <button type="submit" class="like-button">
                     <i class="fa-solid fa-thumbs-up" style="{{ $user_liked ? 'color: blue;' : 'color: lightgray;' }}"></i>
                 </button>
             </form>
+            <button class="btn btn-info" onclick="speakText()">Reproducir</button>
+            <button class="btn btn-info" onclick="stopAudio()">Detener</button>
         </div>
     </div>
     @foreach ($theme->contents as $content)
@@ -23,8 +24,8 @@
             <div class="card-body">
                 <div class="content-container">
                     <div class="text-container">
-                        <h2>{{ $content->name_cont }}</h2>
-                        <p>{!! $content->text_cont !!}</p>
+                        <h2 class="text-to-read">{{ $content->name_cont }}</h2>
+                        <p class="text-to-read"> {{ strip_tags($content->text_cont) }}</p>
                     </div>
                     @if ($content->image_cont)
                         <div class="image-container">
@@ -39,7 +40,7 @@
                     @foreach ($content->examples as $example)
                         <div class="content-container">
                             <div class="text-container">
-                                <p>{!! $example->text_ejm !!}</p>
+                                <p class="text-to-read"> {{ strip_tags($example->text_ejm) }}</p>
                                 @if ($example->image_ejm)
                                     <div class="image-container">
                                         <img src="{{ Storage::url($example->image_ejm) }}" class="responsive-image zoom">
@@ -57,7 +58,39 @@
     </div>
 @endsection
 
+@section('js')
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=lLbCh0ND"></script>
+    <script>
+        function stripHtml(html) {
+            var tempDiv = document.createElement("DIV");
+            tempDiv.innerHTML = html;
+            return tempDiv.textContent || tempDiv.innerText || "";
+        }
+
+        function getTextToSpeak() {
+            var elements = document.getElementsByClassName('text-to-read');
+            var text = "";
+            for (var i = 0; i < elements.length; i++) {
+                text += stripHtml(elements[i].innerHTML) + " ";
+            }
+            return text;
+        }
+
+        function stopAudio() {
+            responsiveVoice.cancel();
+        }
+
+        function speakText() {
+            responsiveVoice.setDefaultVoice("Spanish Female");
+            var text = getTextToSpeak();
+            responsiveVoice.speak(text);
+        }
+    </script>
+@endsection
+
 @section('css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <style>
         .content-container {
             display: flex;
@@ -159,7 +192,4 @@
             height: auto;
         }
     </style>
-@endsection
-
-@section('js')
 @endsection
