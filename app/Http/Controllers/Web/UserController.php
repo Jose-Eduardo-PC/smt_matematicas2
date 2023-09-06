@@ -136,4 +136,21 @@ class UserController extends Controller
     {
         return view('web.usuario.show', compact('user'));
     }
+    //modelo
+    public function index_model()
+    {
+        return view('web.modelos.index');
+    }
+    public function show()
+    {
+        return view('web.modelos.show');
+    }
+    public function show1()
+    {
+        return view('web.modelos.show1');
+    }
+    public function show2()
+    {
+        return view('web.modelos.show2');
+    }
 }

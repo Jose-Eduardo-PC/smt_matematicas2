@@ -69,6 +69,7 @@
                 <div class="col-6">
                     <img src="\storage\imagenes\pizarra_triangulo.jpg" alt="IMG" width="500" height="400">
                 </div>
+                <a href="{{ route('tools') }}" class="btn btn-warning">Volver</a>
             </div>
             <!-- Botones para abrir los modales -->
 
@@ -209,8 +210,7 @@
             });
 
         });
-        //
-        //
+
         function myFunctionSeno() {
             document.getElementById("formseno").addEventListener("submit", function(event) {
                 event.preventDefault();
@@ -324,12 +324,17 @@
             display: none;
         }
 
+        .modal {
+            position: relative;
+        }
+
         /* Estilo para el botón de cerrar */
         .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
+            font-size: 15px;
+            color: white;
+            background-color: red;
+            padding: 10px 20px;
+            border-radius: 5px;
         }
     </style>
 @endsection

@@ -17,6 +17,11 @@
                         <th class="text-light"><b>Opciones</b></th>
                     </tr>
                     <tr>
+                        <td>Tabla de Funciones Trigonometricas (Cos,tan,seno)</td>
+                        <td>Genera una tabla de 1 a 360 con las valores Cosenos,senos y tangentes</td>
+                        <td><a href="{{ url('tool5') }}" class="btn btn-success">Usar</a></td>
+                    </tr>
+                    <tr>
                         <td>Calculadora de Funciones Trigonometricas (Cos,tan,seno)</td>
                         <td>Obtiene valores de angulos y valor numericos de las funciones </td>
                         <td><a href="{{ url('tool1') }}" class="btn btn-success">Usar</a></td>

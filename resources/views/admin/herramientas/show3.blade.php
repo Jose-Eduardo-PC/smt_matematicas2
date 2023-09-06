@@ -2,8 +2,6 @@
 
 <head>
     <title>Calculadora gráfica de funciones trigonométricas</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.min.js"></script>
 </head>
 
 @section('content')
@@ -23,6 +21,8 @@
     </div>
 @endsection
 @section('js')
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.min.js"></script>
     <script>
         function plot() {
             var equation1 = document.getElementById("equation1").value;

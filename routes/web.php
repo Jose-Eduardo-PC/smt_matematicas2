@@ -62,6 +62,7 @@ Route::get('/tool1', [App\Http\Controllers\Admin\HerramientaController::class, '
 Route::get('/tool2', [App\Http\Controllers\Admin\HerramientaController::class, 'show1'])->name('tool2');
 Route::get('/tool3', [App\Http\Controllers\Admin\HerramientaController::class, 'show2'])->name('tool3');
 Route::get('/tool4', [App\Http\Controllers\Admin\HerramientaController::class, 'show3'])->name('tool4');
+Route::get('/tool5', [App\Http\Controllers\Admin\HerramientaController::class, 'show4'])->name('tool5');
 //rutas vista usuario
 
 //presentacion y menu
@@ -71,6 +72,11 @@ Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'inde
 //rutas de usuarios
 //usuario
 Route::get('/user/{user}', [App\Http\Controllers\Web\UserController::class, 'show_usuario'])->name('usuario_show');
+//rutas de modelos
+Route::get('/models', [App\Http\Controllers\Web\UserController::class, 'index_model'])->name('models');
+Route::get('/models1', [App\Http\Controllers\Web\UserController::class, 'show'])->name('models1');
+Route::get('/models2', [App\Http\Controllers\Web\UserController::class, 'show1'])->name('models2');
+Route::get('/models3', [App\Http\Controllers\Web\UserController::class, 'show2'])->name('models2');
 //examen
 Route::get('/test', [App\Http\Controllers\Web\UserController::class, 'index_test'])->name('test_index');
 Route::get('/test/{test}', [App\Http\Controllers\Web\UserController::class, 'show_test'])->name('test_show');

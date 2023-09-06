@@ -8,7 +8,7 @@
     <div class="card contenedor-opciones">
         <div class="card-body">
             <div class="row">
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <a href="{{ route('theme_index') }}">
                         <div class="card card-stats">
                             <div class="card-body">
@@ -28,7 +28,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <a href="{{ route('media_index') }}">
                         <div class="card card-stats">
                             <div class="card-body">
@@ -48,7 +48,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <a href="{{ route('activity_index') }}">
                         <div class="card card-stats">
                             <div class="card-body">
@@ -68,7 +68,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <a href="{{ route('test_index') }}">
                         <div class="card card-stats">
                             <div class="card-body">
@@ -88,7 +88,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <a href="{{ route('tools') }}">
                         <div class="card card-stats">
                             <div class="card-body">
@@ -98,8 +98,28 @@
                                         <span class="font-weight-bold mb-0">Existentes: 3</span>
                                     </div>
                                     <div class="col-auto">
-                                        <img src="\storage\imagenes\Herramientas-r.png" alt="" width="90"
+                                        <img src="\storage\imagenes\Herramientas-r.png" alt="" width="80"
                                             height="70">
+                                    </div>
+                                </div>
+                                <p class="mt-3 mb-0 text-sm">
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <a href="{{ route('models') }}">
+                        <div class="card card-stats">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h4 class="card-title text-uppercase text-muted mb-0">Simulaciones</h4>
+                                        <span class="font-weight-bold mb-0">Existentes: 3</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <img src="\storage\imagenes\simulacion.webp" alt="" width="80"
+                                            height="80">
                                     </div>
                                 </div>
                                 <p class="mt-3 mb-0 text-sm">
