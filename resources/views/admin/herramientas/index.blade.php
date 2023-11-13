@@ -22,7 +22,7 @@
                         <td><a href="{{ url('tool5') }}" class="btn btn-success">Usar</a></td>
                     </tr>
                     <tr>
-                        <td>Calculadora de Funciones Trigonometricas (Cos,tan,seno)</td>
+                        <td>Conversor de Funciones Trigonometricas (Cos,tan,seno)</td>
                         <td>Obtiene valores de angulos y valor numericos de las funciones </td>
                         <td><a href="{{ url('tool1') }}" class="btn btn-success">Usar</a></td>
                     </tr>
@@ -35,6 +35,11 @@
                         <td>Calculadora de parametros de trinagulos(Lados y angulos)</td>
                         <td>Genera un triangulo cuando le das los valores suficientes</td>
                         <td><a href="{{ url('tool3') }}" class="btn btn-success">Usar</a></td>
+                    </tr>
+                    <tr>
+                        <td>Calculadora de Amplitud y periodo</td>
+                        <td>Genera un grafico con la funcion trigonometrica y encuentra su amplitu y periodo</td>
+                        <td><a href="{{ url('tool6') }}" class="btn btn-success">Usar</a></td>
                     </tr>
             </table>
         </div>

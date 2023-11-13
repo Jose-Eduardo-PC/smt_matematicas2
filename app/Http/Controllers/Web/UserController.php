@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Media_resource;
+use Carbon\Carbon;
 use App\Models\Solved_exam;
 use App\Models\Test_user;
 use App\Models\Activity;
@@ -45,7 +46,9 @@ class UserController extends Controller
             DB::table('theme_users')->insert([
                 'user_id' => $user_id,
                 'theme_id' => $theme->id,
-                'visits' => 1
+                'visits' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
         } else {
             // Si ya existe un registro para este usuario y tema, incrementar el contador de visitas
@@ -88,6 +91,18 @@ class UserController extends Controller
             ->where('user_id', $user_id)
             ->where('test_id', $test->id)
             ->exists();
+
+        foreach ($test->questions as $question) {
+            $options = [
+                'A' => $question->incisoA,
+                'B' => $question->incisoB,
+                'C' => $question->incisoC,
+                'D' => $question->incisoD,
+            ];
+
+            $question->options = $options;
+        }
+
         return view('web.examen.show', [
             'test' => $test,
             'hasTest' => $hasTest,

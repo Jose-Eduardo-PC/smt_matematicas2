@@ -33,9 +33,12 @@
         <label for="roles">Rol</label>
         <select name="roles[]" class="custom-select">
             @foreach ($roles as $role)
-                <option value="{{ $role->name }}" {{ $user->roles->contains($role->id) ? 'selected' : '' }}>
-                    {{ $role->name }}
-                </option>
+                @if (Auth::user()->hasRole('SuperAdministrador') ||
+                        (Auth::user()->hasRole('Profesor') && ($role->name == 'Estudiante' || $role->name == 'Usuario')))
+                    <option value="{{ $role->name }}" {{ $user->roles->contains($role->id) ? 'selected' : '' }}>
+                        {{ $role->name }}
+                    </option>
+                @endif
             @endforeach
         </select>
     </div>

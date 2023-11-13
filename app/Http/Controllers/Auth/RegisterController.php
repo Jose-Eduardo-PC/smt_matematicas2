@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\File;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -49,12 +51,18 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        $validator = Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
+
+        if ($validator->fails()) {
+            dd($validator->errors()); // Muestra los errores y detiene la ejecución del script
+        }
+
+        return $validator;
     }
 
     /**
@@ -65,11 +73,34 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $avatarPath = null;
+        if (isset($data['avatar'])) {
+            $avatar = $data['avatar'];
+            $filename = time() . '.' . pathinfo($avatar, PATHINFO_EXTENSION);
+            $avatarPath = 'public/avatars/' . $filename;
+            Storage::disk('local')->put($avatarPath, file_get_contents($avatar));
+        }
+
         return User::create([
             'name' => $data['name'],
             'surname' => $data['surname'],
             'email' => $data['email'],
+            'avatar' => $avatarPath,
             'password' => Hash::make($data['password']),
         ])->assignRole('Usuario');
+    }
+
+
+    public function showRegistrationForm()
+    {
+        // Supongamos que tienes los avatares almacenados en public/avatars
+        $avatars = File::files(public_path('avatars'));
+
+        // Convertir cada archivo a una URL
+        $avatarUrls = array_map(function ($file) {
+            return asset('avatars/' . $file->getFilename());
+        }, $avatars);
+
+        return view('auth.register', ['avatars' => $avatarUrls]);
     }
 }

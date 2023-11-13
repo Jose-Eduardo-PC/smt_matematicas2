@@ -48,6 +48,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('notes.index') }}">
+                            <i class="ni ni-single-copy-04 text-blue"></i>
+                            <span class="nav-link-text">Notas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('media_resources.index') }}">
                             <i class="ni ni-folder-17 text-blue"></i>
                             <span class="nav-link-text">Recursos Multimedia</span>

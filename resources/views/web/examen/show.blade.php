@@ -8,86 +8,89 @@
         <div class="card-body">
             <h2>{{ $test->name_test }}</h2>
             <p>{{ $test->content }}</p>
+            @if ($hasTest)
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Ya diste el examen y tu califiacion fue {{ $test_user->points }}</h4>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        @foreach ($test->questions as $question)
+                            <div class="pregunta">
+                                <p>{{ $question->statement }}</p>
+                                <ul>
+                                    @foreach ($question->options as $option => $value)
+                                        <li
+                                            class="{{ $question->solved_exam($user_id)->selected_question == $option ? 'seleccionada' : '' }}">
+                                            <span
+                                                class="{{ $question->correct_paragraph == $option ? 'correcta' : 'incorrecta' }}">
+                                                {{ $question->correct_paragraph == $option ? '✔️' : '❌' }}
+                                            </span>
+                                            <label><b>{{ $option }})</b> {{ $value }}</label>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endforeach
+
+                    </div>
+                </div>
+            @else
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#examModal">
+                    Abrir examen
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="examModal" tabindex="-1" role="dialog" aria-labelledby="examModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="examModalLabel"> {{ $test->id }} Examen</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('test_create') }}" method="POST" id="questionForm">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $test->id }}">
+                                    @foreach ($test->questions as $index => $question)
+                                        <div class="question" id="question{{ $index + 1 }}" style="display: none;">
+                                            <ul>
+                                                <h4>{{ $question->statement }}</h4>
+                                                {{ $question->id }}
+                                                @foreach ($question->options as $option => $value)
+                                                    <li>
+                                                        <label>
+                                                            <input type="radio"
+                                                                name="correct_paragraph_{{ $question->id }}"
+                                                                value="{{ $option }}">
+                                                            <label><b>{{ $option }})</b> {{ $value }}</label>
+                                                        </label>
+                                                    </li>
+                                                @endforeach
+                                                @if ($index > 0)
+                                                    <button class="btn previous-question" type="button">Atrás</button>
+                                                @endif
+                                                @if ($index + 1 < count($test->questions))
+                                                    <button class="btn next-question" type="button">Siguiente</button>
+                                                @endif
+                                            </ul>
+                                        </div>
+                                    @endforeach
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <button form="questionForm" class="btn btn-primary" type="submit">Terminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
-    @if ($hasTest)
-        <div class="card">
-            <div class="card-body">
-                <h4>Ya diste el examen y tu califiacion fue {{ $test_user->points }}</h4>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                @foreach ($test->questions as $question)
-                    <div class="pregunta">
-                        <p>{{ $question->statement }}</p>
-                        <ul>
-                            <li
-                                class="{{ $question->correct_paragraph == 'A' ? 'correcta' : 'incorrecta' }} {{ $question->solved_exam($user_id)->selected_question == 'A' ? 'seleccionada' : '' }}">
-                                {{ $question->incisoA }}</li>
-                            <li
-                                class="{{ $question->correct_paragraph == 'B' ? 'correcta' : 'incorrecta' }} {{ $question->solved_exam($user_id)->selected_question == 'B' ? 'seleccionada' : '' }}">
-                                {{ $question->incisoB }}</li>
-                            <li
-                                class="{{ $question->correct_paragraph == 'C' ? 'correcta' : 'incorrecta' }} {{ $question->solved_exam($user_id)->selected_question == 'C' ? 'seleccionada' : '' }}">
-                                {{ $question->incisoC }}</li>
-                            <li
-                                class="{{ $question->correct_paragraph == 'D' ? 'correcta' : 'incorrecta' }} {{ $question->solved_exam($user_id)->selected_question == 'D' ? 'seleccionada' : '' }}">
-                                {{ $question->incisoD }}</li>
-                        </ul>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    @else
-        <div class="card">
-            <div class="card-body">
-                <form action="{{ route('test_create') }}" method="POST" id="questionForm">
-                    @csrf
-                    <input type="hidden" name="id" value="{{ $test->id }}">
-                    @foreach ($test->questions as $index => $question)
-                        <div class="question" id="question{{ $index + 1 }}"
-                            @if ($index > 0) style="display: none;" @endif>
-                            <ul>
-                                <h4>{{ $question->statement }}</h4>
-                                <li>
-                                    <label>
-                                        <input type="radio" name="correct_paragraph_{{ $question->id }}" value="A">
-                                        <label><b>A)</b> {{ $question->incisoA }}</label>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="radio" name="correct_paragraph_{{ $question->id }}" value="B">
-                                        <label><b>B)</b>{{ $question->incisoB }}</label>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="radio" name="correct_paragraph_{{ $question->id }}" value="C">
-                                        <label><b>C)</b>{{ $question->incisoC }}</label>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="radio" name="correct_paragraph_{{ $question->id }}" value="D">
-                                        <label><b>D)</b>{{ $question->incisoD }}</label>
-                                    </label>
-                                </li>
-                            </ul>
-                            @if ($index + 1 < count($test->questions))
-                                <button class="btn" type="button"
-                                    onclick="showNextQuestion({{ $index + 1 }})">Siguiente</button>
-                            @endif
-                        </div>
-                    @endforeach
-                    <div class="form-group">
-                        <button class="btn btn-primary" type="submit">Terminar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    @endif
 @endsection
 @section('css')
     <style>
@@ -103,19 +106,14 @@
         }
 
         .correcta {
-            border: 2px solid rgb(34, 214, 34);
+            color: rgb(34, 214, 34);
         }
 
         .incorrecta {
-            border: 2px solid rgb(221, 21, 21);
+            color: rgb(221, 21, 21);
         }
 
-        .pregunta li {
-            margin-bottom: 10px;
-            padding: 5px;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
+        /* Resto del CSS... */
 
         p {
             color: #777;
@@ -167,9 +165,20 @@
 @endsection
 @section('js')
     <script>
-        function showNextQuestion(currentQuestion) {
-            document.getElementById(`question${currentQuestion}`).style.display = 'none';
-            document.getElementById(`question${currentQuestion + 1}`).style.display = 'block';
-        }
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelector('#question1').style.display = 'block';
+            document.querySelectorAll('.next-question').forEach((button, index) => {
+                button.addEventListener('click', (event) => {
+                    document.querySelector('#question' + (index + 1)).style.display = 'none';
+                    document.querySelector('#question' + (index + 2)).style.display = 'block';
+                });
+            });
+            document.querySelectorAll('.previous-question').forEach((button, index) => {
+                button.addEventListener('click', (event) => {
+                    document.querySelector('#question' + (index + 2)).style.display = 'none';
+                    document.querySelector('#question' + (index + 1)).style.display = 'block';
+                });
+            });
+        });
     </script>
 @endsection

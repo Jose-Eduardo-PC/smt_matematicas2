@@ -31,6 +31,12 @@
                                     <div class="media-body  ml-2  d-none d-lg-block">
                                         @auth
                                             <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
+                                                @hasanyrole('SuperAdministrador|Profesor')
+                                                    <li class="nav-item">
+                                                        <a class="nav-link font-weight-bold" href="/home">PANEL DE
+                                                            ADMINISTRACION</a>
+                                                    </li>
+                                                @endhasanyrole
                                                 <li class="nav-item">
                                                     <a class="nav-link font-weight-bold" href={{ route('menu') }}>MENU</a>
                                                 </li>

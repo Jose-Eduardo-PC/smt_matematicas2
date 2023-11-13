@@ -61,6 +61,11 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+            'dump' => [
+                'dump_binary_path' => 'C:/xampp/mysql/bin/', // sólo la ruta, sin `mysqldump` o `pg_dump`
+                'use_single_transaction',
+                'timeout' => 60 * 5, // tiempo de espera de 5 minutos
+            ],
         ],
 
         'pgsql' => [
@@ -89,6 +94,12 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+        ],
+
+        'dump' => [
+            'dump_binary_path' => 'C:/xampp/mysql/bin/', // sólo la ruta, sin `mysqldump` o `pg_dump`
+            'use_single_transaction',
+            'timeout' => 60 * 5, // tiempo de espera de 5 minutos
         ],
 
     ],
@@ -123,7 +134,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
         ],
 
         'default' => [

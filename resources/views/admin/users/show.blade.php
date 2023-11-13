@@ -16,9 +16,15 @@
                         </div>
                         <div class="col-md-6">
                             @if ($user->avatar)
-                                <img class="imgPr" id="preview" alt="Image placeholder" height="100"
-                                    src="{{ Storage::url($user->avatar) }}"
-                                    onerror="this.src='/storage/imagenes/avatar.gif'">
+                                @if (Str::startsWith($user->avatar, 'public/imagenes/imgavatars'))
+                                    <img class="imgPr" id="preview" alt="Image placeholder" height="100"
+                                        src="{{ Storage::url($user->avatar) }}"
+                                        onerror="this.src='/storage/imagenes/avatar.gif'">
+                                @else
+                                    <img class="imgPr" id="preview" alt="Image placeholder" height="100"
+                                        src="{{ Storage::url('avatars/' . basename($user->avatar)) }}"
+                                        onerror="this.src='/storage/imagenes/avatar.gif'">
+                                @endif
                             @else
                                 <img class="imgPr" id="preview" src="/storage/imagenes/avatar.gif" height="100"
                                     alt="Vista previa de la imagen">

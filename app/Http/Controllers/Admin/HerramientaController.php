@@ -43,4 +43,8 @@ class HerramientaController extends Controller
     {
         return view('admin.herramientas.show4');
     }
+    public function show5()
+    {
+        return view('admin.herramientas.show5');
+    }
 }

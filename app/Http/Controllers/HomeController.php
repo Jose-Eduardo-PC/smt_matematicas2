@@ -7,7 +7,12 @@ use App\Models\Activity;
 use App\Models\User;
 use App\Models\Test;
 use App\Models\Theme;
+use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
+use App\Jobs\RunBackup;
+use Illuminate\Support\Facades\Cache;
+
+
 
 class HomeController extends Controller
 {
@@ -33,29 +38,53 @@ class HomeController extends Controller
                 ->addSelect(['total_visits' => function ($query) {
                     $query->from('theme_users')
                         ->whereColumn('theme_id', 'themes.id')
-                        ->where('visits', '>', 0)
-                        ->selectRaw('count(*)');
+                        ->selectRaw('sum(visits)');
                 }])
                 ->addSelect(['total_likes' => function ($query) {
                     $query->from('theme_users')
                         ->whereColumn('theme_id', 'themes.id')
-                        ->where('likes', 1)
-                        ->selectRaw('count(*)');
+                        ->selectRaw('sum(likes)');
                 }])
         )
             ->addColumn('btn', 'admin.themes.partials.btn')
             ->rawColumns(['btn'])
             ->toJson();
     }
+
     public function index()
     {
+        // Obtén los datos de tu base de datos
+        $temas = DB::table('theme_users')
+            ->join('themes', 'theme_users.theme_id', '=', 'themes.id')
+            ->select('themes.name_theme', DB::raw('SUM(theme_users.visits) as total_visits'), DB::raw('SUM(theme_users.likes) as total_likes'))
+            ->groupBy('themes.name_theme')
+            ->orderBy('total_visits', 'desc')
+            ->take(6)
+            ->get();
+
         $user = User::count();
-        $theme = Theme::count();
+        $themeCount = Theme::count();
         $activity = Activity::count();
         $test = Test::count();
-        return view('home', compact('user', 'theme', 'activity', 'test'));
 
-        $themes = Theme::all();
-        return view('admin.cursos.index', compact('themes'));
+        // Obtén el estado del backup
+        $status = Cache::get('backup-status', 'No se está realizando ningún backup.');
+        $completedAt = Cache::get('backup-completed-at');
+
+        // Envía los datos a tu vista
+        return view('home', compact('temas', 'user', 'themeCount', 'activity', 'test', 'status', 'completedAt'));
+    }
+
+    public function create()
+    {
+        RunBackup::dispatch();
+        return back()->with('status', 'El backup se está creando.');
+    }
+
+    public function checkBackupStatus()
+    {
+        $status = Cache::get('backup-status', 'No se está realizando ningún backup.');
+        $completedAt = Cache::get('backup-completed-at');
+        return view('home', ['status' => $status, 'completedAt' => $completedAt]);
     }
 }

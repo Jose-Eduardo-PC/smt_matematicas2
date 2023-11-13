@@ -63,6 +63,7 @@ Route::get('/tool2', [App\Http\Controllers\Admin\HerramientaController::class, '
 Route::get('/tool3', [App\Http\Controllers\Admin\HerramientaController::class, 'show2'])->name('tool3');
 Route::get('/tool4', [App\Http\Controllers\Admin\HerramientaController::class, 'show3'])->name('tool4');
 Route::get('/tool5', [App\Http\Controllers\Admin\HerramientaController::class, 'show4'])->name('tool5');
+Route::get('/tool6', [App\Http\Controllers\Admin\HerramientaController::class, 'show5'])->name('tool6');
 //rutas vista usuario
 
 //presentacion y menu
@@ -91,3 +92,6 @@ Route::get('/activity/{activity}', [App\Http\Controllers\Web\UserController::cla
 //recursos multimedia
 Route::get('/media', [App\Http\Controllers\Web\UserController::class, 'index_media'])->name('media_index');
 Route::get('/media/{media}', [App\Http\Controllers\Web\UserController::class, 'show_media'])->name('media_show');
+Route::get('/generar-pdf', 'App\Http\Controllers\Admin\NoteController@generarPDF')->name('generar-pdf');
+Route::get('/backup', 'App\Http\Controllers\HomeController@create')->name('backup');
+Route::get('/backup-status', 'App\Http\Controllers\HomeController@checkBackupStatus');

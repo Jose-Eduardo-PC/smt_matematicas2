@@ -168,7 +168,7 @@
                                         <form id="formtan">
                                             <select id="operationtan" name="operation">
                                                 <option value="anglet">Calcular Ángulo</option>
-                                                <option value="tan">Calcular Coseno</option>
+                                                <option value="tan">Calcular Tangente</option>
                                             </select>
                                             <br><br>
                                             <label for="value">Valor:</label>
@@ -236,31 +236,31 @@
         }
 
         function myFunctionCoseno() {
-            document.getElementById("formcos").addEventListener("submit", function(event) {
-                console.log("Controlador de eventos activado");
+            document.getElementById("formcoseno").addEventListener("submit", function(event) {
                 event.preventDefault();
-                var operation = document.getElementById("operationcos").value;
-                var value = parseFloat(document.getElementById("valuecos").value);
+                var operation = document.getElementById("operation").value;
+                var value = parseFloat(document.getElementById("value").value);
                 var result;
-                if (operation === "anglec") {
-                    console.log(operation);
+                if (operation === "angles") {
                     if (value >= -1 && value <= 1) {
                         result = Math.acos(value) * 180 / Math.PI;
-                        document.getElementById("result").innerHTML = "Ángulo = " + result.toFixed(3) + "°";
+                        document.getElementById("resultCoseno").innerHTML = "Ángulo = " + result.toFixed(3) + "°";
                     } else {
-                        document.getElementById("result").innerHTML =
+                        document.getElementById("resultCoseno").innerHTML =
                             "Error: El valor del coseno debe estar entre -1 y 1.";
                     }
                 } else if (operation === "cos") {
                     result = Math.cos(value * Math.PI / 180);
-                    document.getElementById("result").innerHTML = "Coseno de " + value + "° = " + result.toFixed(3);
+                    console.log(result);
+                    document.getElementById("resultCoseno").innerHTML = "Coseno de " + value + "° = " + result
+                        .toFixed(3);
                 }
-
             });
         }
 
+
         function myFunctionTangente() {
-            console.log('myFunctionTangente llamado'); // Agrega esta línea
+            console.log('myFunctionTangente llamado');
             document.getElementById("formtan").addEventListener("submit", function(event) {
                 event.preventDefault();
                 var operation = document.getElementById("operationtan").value;
@@ -272,12 +272,16 @@
                     document.getElementById("resultan").innerHTML = "Ángulo = " + result.toFixed(3) + "°";
                 } else if (operation === "tan") {
                     result = Math.tan(value * Math.PI / 180);
-                    document.getElementById("resultan").innerHTML = "Tangente de " + value + "° = " + result
-                        .toFixed(
-                            3);
+                    if (Math.abs(result) > 1e10) { // Puedes ajustar este límite según tus necesidades
+                        document.getElementById("resultan").innerHTML = "Tangente de " + value + "° = ∞";
+                    } else {
+                        document.getElementById("resultan").innerHTML = "Tangente de " + value + "° = " + result
+                            .toFixed(3);
+                    }
                 }
             });
         }
+
 
         // Obtener todos los botones para cerrar modales
         const closeModalButtons = document.querySelectorAll('.close-button');

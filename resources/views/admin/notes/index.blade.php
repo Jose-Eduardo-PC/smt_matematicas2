@@ -9,6 +9,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h2>Listado de Examenes</h2>
             </div>
+            <div> <a href="{{ route('generar-pdf') }}" class="btn btn-primary">Generar PDF</a></div><br>
             <table id="table" class="table">
                 <thead>
                     <tr>

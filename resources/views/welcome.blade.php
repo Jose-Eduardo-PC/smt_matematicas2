@@ -4,7 +4,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-6">
-                    <h2>Los Sistemas Multimedia en la Educacion</h2>
+                    <h2>Los Sistemas en la Educacion</h2>
                     <p>El rápido desarrollo de la tecnología y de la informática está proporcionando
                         herramientas revolucionarias en todos los campos de la ciencia . En este sentido, los sistemas
                         interactivos multimedia se están integrando en nuestro entorno .

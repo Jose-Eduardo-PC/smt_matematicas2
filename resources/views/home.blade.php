@@ -8,76 +8,116 @@
         <!-- Card stats -->
         <div class="row">
             <div class="col-xl-3 col-md-6">
-                <div class="card card-stats">
-                    <!-- Card body -->
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-0">Usuarios Existentes</h5>
-                                <span class="h2 font-weight-bold mb-0">{{ $user }}</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
-                                    <i class="ni ni-circle-08"></i>
+                <a href="{{ route('users.index') }}" class="card-link">
+                    <div class="card card-stats">
+                        <!-- Card body -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Usuarios Existentes</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ $user }}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
+                                        <i class="ni ni-circle-08"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+                <a href="{{ route('themes.index') }}" class="card-link">
+                    <div class="card card-stats">
+                        <!-- Card body -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Temas Existentes</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ $themeCount }}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
+                                        <i class="ni ni-books"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
             <div class="col-xl-3 col-md-6">
-                <div class="card card-stats">
-                    <!-- Card body -->
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-0">Temas Existentes</h5>
-                                <span class="h2 font-weight-bold mb-0">{{ $theme }}</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
-                                    <i class="ni ni-books"></i>
+                <a href="{{ route('activitys.index') }}" class="card-link">
+                    <div class="card card-stats">
+                        <!-- Card body -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Actividades Existentes</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ $activity }}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
+                                        <i class="ni ni-book-bookmark"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-xl-3 col-md-6">
-                <div class="card card-stats">
-                    <!-- Card body -->
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-0">Actividades Existentes</h5>
-                                <span class="h2 font-weight-bold mb-0">{{ $activity }}</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
-                                    <i class="ni ni-book-bookmark"></i>
+                <a href="{{ route('tests.index') }}" class="card-link">
+                    <div class="card card-stats">
+                        <!-- Card body -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Examenes Existentes</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ $test }}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                                        <i class="ni ni-single-copy-04"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card card-stats">
-                    <!-- Card body -->
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-0">Examenes Existentes</h5>
-                                <span class="h2 font-weight-bold mb-0">{{ $test }}</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
-                                    <i class="ni ni-single-copy-04"></i>
-                                </div>
-                            </div>
-                        </div>
+            </a>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <form action="/backup" method="GET">
+                    <div>
+                        <p>Un backup, también conocido como copia de seguridad, es un proceso que implica guardar datos. Al
+                            finalizar el backup, se habrá
+                            creado una copia de seguridad que contendrá los datos importantes de forma redundante, es decir,
+                            en
+                            una copia o repetición de los mismos.
+                            En cuanto a la ubicación del backup al usar Spatie Laravel, el backup se almacena en la carpeta
+                            `storage/app` de tu proyecto. Sin embargo, puedes configurar Spatie Laravel para almacenar los
+                            backups en cualquier sistema de archivos que hayas configurado. Por favor, ten en cuenta que
+                            debes
+                            tener suficiente espacio libre en tu disco para crear el archivo zip del backup.</p>
+                        <button class="btn btn-primary" type="submit">Crear copia de seguridad</button>
                     </div>
-                </div>
+                    <br>
+                    <div>
+                        <h3>Estado del backup</h3>
+                        <p>{{ $status }}</p>
+                        @if ($completedAt)
+                            <p>Último backup completado en: {{ $completedAt }}</p>
+                        @endif
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div id="my_dataviz"></div>
             </div>
         </div>
         {{-- <!-- Table Themes  --> --}}
@@ -123,4 +163,157 @@
     </script>
 @endsection
 @section('css')
+    <style>
+        .card-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .card-link:hover {
+            color: inherit;
+            text-decoration: none;
+        }
+    </style>
+@endsection
+@section('js')
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script>
+        var temas = @json($temas);
+
+        var margin = {
+            top: 20,
+            right: 20,
+            bottom: 30,
+            left: 40
+        };
+        var width = 1000 - margin.left - margin.right;
+        var height = 600 - margin.top - margin.bottom;
+
+        var svg = d3.select("#my_dataviz")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var xScale = d3.scaleBand().range([0, width]).padding(0.2);
+        var yScale = d3.scaleLinear().range([height, 0]);
+
+        var xAxis = d3.axisBottom(xScale);
+        var yAxis = d3.axisLeft(yScale);
+
+        xScale.domain(temas.map(function(d) {
+            return d.name_theme;
+        }));
+        yScale.domain([0, d3.max(temas, function(d) {
+            return Math.max(d.total_visits, d.total_likes);
+        })]);
+
+        var barGroups = svg.selectAll("g")
+            .data(temas)
+            .enter().append("g")
+            .attr("transform", function(d) {
+                return "translate(" + xScale(d.name_theme) + ",0)";
+            });
+
+        barGroups.selectAll(".visit-rect")
+            .data(function(d) {
+                return [d.total_visits];
+            })
+            .enter().append("rect")
+            .attr("class", "visit-rect")
+            .attr("width", xScale.bandwidth() / 2)
+            .attr("y", function(d) {
+                return yScale(d);
+            })
+            .attr("height", function(d) {
+                return height - yScale(d);
+            })
+            .attr("fill", function(d) {
+                return "rgb(0, 0, " + Math.round(d * 10) + ")";
+            });
+
+        barGroups.selectAll(".like-rect")
+            .data(function(d) {
+                return [d.total_likes];
+            })
+            .enter().append("rect")
+            .attr("class", "like-rect")
+            .attr("width", xScale.bandwidth() / 2)
+            .attr("x", xScale.bandwidth() / 2)
+            .attr("y", function(d) {
+                return yScale(d);
+            })
+            .attr("height", function(d) {
+                return height - yScale(d);
+            })
+            .attr("fill", function(d) {
+                return "rgb(" + Math.round(d * 5) + ", 0, 0)";
+            });
+
+        barGroups.selectAll(".visit-text")
+            .data(function(d) {
+                return [d.total_visits];
+            })
+            .enter().append("text")
+            .attr("class", "visit-text")
+            .attr("x", xScale.bandwidth() / 4)
+            .attr("y", function(d) {
+                return yScale(d) - 10;
+            })
+            .text(function(d) {
+                return d;
+            });
+
+        barGroups.selectAll(".like-text")
+            .data(function(d) {
+                return [d.total_likes];
+            })
+            .enter().append("text")
+            .attr("class", "like-text")
+            .attr("x", 3 * xScale.bandwidth() / 4)
+            .attr("y", function(d) {
+                return yScale(d) - 10;
+            })
+            .text(function(d) {
+                return d;
+            });
+
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+
+        svg.append("g")
+            .call(yAxis);
+
+        var legend = svg.append("g")
+            .attr("class", "legend")
+            .attr("transform", "translate(" + (width - 40) + "," + (height - 520) + ")");
+
+        legend.append("rect")
+            .attr("width", 18)
+            .attr("height", 18)
+            .style("fill", "blue");
+
+        legend.append("text")
+            .attr("x", 24)
+            .attr("y", 9)
+            .attr("dy", ".35em")
+            .text("Visitas");
+
+        var legend2 = svg.append("g")
+            .attr("class", "legend")
+            .attr("transform", "translate(" + (width - 40) + "," + (height - 500) + ")");
+
+        legend2.append("rect")
+            .attr("width", 18)
+            .attr("height", 18)
+            .style("fill", "red");
+
+        legend2.append("text")
+            .attr("x", 24)
+            .attr("y", 9)
+            .attr("dy", ".35em")
+            .text("Likes");
+    </script>
 @endsection
