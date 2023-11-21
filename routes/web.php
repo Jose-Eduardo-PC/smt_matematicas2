@@ -32,6 +32,8 @@ Route::group(['middleware' => ['role:SuperAdministrador|Profesor']], function ()
     Route::resource('media_resources', Media_resourceController::class);
     Route::resource('samples', ExampleController::class)->except(['create']);
     Route::resource('questions', QuestionController::class)->except('create');
+    Route::get('/test_show/{testUserId}', [NoteController::class, 'show'])->name('test_show2');
+
 
 
     //rutas especificas
@@ -53,6 +55,7 @@ Route::get('api/contents/{theme}', [ContentController::class, 'datatables']);
 Route::get('api/questions/{test}', [QuestionController::class, 'datatables']);
 Route::get('api/examples/{content}', [ExampleController::class, 'datatables']);
 Route::get('api/resources', [Media_resourceController::class, 'datatables']);
+Route::get('/api/notes', [NoteController::class, 'datatables']);
 
 //rutas web sin autenticacion
 
@@ -92,6 +95,7 @@ Route::get('/activity/{activity}', [App\Http\Controllers\Web\UserController::cla
 //recursos multimedia
 Route::get('/media', [App\Http\Controllers\Web\UserController::class, 'index_media'])->name('media_index');
 Route::get('/media/{media}', [App\Http\Controllers\Web\UserController::class, 'show_media'])->name('media_show');
-Route::get('/generar-pdf', 'App\Http\Controllers\Admin\NoteController@generarPDF')->name('generar-pdf');
+Route::get('/generar-pdf/{exam_id?}/{user_id?}', 'App\Http\Controllers\Admin\NoteController@generarPDF')->name('generar-pdf');
+
 Route::get('/backup', 'App\Http\Controllers\HomeController@create')->name('backup');
 Route::get('/backup-status', 'App\Http\Controllers\HomeController@checkBackupStatus');

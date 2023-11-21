@@ -62,6 +62,10 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
+        foreach ($temas as $tema) {
+            $tema->total_visits = $tema->total_visits ?? 0; // Si total_visits es null, usa 0
+            $tema->total_likes = $tema->total_likes ?? 0; // Si total_likes es null, usa 0
+        }
         $user = User::count();
         $themeCount = Theme::count();
         $activity = Activity::count();

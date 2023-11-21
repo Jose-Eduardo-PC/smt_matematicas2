@@ -92,16 +92,8 @@
             <div class="card-header">
                 <form action="/backup" method="GET">
                     <div>
-                        <p>Un backup, también conocido como copia de seguridad, es un proceso que implica guardar datos. Al
-                            finalizar el backup, se habrá
-                            creado una copia de seguridad que contendrá los datos importantes de forma redundante, es decir,
-                            en
-                            una copia o repetición de los mismos.
-                            En cuanto a la ubicación del backup al usar Spatie Laravel, el backup se almacena en la carpeta
-                            `storage/app` de tu proyecto. Sin embargo, puedes configurar Spatie Laravel para almacenar los
-                            backups en cualquier sistema de archivos que hayas configurado. Por favor, ten en cuenta que
-                            debes
-                            tener suficiente espacio libre en tu disco para crear el archivo zip del backup.</p>
+                        <p>Un backup, también conocido como copia de seguridad, el backup se almacena en la carpeta
+                            `storage/app` del proyecto.</p>
                         <button class="btn btn-primary" type="submit">Crear copia de seguridad</button>
                     </div>
                     <br>
@@ -116,7 +108,7 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-header">
+            <div class="card-body custom">
                 <div id="my_dataviz"></div>
             </div>
         </div>
@@ -169,6 +161,14 @@
             text-decoration: none;
         }
 
+
+        .card-body.custom {
+            padding: 1.25rem !important;
+            /* Aumenta este valor para añadir más espacio interior */
+            overflow: auto !important;
+            /* Añade barras de desplazamiento si el contenido es demasiado grande */
+        }
+
         .card-link:hover {
             color: inherit;
             text-decoration: none;
@@ -179,7 +179,6 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script>
         var temas = @json($temas);
-
         var margin = {
             top: 20,
             right: 20,
@@ -196,11 +195,8 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        var xScale = d3.scaleBand().range([0, width]).padding(0.2);
+        var xScale = d3.scaleBand().range([0, width]).padding(0.1);
         var yScale = d3.scaleLinear().range([height, 0]);
-
-        var xAxis = d3.axisBottom(xScale);
-        var yAxis = d3.axisLeft(yScale);
 
         xScale.domain(temas.map(function(d) {
             return d.name_theme;
@@ -218,73 +214,67 @@
 
         barGroups.selectAll(".visit-rect")
             .data(function(d) {
-                return [d.total_visits];
+                return [d];
             })
             .enter().append("rect")
             .attr("class", "visit-rect")
             .attr("width", xScale.bandwidth() / 2)
             .attr("y", function(d) {
-                return yScale(d);
+                return yScale(d.total_visits);
             })
             .attr("height", function(d) {
-                return height - yScale(d);
+                return height - yScale(d.total_visits);
             })
-            .attr("fill", function(d) {
-                return "rgb(0, 0, " + Math.round(d * 10) + ")";
+            .style("fill", "blue") // Cambia "blue" al color que desees para "Visitas"
+            .each(function(d) {
+                svg.append("text")
+                    .attr("x", function() {
+                        return xScale(d.name_theme) + xScale.bandwidth() / 4;
+                    })
+                    .attr("y", function() {
+                        return yScale(d.total_visits) - 5;
+                    })
+                    .attr("text-anchor", "middle")
+                    .text(d.total_visits)
+                    .style("font-size", "20px") // Ajusta el tamaño de la fuente según lo necesites
+                    .style("fill", "black"); // Ajusta el color del texto según lo necesites
             });
 
         barGroups.selectAll(".like-rect")
             .data(function(d) {
-                return [d.total_likes];
+                return [d];
             })
             .enter().append("rect")
             .attr("class", "like-rect")
             .attr("width", xScale.bandwidth() / 2)
             .attr("x", xScale.bandwidth() / 2)
             .attr("y", function(d) {
-                return yScale(d);
+                return yScale(d.total_likes);
             })
             .attr("height", function(d) {
-                return height - yScale(d);
+                return height - yScale(d.total_likes);
             })
-            .attr("fill", function(d) {
-                return "rgb(" + Math.round(d * 5) + ", 0, 0)";
-            });
-
-        barGroups.selectAll(".visit-text")
-            .data(function(d) {
-                return [d.total_visits];
-            })
-            .enter().append("text")
-            .attr("class", "visit-text")
-            .attr("x", xScale.bandwidth() / 4)
-            .attr("y", function(d) {
-                return yScale(d) - 10;
-            })
-            .text(function(d) {
-                return d;
-            });
-
-        barGroups.selectAll(".like-text")
-            .data(function(d) {
-                return [d.total_likes];
-            })
-            .enter().append("text")
-            .attr("class", "like-text")
-            .attr("x", 3 * xScale.bandwidth() / 4)
-            .attr("y", function(d) {
-                return yScale(d) - 10;
-            })
-            .text(function(d) {
-                return d;
+            .style("fill", "red") // Cambia "red" al color que desees para "Likes"
+            .each(function(d) {
+                svg.append("text")
+                    .attr("x", function() {
+                        return xScale(d.name_theme) + xScale.bandwidth() / 4 * 3;
+                    })
+                    .attr("y", function() {
+                        return yScale(d.total_likes) - 5;
+                    })
+                    .attr("text-anchor", "middle")
+                    .text(d.total_likes)
+                    .style("font-size", "20px") // Ajusta el tamaño de la fuente según lo necesites
+                    .style("fill", "black"); // Ajusta el color del texto según lo necesites
             });
 
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
+            .call(d3.axisBottom(xScale));
 
         svg.append("g")
-            .call(yAxis);
+            .call(d3.axisLeft(yScale));
 
         var legend = svg.append("g")
             .attr("class", "legend")
@@ -293,7 +283,7 @@
         legend.append("rect")
             .attr("width", 18)
             .attr("height", 18)
-            .style("fill", "blue");
+            .style("fill", "blue"); // Cambia "blue" al color que desees para "Visitas"
 
         legend.append("text")
             .attr("x", 24)
@@ -308,7 +298,7 @@
         legend2.append("rect")
             .attr("width", 18)
             .attr("height", 18)
-            .style("fill", "red");
+            .style("fill", "red"); // Cambia "red" al color que desees para "Likes"
 
         legend2.append("text")
             .attr("x", 24)

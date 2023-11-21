@@ -1,73 +1,95 @@
 @extends('layouts.admin_index')
 
 @section('content')
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4>Usuario:</h4>
-                            <p>{{ $user->name }} {{ $user->surname }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            @if ($user->avatar)
-                                @if (Str::startsWith($user->avatar, 'public/imagenes/imgavatars'))
-                                    <img class="imgPr" id="preview" alt="Image placeholder" height="100"
-                                        src="{{ Storage::url($user->avatar) }}"
-                                        onerror="this.src='/storage/imagenes/avatar.gif'">
-                                @else
-                                    <img class="imgPr" id="preview" alt="Image placeholder" height="100"
-                                        src="{{ Storage::url('avatars/' . basename($user->avatar)) }}"
-                                        onerror="this.src='/storage/imagenes/avatar.gif'">
-                                @endif
-                            @else
-                                <img class="imgPr" id="preview" src="/storage/imagenes/avatar.gif" height="100"
-                                    alt="Vista previa de la imagen">
-                            @endif
-                        </div>
-                    </div>
-                    <h4>Rol:</h4>
-                    @forelse ($user->roles as $role)
-                        <p>{{ $role->name }}</p>
-                    @empty
-                        <p>No tiene un rol</p>
-                    @endforelse
-                    <h4>Correo:</h4>
-                    <p>{{ $user->email }}</p>
-                    <h4>Fecha de Creacion:</h4>
-                    <p>{{ $user->created_at }}</p>
-                    <h4>Fecha de Actualizacion:</h4>
-                    <p>{{ $user->updated_at }}</p>
+    <div class="card">
+        <div class="card-body">
+            @foreach ($test->questions as $question)
+                <div class="pregunta">
+                    <p>{{ $question->statement }}</p>
+                    <ul>
+                        @foreach ($question->options as $option => $value)
+                            <li
+                                class="{{ $question->solved_exam($user_id)->selected_question == $option ? 'seleccionada' : '' }}">
+                                <span class="{{ $question->correct_paragraph == $option ? 'correcta' : 'incorrecta' }}">
+                                    {{ $question->correct_paragraph == $option ? '✔️' : '❌' }}
+                                </span>
+                                <label><b>{{ $option }})</b> {{ $value }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            @forelse ($user->test_user as $nota)
-                <div class="card">
-                    <a href="{{ route('test_show', $nota->test->id) }}" class="card-link">
-                        <div class="card-body">
-                            <h5>Examenes realizados</h5>
-                            <hr>
-                            <span><b>Examen:</b> </span><span>{{ $nota->test->name_test }}</span><br>
-                            <span><b>Nota: </b></span><span>{{ $nota->points }}</span><br>
-                            <span><b>Estado: </b></span><span>{{ $nota->status }}</span><br>
-                        </div>
-                    </a>
-                </div>
-            @empty
-                <div class="card">
-                    <div class="card-body">
-                        <span>No hay examenes realizados</span>
-                    </div>
-                </div>
-            @endforelse
+            @endforeach
         </div>
     </div>
+@endsection
+@section('css')
     <style>
-        .imgPr {
-            border-radius: 15px;
-            box-shadow: 10px 10px 5px grey;
+        .pregunta li {
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .seleccionada {
+            background-color: rgb(46, 46, 194);
+            color: white;
+        }
+
+        .correcta {
+            color: rgb(34, 214, 34);
+        }
+
+        .incorrecta {
+            color: rgb(221, 21, 21);
+        }
+
+        /* Resto del CSS... */
+
+        p {
+            color: #777;
+            font-size: 15px;
+            line-height: 1.5;
+            font-weight: bold;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.5;
+            font-weight: bold;
+        }
+
+        .question {
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .question h4 {
+            margin-bottom: 10px;
+        }
+
+        .question ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .question li {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
         }
     </style>
 @endsection

@@ -6,7 +6,7 @@
                     <img alt="Image placeholder" src="/storage/imagenes/EscudoUajms.png">
                 </span>
                 <div class="media-body  ml-2  d-none d-lg-block">
-                    <span class="text-white font-weight-bold">SISTEMA MULTIMEDIA DE MATEMATICAS</span>
+                    <span class="text-white font-weight-bold">SISTEMA GESTOR DE CONTENIDO DE MATEMATICAS</span>
                 </div>
             </div>
             <ul class="navbar-nav align-items-center  ml-md-auto ">

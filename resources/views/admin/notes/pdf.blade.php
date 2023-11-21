@@ -14,6 +14,7 @@
         td {
             border: 1px solid #ddd;
             padding: 8px;
+            font-size: 0.8em;
         }
 
         th {
@@ -39,8 +40,8 @@
     <div class="divcent">
         <img class="logo" src="{{ $logo }}" alt="Logo">
         <h3 style="display: inline-block">U.E Rvd. Oliverio Pellicelli</h3>
+        <p>Fecha de Creacion del PDF: {{ $date }}</p>
     </div>
-
 
     <h4>Lista de Notas </h4>
     <table id="table" class="table">
@@ -50,25 +51,32 @@
                 <th>Nombres</th>
                 <th>Apellidos</th>
                 <th>Examen</th>
+                <th>Estado</th>
                 <th>Nota</th>
                 <th>Tema</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $user)
+            @forelse ($users as $user)
                 @foreach ($user->test_user as $test_user)
                     <tr>
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->surname }}</td>
                         <td>{{ $test_user->test->name_test }}</td>
+                        <td>{{ $test_user->status }}</td>
                         <td>{{ $test_user->points }}</td>
                         <td>{{ $test_user->test->theme->name_theme }}</td>
                     </tr>
                 @endforeach
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="7">No hay datos disponibles</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
+
 
 </body>
 

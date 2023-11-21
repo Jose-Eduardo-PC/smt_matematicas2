@@ -68,7 +68,6 @@
     </script>
     <script>
         var fieldCount = 0;
-
         var colors = ['rgb(0, 102, 255)', 'rgb(236, 99, 45)', 'rgb(26, 129, 16)', 'rgb(255, 0, 0)', 'rgb(0, 255, 0)',
             'rgb(0, 0, 255)'
         ];
@@ -107,7 +106,7 @@
             for (var i = 0; i < fieldCount; i++) {
                 var equation = document.getElementById("equation" + i).value;
                 var yValues = [];
-                for (var x = -10; x < 10; x += 0.1) {
+                for (var x = -100; x < 100; x += 0.01) { // Aumenta la resolución de los datos
                     if (i === 0) {
                         xValues.push(x);
                     }
@@ -121,25 +120,46 @@
                     type: 'scatter',
                     name: 'Función ' + (i + 1),
                     line: {
-                        color: colors[i % colors.length] // Asigna el color de la línea
-                    }
+                        color: colors[i % colors.length]
+                    },
+                    hovertemplate: 'x: %{x}<br>y: %{y}<extra></extra>' // Agrega un hoverlabel
                 };
                 traces.push(trace);
             }
             var layout = {
-                title: 'Gráfico de las funciones',
+                title: 'Gráfico de las Funciones',
                 xaxis: {
-                    title: '< - -x- - >'
+                    title: '< - -x- - >',
+                    range: [-50, 50],
+                    gridcolor: 'rgb(200, 200, 200)', // Agrega una cuadrícula al gráfico
+                    zerolinewidth: 1,
+                    zerolinecolor: 'rgb(200, 200, 200)',
+                    linecolor: 'rgb(200, 200, 200)',
+                    linecolor: 'rgb(0, 0, 0)', // Cambia el color de la línea a negro
+                    linewidth: 2,
+                    zerolinecolor: 'rgb(255, 0, 0)', // Cambia el color de la línea central a rojo
                 },
                 yaxis: {
                     title: '< - -y- - >',
                     scaleanchor: 'x',
-                    scaleratio: 1
+                    scaleratio: 1,
+                    range: [-50, 50],
+                    gridcolor: 'rgb(200, 200, 200)', // Agrega una cuadrícula al gráfico
+                    zerolinewidth: 1,
+                    zerolinecolor: 'rgb(200, 200, 200)',
+                    linecolor: 'rgb(200, 200, 200)',
+                    linecolor: 'rgb(0, 0, 0)', // Cambia el color de la línea a negro
+                    linewidth: 2,
+                    zerolinecolor: 'rgb(255, 0, 0)', // Cambia el color de la línea central a rojo
                 },
-                height: 550 // Altura del gráfico en píxeles
+                autosize: false,
+                width: 600,
+                height: 600
             };
+
             Plotly.newPlot('myDiv', traces, layout);
         }
+
         window.onload = addField;
     </script>
 @endsection
