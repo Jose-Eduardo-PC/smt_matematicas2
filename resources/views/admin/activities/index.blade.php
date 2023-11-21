@@ -13,7 +13,7 @@
                     <tr>
                         <th>Id</th>
                         <th>Nombre</th>
-                        <th>tema</th>
+                        <th>Tema</th>
                         <th>Opciones</th>
                     </tr>
                 </thead>
@@ -23,6 +23,17 @@
 @endsection
 
 @section('css')
+    <style>
+        #table-activitys {
+
+            width: 100% !important;
+        }
+
+        td {
+            max-width: 300px !important;
+        }
+    </style>
+
     <!-- Datatables -->
     <link href="{{ asset('admin/assets/vendor/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/vendor/datatables.net-buttons-bs/css/buttons.bootstrap.min.css') }}" rel="stylesheet">
@@ -59,6 +70,14 @@
                     "searchable": false
                 },
             ],
+            "initComplete": function(settings, json) {
+                $('#table-activitys td').css({
+                    'max-width': '300px',
+                    'overflow': 'hidden',
+                    'text-overflow': 'ellipsis',
+                    'white-space': 'nowrap'
+                });
+            },
             language: {
                 "decimal": "",
                 "emptyTable": "No hay información",
@@ -81,6 +100,8 @@
             },
         });
     </script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @if (session('eliminar') == 'ok')
         <script>

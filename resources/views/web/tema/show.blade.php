@@ -19,9 +19,9 @@
             <button class="btn btn-info" onclick="stopAudio()">Detener</button>
         </div>
     </div>
-    @foreach ($theme->contents as $content)
-        <div class="card">
-            <div class="card-body">
+    <div class="card">
+        <div class="card-body">
+            @foreach ($theme->contents as $content)
                 <div class="content-container">
                     <div class="text-container">
                         <h2 class="text-to-read">{{ $content->name_cont }}</h2>
@@ -50,11 +50,9 @@
                         </div>
                     @endforeach
                 @endif
-            </div>
+            @endforeach
+            <a href="{{ route('theme_index') }}" class="btn btn-warning">Volver</a>
         </div>
-    @endforeach
-    <div class="card">
-        <a href="{{ route('theme_index') }}" class="btn btn-warning">Volver</a>
     </div>
 @endsection
 

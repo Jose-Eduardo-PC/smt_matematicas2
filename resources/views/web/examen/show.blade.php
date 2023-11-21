@@ -33,7 +33,6 @@
                                 </ul>
                             </div>
                         @endforeach
-
                     </div>
                 </div>
             @else

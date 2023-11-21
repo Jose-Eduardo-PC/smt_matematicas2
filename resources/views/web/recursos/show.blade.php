@@ -13,8 +13,8 @@
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen></iframe>
             </div>
+            <a href="{{ route('theme_index') }}" class="btn btn-warning">Volver</a>
         </div>
-        <a href="{{ route('theme_index') }}" class="btn btn-warning">Volver</a>
     </div>
 @endsection
 

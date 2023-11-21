@@ -74,8 +74,8 @@
                         <td><a href="{{ url('models3') }}" class="btn btn-success">Usar</a></td>
                     </tr>
             </table>
+            <a href="{{ route('menu') }}" class="btn btn-warning">Volver</a>
         </div>
-        <a href="{{ route('menu') }}" class="btn btn-warning">Volver</a>
     </div>
 @endsection
 
