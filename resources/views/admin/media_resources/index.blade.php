@@ -43,13 +43,18 @@
             "columns": [{
                     data: 'id'
                 },
-
                 {
                     data: 'link_video',
                     render: function(data, type, row) {
-                        var videoId = data.split('/embed/')[1];
-                        var thumbnailUrl = 'https://img.youtube.com/vi/' + videoId + '/0.jpg';
-                        return '<img class="thumbnail" src="' + thumbnailUrl + '" alt="Vista previa">';
+                        if (row.resource_type == 'video') {
+                            var videoId = data.split('/embed/')[1];
+                            var thumbnailUrl = 'https://img.youtube.com/vi/' + videoId + '/0.jpg';
+                            return '<img class="thumbnail" src="' + thumbnailUrl + '" alt="Vista previa">';
+                        } else if (row.resource_type == 'imagen') {
+                            return '<img src="/storage/imagenes/imag_default.jpg" alt="Vista previa" style="width: 80px; height: 80px;">';
+                        } else if (row.resource_type == 'pdf') {
+                            return '<img src="/storage/imagenes/adobe-pdf.png" alt="Icono de PDF" style="width: 80px; height: 100px;">';
+                        }
                     }
                 },
                 {

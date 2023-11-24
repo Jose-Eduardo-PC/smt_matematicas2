@@ -61,12 +61,21 @@ Route::get('/api/notes', [NoteController::class, 'datatables']);
 
 //rutas de herramientas
 Route::get('/tools', [App\Http\Controllers\Admin\HerramientaController::class, 'index'])->name('tools');
+// funciona
 Route::get('/tool1', [App\Http\Controllers\Admin\HerramientaController::class, 'show'])->name('tool1');
+Route::post('/rate1', [App\Http\Controllers\Admin\HerramientaController::class, 'store'])->name('rate1');
+// funciona
 Route::get('/tool2', [App\Http\Controllers\Admin\HerramientaController::class, 'show1'])->name('tool2');
+Route::post('/rate2', [App\Http\Controllers\Admin\HerramientaController::class, 'store1'])->name('rate2');
+//funciona
 Route::get('/tool3', [App\Http\Controllers\Admin\HerramientaController::class, 'show2'])->name('tool3');
+Route::post('/rate3', [App\Http\Controllers\Admin\HerramientaController::class, 'store2'])->name('rate3');
+//funciona
 Route::get('/tool4', [App\Http\Controllers\Admin\HerramientaController::class, 'show3'])->name('tool4');
+Route::post('/rate4', [App\Http\Controllers\Admin\HerramientaController::class, 'store3'])->name('rate4');
+//
 Route::get('/tool5', [App\Http\Controllers\Admin\HerramientaController::class, 'show4'])->name('tool5');
-Route::get('/tool6', [App\Http\Controllers\Admin\HerramientaController::class, 'show5'])->name('tool6');
+Route::post('/rate5', [App\Http\Controllers\Admin\HerramientaController::class, 'store4'])->name('rate5');
 //rutas vista usuario
 
 //presentacion y menu
@@ -92,6 +101,10 @@ Route::get('/theme/{theme}', [App\Http\Controllers\Web\UserController::class, 's
 //actividad
 Route::get('/activity', [App\Http\Controllers\Web\UserController::class, 'index_activity'])->name('activity_index');
 Route::get('/activity/{activity}', [App\Http\Controllers\Web\UserController::class, 'show_activity'])->name('activity_show');
+Route::post('/user-activity/done', [App\Http\Controllers\Web\UserController::class, 'storeUserDone']);
+Route::post('/user-activity/like', [App\Http\Controllers\Web\UserController::class, 'storeUserLike']);
+
+
 //recursos multimedia
 Route::get('/media', [App\Http\Controllers\Web\UserController::class, 'index_media'])->name('media_index');
 Route::get('/media/{media}', [App\Http\Controllers\Web\UserController::class, 'show_media'])->name('media_show');

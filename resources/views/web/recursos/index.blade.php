@@ -7,8 +7,14 @@
             <div class="row">
                 @foreach ($resources as $resource)
                     @php
-                        $videoId = explode('/embed/', $resource->link_video)[1];
-                        $thumbnailUrl = 'https://img.youtube.com/vi/' . $videoId . '/0.jpg';
+                        if ($resource->resource_type == 'video') {
+                            $videoId = explode('/embed/', $resource->link_video)[1];
+                            $thumbnailUrl = 'https://img.youtube.com/vi/' . $videoId . '/0.jpg';
+                        } elseif ($resource->resource_type == 'imagen') {
+                            $thumbnailUrl = '/storage/imagenes/imag_default.jpg';
+                        } elseif ($resource->resource_type == 'pdf') {
+                            $thumbnailUrl = '/storage/imagenes/adobe-pdf.png';
+                        }
                     @endphp
                     <a href="{{ route('media_show', $resource) }}" class="col-md-6">
                         <div class="card">

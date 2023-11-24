@@ -31,18 +31,37 @@
                 console.error(error);
             });
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function previewFile() {
-            const preview = document.querySelector('#preview');
-            const file = document.querySelector('input[name=image_ejm]').files[0];
-            const reader = new FileReader();
-            reader.addEventListener("load", function() {
-                preview.src = reader.result;
-            }, false);
-            if (file) {
-                reader.readAsDataURL(file);
+        $(document).ready(function() {
+            adjustInputField();
+
+            $('#resource_type').change(function() {
+                adjustInputField();
+            });
+
+            function adjustInputField() {
+                if ($('#resource_type').val() == 'default') {
+                    $('#link_input').hide();
+                    $('#file_input').hide();
+                    $('#file_label').hide();
+                    $('.input-group-text').hide();
+                    $('#resource_icon').show();
+                } else if ($('#resource_type').val() == 'video') {
+                    $('#link_input').show();
+                    $('#file_input').hide();
+                    $('#file_label').hide();
+                    $('.input-group-text').show();
+                    $('#resource_icon').hide();
+                } else if ($('#resource_type').val() == 'pdf' || $('#resource_type').val() == 'imagen') {
+                    $('#link_input').hide();
+                    $('#file_input').show();
+                    $('#file_label').show();
+                    $('.input-group-text').hide();
+                    $('#resource_icon').hide();
+                }
             }
-        }
+        });
     </script>
 @endsection
 
@@ -55,6 +74,17 @@
         #preview {
             display: block;
             margin: 0 auto;
+        }
+
+        #file_input {
+            display: none;
+        }
+
+        #file_label {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
         }
     </style>
 @endsection

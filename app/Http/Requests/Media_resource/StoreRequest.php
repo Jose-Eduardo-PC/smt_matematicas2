@@ -24,7 +24,11 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'link_video' => 'required|url',
+            'link_video' => ['required', function ($attribute, $value, $fail) {
+                if (!filter_var($value, FILTER_VALIDATE_URL) && !file_exists($value)) {
+                    $fail($attribute . ' debe ser una URL válida o una ruta de archivo existente.');
+                }
+            }],
             'description' => 'required|string',
             'resource_type' => 'required|string',
             'theme_id' => 'required|integer',

@@ -55,4 +55,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Theme_user::class,);
     }
+    public function activities()
+    {
+        return $this->hasMany(UserActivity::class);
+    }
+    public function toolRatings()
+    {
+        return $this->hasMany(ToolRating::class);
+    }
 }

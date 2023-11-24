@@ -24,10 +24,14 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'link_video' => 'required|url',
-            'description' => 'required|string',
-            'resource_type' => 'required|string',
-            'theme_id' => 'required|integer',
+            'link_video' => ['sometimes', function ($attribute, $value, $fail) {
+                if (!filter_var($value, FILTER_VALIDATE_URL) && !file_exists($value)) {
+                    $fail($attribute . ' debe ser una URL válida o una ruta de archivo existente.');
+                }
+            }],
+            'description' => 'sometimes|string',
+            'resource_type' => 'sometimes|string',
+            'theme_id' => 'sometimes|integer',
         ];
     }
 }

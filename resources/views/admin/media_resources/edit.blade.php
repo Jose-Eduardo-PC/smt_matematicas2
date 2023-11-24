@@ -34,6 +34,52 @@
                 console.error(error);
             });
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            adjustInputField();
+
+            @if (isset($media_resource))
+                $('#link_input').val('{{ $media_resource->link_video }}');
+                var fileName = '{{ $media_resource->link_video }}'.split('/').pop();
+                $('#file_name').text(fileName);
+            @endif
+
+            $('#resource_type').change(function() {
+                adjustInputField();
+            });
+
+            function adjustInputField() {
+                if ($('#resource_type').val() == 'default') {
+                    $('#link_input').hide();
+                    $('#file_input').hide();
+                    $('#file_label').hide();
+                    $('.input-group-text').hide();
+                    $('#resource_icon').show();
+                } else if ($('#resource_type').val() == 'video') {
+                    $('#link_input').show();
+                    $('#file_input').hide();
+                    $('#file_label').hide();
+                    $('.input-group-text').show();
+                    $('#resource_icon').hide();
+                } else if ($('#resource_type').val() == 'pdf') {
+                    $('#link_input').hide();
+                    $('#file_input').show();
+                    $('#file_label').show();
+                    $('.input-group-text').hide();
+                    $('#resource_icon').hide();
+                    // Aquí puedes agregar código específico para manejar PDFs
+                } else if ($('#resource_type').val() == 'imagen') {
+                    $('#link_input').hide();
+                    $('#file_input').show();
+                    $('#file_label').show();
+                    $('.input-group-text').hide();
+                    $('#resource_icon').hide();
+                    // Aquí puedes agregar código específico para manejar imágenes
+                }
+            }
+        });
+    </script>
 @endsection
 
 @section('css')

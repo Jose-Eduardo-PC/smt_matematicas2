@@ -14,13 +14,11 @@
             </div>
             <br>
             <div>
-                <button class="btn btn-warning" onclick="goBack()">Volver</button>
+                <a href="{{ route('models') }}" class="btn btn-primary"
+                    style="background-color: #ca0606; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">
+                    Volver al Menu
+                </a>
             </div>
         </div>
     </div>
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
 @endsection

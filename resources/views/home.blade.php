@@ -88,28 +88,103 @@
             </div>
             </a>
         </div>
+        @if (Auth::user() && Auth::user()->hasRole('SuperAdministrador'))
+            <div class="card">
+                <div class="card-header">
+                    <form action="/backup" method="GET">
+                        <div>
+                            <p>Un backup, también conocido como copia de seguridad, el backup se almacena en la carpeta
+                                `storage/app` del proyecto.</p>
+                            <button class="btn btn-primary" type="submit">Crear copia de seguridad</button>
+                        </div>
+                        <br>
+                        <div>
+                            <h3>Estado del backup</h3>
+                            <p>{{ $status }}</p>
+                            @if ($completedAt)
+                                <p>Último backup completado en: {{ $completedAt }}</p>
+                            @endif
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endif
+        <!-- Panel de actividades de usuario -->
         <div class="card">
-            <div class="card-header">
-                <form action="/backup" method="GET">
-                    <div>
-                        <p>Un backup, también conocido como copia de seguridad, el backup se almacena en la carpeta
-                            `storage/app` del proyecto.</p>
-                        <button class="btn btn-primary" type="submit">Crear copia de seguridad</button>
+            <div class="card-body custom">
+                <h2>Top 6 de Visista y likes del apartado temas </h2>
+                <button class="btn btn-primary" onclick="togglePanel()">Mostrar/Ocultar Panel</button>
+                <div id="userPanel" style="display: none;">
+                    <div class="card">
+                        <div class="card-body custom">
+                            <div id="my_dataviz"></div>
+                        </div>
                     </div>
-                    <br>
-                    <div>
-                        <h3>Estado del backup</h3>
-                        <p>{{ $status }}</p>
-                        @if ($completedAt)
-                            <p>Último backup completado en: {{ $completedAt }}</p>
-                        @endif
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
         <div class="card">
-            <div class="card-body custom">
-                <div id="my_dataviz"></div>
+            <div class="card-header">
+                <h2> Datos de las actividades</h2>
+                <button class="btn btn-primary" onclick="toggleTable()">Mostrar/Ocultar Tabla</button>
+
+                <!-- Tabla de actividades de usuario -->
+                <div id="userActivitiesTable" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <table>
+                                <tr>
+                                    <th>Nombre del Usuario</th>
+                                    <th>Nombre de la actividad</th>
+                                    <th>Actividades echas</th>
+                                    <th>Like</th>
+                                </tr>
+                                @foreach ($userActivities as $userActivity)
+                                    <tr>
+                                        <td>{{ $userActivity['user_name'] }}</td>
+                                        <td>{{ $userActivity['activity_name'] }}</td>
+                                        <td>{{ $userActivity['done'] ? 'si' : 'No' }}</td>
+                                        <td>{{ $userActivity['like'] ? 'si' : 'No' }}</td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- <!-- Table Themes  --> --}}
+        <h2>Calificacion de Herramientas</h2>
+        <div class="card">
+            <div class="card-header">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre de la herramienta</th>
+                            <th>Calificación promedio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($toolRatings as $toolRating)
+                            <tr>
+                                <td><a href="{{ url('tool' . $loop->iteration) }}">{{ $toolRating->tool_name }}</a>
+                                </td>
+                                <td>
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= floor($toolRating->average_rating))
+                                            <span class="star gold">★</span> <!-- Estrella completa -->
+                                        @elseif ($i - 0.5 <= $toolRating->average_rating)
+                                            <span class="star-half">★</span> <!-- Media estrella -->
+                                        @else
+                                            <span class="star">★</span> <!-- Estrella vacía -->
+                                        @endif
+                                    @endfor
+                                </td>
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
             </div>
         </div>
         {{-- <!-- Table Themes  --> --}}
@@ -174,6 +249,59 @@
             text-decoration: none;
         }
     </style>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: rgb(22, 36, 160);
+            color: white;
+        }
+    </style>
+    <style>
+        .star,
+        .star-half {
+            font-size: 2em;
+            /* Ajusta este valor a tu gusto */
+            color: #ccc;
+            /* Color de la estrella vacía */
+        }
+
+        .star.gold {
+            color: #FFD700;
+            /* Color de la estrella completa */
+        }
+
+        .star-half {
+            position: relative;
+        }
+
+        .star-half:before {
+            content: "★";
+            position: absolute;
+            color: #FFD700;
+            /* Color de la media estrella */
+            overflow: hidden;
+            width: 50%;
+            z-index: 1;
+        }
+
+        .star-half:after {
+            position: absolute;
+            color: #ccc;
+            /* Color de fondo de la media estrella */
+        }
+    </style>
 @endsection
 @section('js')
     <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -195,7 +323,7 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        var xScale = d3.scaleBand().range([0, width]).padding(0.1);
+        var xScale = d3.scaleBand().range([0, width]).padding(0.2);
         var yScale = d3.scaleLinear().range([height, 0]);
 
         xScale.domain(temas.map(function(d) {
@@ -305,5 +433,37 @@
             .attr("y", 9)
             .attr("dy", ".35em")
             .text("Likes");
+    </script>
+    <script>
+        function updateStars(rating) {
+            var stars = document.querySelectorAll('.star');
+            stars.forEach(function(star, index) {
+                if (index < rating) {
+                    star.classList.add('gold');
+                } else {
+                    star.classList.remove('gold');
+                }
+            });
+        }
+    </script>
+    <script>
+        function toggleTable() {
+            var table = document.getElementById("userActivitiesTable");
+            if (table.style.display === "none") {
+                table.style.display = "block";
+            } else {
+                table.style.display = "none";
+            }
+        }
+    </script>
+    <script>
+        function togglePanel() {
+            var panel = document.getElementById("userPanel");
+            if (panel.style.display === "none") {
+                panel.style.display = "block";
+            } else {
+                panel.style.display = "none";
+            }
+        }
     </script>
 @endsection

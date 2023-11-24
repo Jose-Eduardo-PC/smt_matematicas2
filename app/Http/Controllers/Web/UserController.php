@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Media_resource;
 use Carbon\Carbon;
+use App\Models\UserActivity;
 use App\Models\Solved_exam;
 use App\Models\Test_user;
 use App\Models\Activity;
@@ -145,8 +146,37 @@ class UserController extends Controller
     public function show_activity(Activity $activity)
     {
         $activity = Activity::find($activity->id);
-        return view('web.actividad.show', compact('activity'));
+
+        $userActivity = UserActivity::where('user_id', Auth::id())
+            ->where('activity_id', $activity->id)
+            ->first();
+
+        return view('web.actividad.show', compact('activity', 'userActivity'));
     }
+
+    public function storeUserDone(Request $request)
+    {
+        $userActivity = UserActivity::firstOrNew(
+            ['user_id' => Auth::id(), 'activity_id' => $request->activity_id]
+        );
+
+        $userActivity->done = !$userActivity->done;
+        $userActivity->save();
+
+        return back();
+    }
+    public function storeUserLike(Request $request)
+    {
+        $userActivity = UserActivity::firstOrNew(
+            ['user_id' => Auth::id(), 'activity_id' => $request->activity_id]
+        );
+
+        $userActivity->like = !$userActivity->like;
+        $userActivity->save();
+
+        return back();
+    }
+
     public function show_usuario(User $user)
     {
         return view('web.usuario.show', compact('user'));

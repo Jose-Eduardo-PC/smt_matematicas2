@@ -9,6 +9,7 @@ use App\Models\Media_resource;
 use App\Models\Theme;
 use Yajra\Datatables\Datatables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class Media_resourceController extends Controller
 {
@@ -52,25 +53,51 @@ class Media_resourceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function convertirEnlaceYouTube($enlaceCorto)
+    public function convertirEnlaceYouTube($enlace)
     {
-        $partesEnlace = explode('/', $enlaceCorto);
+        $partesEnlace = explode('/', $enlace);
         $idVideo = end($partesEnlace);
+
+        // Comprueba si el ID del video contiene un signo de interrogación, lo que indica un enlace de formato nuevo
+        if (strpos($idVideo, '?') !== false) {
+            // Divide el ID del video en el signo de interrogación y toma la primera parte
+            $partesIdVideo = explode('?', $idVideo);
+            $idVideo = $partesIdVideo[0];
+        }
+
         $enlaceIncrustado = 'https://www.youtube.com/embed/' . $idVideo;
         return $enlaceIncrustado;
     }
-
 
     public function store(StoreRequest $request, Media_resource $media_resource)
     {
         $media_resource = new Media_resource();
         $media_resource->fill($request->validated());
-        $enlaceCorto = $media_resource->link_video;
-        $enlaceIncrustado = $this->convertirEnlaceYouTube($enlaceCorto);
-        $media_resource->link_video = $enlaceIncrustado;
+
+        if ($request->hasFile('link_video')) {
+            // Si 'link_video' es un archivo, guarda el archivo con su nombre original y establece 'link_video' a la ruta del archivo
+            $file = $request->file('link_video');
+            $fileName = str_replace(' ', '_', $file->getClientOriginalName());
+            $path = 'public/media_resources/' . $fileName;
+
+            // Verifica si el archivo ya existe
+            if (!Storage::exists($path)) {
+                $path = $file->storeAs('public/media_resources', $fileName);
+                $media_resource->link_video = $path;
+            } else {
+                return redirect()->back()->withErrors(['link_video' => 'El archivo ya existe.']);
+            }
+        } else {
+            // Si 'link_video' no es un archivo, asume que es una URL y convierte el enlace de YouTube
+            $enlaceCorto = $media_resource->link_video;
+            $enlaceIncrustado = $this->convertirEnlaceYouTube($enlaceCorto);
+            $media_resource->link_video = $enlaceIncrustado;
+        }
+
         $media_resource->save();
         return redirect()->route('media_resources.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -105,12 +132,34 @@ class Media_resourceController extends Controller
     public function update(UpdateRequest $request, Media_resource $media_resource)
     {
         $media_resource->fill($request->validated());
-        $enlaceCorto = $media_resource->link_video;
-        $enlaceIncrustado = $this->convertirEnlaceYouTube($enlaceCorto);
-        $media_resource->link_video = $enlaceIncrustado;
+
+        if ($request->has('link_video')) {
+            if ($request->hasFile('link_video')) {
+                // Si 'link_video' es un archivo, guarda el archivo con su nombre original y establece 'link_video' a la ruta del archivo
+                $file = $request->file('link_video');
+                $fileName = str_replace(' ', '_', $file->getClientOriginalName());
+                $path = 'public/media_resources/' . $fileName;
+
+                // Verifica si el archivo ya existe
+                if (!Storage::exists($path)) {
+                    $path = $file->storeAs('public/media_resources', $fileName);
+                    $media_resource->link_video = $path;
+                } else {
+                    return redirect()->back()->withErrors(['link_video' => 'El archivo ya existe.']);
+                }
+            } else {
+                // Si 'link_video' no es un archivo, asume que es una URL y convierte el enlace de YouTube
+                $enlaceCorto = $media_resource->link_video;
+                $enlaceIncrustado = $this->convertirEnlaceYouTube($enlaceCorto);
+                $media_resource->link_video = $enlaceIncrustado;
+            }
+        }
+
         $media_resource->save();
         return redirect()->route('media_resources.index');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
