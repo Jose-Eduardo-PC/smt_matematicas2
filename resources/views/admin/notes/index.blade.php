@@ -1,4 +1,4 @@
-@extends('layouts.admin_index')
+@extends('layouts.admin_index2')
 
 <head>
     <title>Notas</title>
@@ -44,8 +44,96 @@
             </div>
         </div>
     </div>
+    <div class="card">
+        <div class="card-body">
+            <h2>Listado de Estudiantes y Notas Trimestrales</h2>
+            <br>
+            <a id="pdf-link2" href="{{ route('generar-pdf2') }}" class="btn btn-primary">Generar PDF2</a><br>
+            <br>
+            <div class="filter-section">
+                <label for="status">Filtrar por estado:</label>
+                <select id="status" class="estado-select">
+                    <option value="all">Todos</option>
+                    <option value="aprobado">Aprobados</option>
+                    <option value="reprobado">Reprobados</option>
+                </select>
+            </div>
+            <br>
+            <table id="estudiantes" class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Estudiante</th>
+                        <th>Trimestre 1</th>
+                        <th>Trimestre 2</th>
+                        <th>Trimestre 3</th>
+                        <th>Promedio</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($notas as $estudianteId => $datos)
+                        @php
+                            $claseEstado = 'estado-' . $datos['estado'];
+                        @endphp
+                        <tr class="{{ $claseEstado }}">
+                            <td>{{ $estudianteId }}</td>
+                            @foreach ($datos['notas'] as $trimestre => $notasPorTema)
+                                <td>
+                                    @if (count($notasPorTema) > 0)
+                                        @foreach ($notasPorTema as $tema => $nota)
+                                            @php
+                                                $claseNota = '';
+                                                if ($nota < 50) {
+                                                    $claseNota = 'nota-baja';
+                                                } elseif ($nota < 80) {
+                                                    $claseNota = 'nota-media';
+                                                } else {
+                                                    $claseNota = 'nota-alta';
+                                                }
+                                            @endphp
+                                            <p class="{{ $claseNota }}"><strong>{{ $tema }}:</strong>
+                                                {{ $nota }}</p>
+                                        @endforeach
+                                    @else
+                                        <p>N/A</p>
+                                    @endif
+                                </td>
+                            @endforeach
+                            <td>{{ $datos['promedio'] }}</td>
+                            <td>
+                                {{ $datos['estado'] == 'reprobado' ? 'Reprobado' : 'Aprobado' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function filtrarEstudiantes() {
+            var selectedStatus = $("#status").val();
+            $("#estudiantes tbody tr").each(function() {
+                var estado = $(this).find('td:last').text().trim().toLowerCase();
+                if (selectedStatus == "all") {
+                    $(this).show();
+                } else if (estado == selectedStatus) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $("#status").on("change", filtrarEstudiantes);
+            // Llama a filtrarEstudiantes cada vez que los datos de la tabla cambien
+            // Por ejemplo, podrías hacerlo en el callback de una petición AJAX
+        });
+    </script>
 @endsection
 @section('js')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script>
         document.getElementById('exam-select').addEventListener('change', function() {
             updatePdfLink();
@@ -53,6 +141,9 @@
 
         document.getElementById('user-select').addEventListener('change', function() {
             updatePdfLink();
+        });
+        document.getElementById('status').addEventListener('change', function() {
+            updatePdfLink2();
         });
 
         function updatePdfLink() {
@@ -65,6 +156,17 @@
 
             console.log('Enlace a PDF actualizado: ' + pdfLink.href);
         }
+
+        function updatePdfLink2() {
+            var statusSelectValue = document.getElementById('status').value;
+            var pdfLink2 = document.getElementById('pdf-link2');
+
+            // Aquí debes reemplazar 'ruta-a-generar-pdf2' con la ruta real a tu script de generación de PDF
+            pdfLink2.href = 'generar-pdf2/' + statusSelectValue;
+
+            console.log('Enlace a PDF2 actualizado: ' + pdfLink2.href);
+        }
+        //
     </script>
 @endsection
 @section('datatables-script')
@@ -81,21 +183,39 @@
             {
                 data: 'name_test'
             },
-
             {
                 data: 'points'
             },
             {
                 data: 'status'
             },
-
             {
                 data: 'btn',
                 "orderable": false,
                 "searchable": false
             },
         ];
-        showTable('/api/notes', columns);
+
+        var language = {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": ">>",
+                "previous": "<<"
+            }
+        };
 
         function showTable(url, columns, examId, userId) {
             $('#table').DataTable({
@@ -104,23 +224,26 @@
                 ajax: {
                     url: url,
                     data: {
-                        exam_id: examId, // Pasa el examen seleccionado a tu endpoint
-                        user_id: userId // Pasa el usuario seleccionado a tu endpoint
+                        exam_id: examId,
+                        user_id: userId
                     }
                 },
                 columns: columns,
+                language: language
             });
         }
 
-        // Escucha el evento 'change' del select para recargar la tabla cuando se selecciona un examen o un usuario
-        $('#exam-select, #user-select').on('change', function() {
-            var examId = $('#exam-select').val(); // Obtiene el examen seleccionado
-            var userId = $('#user-select').val(); // Obtiene el usuario seleccionado
+        function reloadTableWithSelectedExamAndUser() {
+            var examId = $('#exam-select').val();
+            var userId = $('#user-select').val();
             var table = $('#table').DataTable();
-            table.destroy(); // Destruye la tabla actual
-            showTable('/api/notes', columns, examId,
-                userId); // Crea una nueva tabla con el examen y el usuario seleccionados
-        });
+            table.destroy();
+            showTable('/api/notes', columns, examId, userId);
+        }
+
+        $('#exam-select, #user-select').on('change', reloadTableWithSelectedExamAndUser);
+
+        showTable('/api/notes', columns);
     </script>
 @endsection
 @section('sweetalert-script')
@@ -151,6 +274,67 @@
         #user-select:hover {
             background-color: #f2f2f2;
             color: #333;
+        }
+
+        .estado-select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .estado-select:hover {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+    </style>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <style>
+        .nota-baja {
+            color: red;
+            font-weight: bold;
+        }
+
+        .nota-media {
+            color: green;
+            font-weight: bold;
+        }
+
+        .nota-alta {
+            color: purple;
+            /* Cambiado a morado */
+            font-weight: bold;
+        }
+
+        .estado-aprobado {
+            color: green;
+            font-weight: bold;
+        }
+
+        .estado-reprobado {
+            color: red;
+            font-weight: bold;
         }
     </style>
 @endsection

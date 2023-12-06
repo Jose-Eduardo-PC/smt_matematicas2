@@ -27,4 +27,8 @@ class Theme extends Model
     {
         return $this->hasMany(Media_resource::class);
     }
+    public function tests()
+    {
+        return $this->hasMany(Test::class);
+    }
 }

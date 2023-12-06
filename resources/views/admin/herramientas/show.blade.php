@@ -39,10 +39,7 @@
                     <option value="10">10</option>
                 </select>
             </div>
-
-
         </div>
-    </div>
     </div>
 @endsection
 

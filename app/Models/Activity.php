@@ -20,4 +20,8 @@ class Activity extends Model
     {
         return $this->belongsTo((Theme::class));
     }
+    public function userActivities()
+    {
+        return $this->hasMany(UserActivity::class);
+    }
 }

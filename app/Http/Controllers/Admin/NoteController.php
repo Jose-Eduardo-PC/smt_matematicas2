@@ -7,6 +7,9 @@ use Yajra\Datatables\Datatables;
 use App\Models\Test_user;
 use App\Models\User;
 use App\Models\Test;
+use App\Models\Theme;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 use PDF;
 
@@ -56,8 +59,6 @@ class NoteController extends Controller
         return $pdf->download('lista-de-notas.pdf');
     }
 
-
-
     public function datatables()
     {
         $examId = request('exam_id'); // Obtiene el examen seleccionado
@@ -83,13 +84,16 @@ class NoteController extends Controller
             ->make(true);
     }
 
-
     public function index()
     {
         $exams = Test::all();
         $users = User::all();
-        return view('admin.notes.index', compact('exams', 'users'));
+        $notas = $this->calcularNotasPorTrimestrePorEstudiante();
+
+        return view('admin.notes.index', compact('exams', 'users', 'notas'));
     }
+
+
     public function show($testUserId)
     {
         $testUser = Test_user::find($testUserId);
@@ -113,5 +117,115 @@ class NoteController extends Controller
             'test_user' => $testUser,
             'user_id' => $user_id,
         ]);
+    }
+
+    public function dividirTemasPorTrimestre()
+    {
+        $temas = Theme::all();
+
+        $trimestres = $temas->chunk(4);
+
+        return $trimestres;
+    }
+
+    public function obtenerExamenesPorEstudiante()
+    {
+        // Recuperar todos los usuarios con el rol de estudiante
+        $estudiantes = User::role('estudiante')->get();
+
+        // Recuperar todos los registros de exámenes en test_users
+        $examenes = Test_user::with('test.theme')->get();
+
+        // Agrupar los exámenes por usuario y por tema
+        $examenesPorUsuarioPorTema = $examenes->groupBy([
+            'user_id',
+            function ($item, $key) {
+                return $item->test->theme->id;
+            },
+        ]);
+
+        // Crear un array para almacenar los exámenes de cada usuario por tema
+        $examenesPorEstudiantePorTema = [];
+
+        // Para cada estudiante, guardar sus exámenes en el array por tema
+        foreach ($estudiantes as $estudiante) {
+            $examenesDelEstudiante = $examenesPorUsuarioPorTema->get($estudiante->id);
+            if ($examenesDelEstudiante) {
+                $examenesPorEstudiantePorTema[$estudiante->name] = $examenesDelEstudiante;
+            }
+        }
+
+        // Devolver los datos
+        return $examenesPorEstudiantePorTema;
+    }
+
+    public function calcularNotasPorTrimestrePorEstudiante()
+    {
+        // Obtener los temas divididos por trimestre
+        $trimestres = $this->dividirTemasPorTrimestre();
+
+        // Obtener los exámenes por estudiante y por tema
+        $examenesPorEstudiantePorTema = $this->obtenerExamenesPorEstudiante();
+
+        // Crear un array para almacenar las notas por trimestre de cada estudiante
+        $notasPorTrimestrePorEstudiante = [];
+
+        // Para cada estudiante, calcular las notas por trimestre
+        foreach ($examenesPorEstudiantePorTema as $estudianteId => $examenesPorTema) {
+            $notasPorTrimestre = [];
+            $suma = 0;
+
+            // Para cada trimestre, calcular la nota promedio de los exámenes correspondientes
+            foreach ($trimestres as $i => $temasDelTrimestre) {
+                $notasPorTema = [];
+
+                foreach ($temasDelTrimestre as $tema) {
+                    $examenesDelTema = $examenesPorTema->get($tema->id);
+                    if ($examenesDelTema) {
+                        $notaPromedio = $examenesDelTema->avg('points');
+                        $notasPorTema[$tema->name] = $notaPromedio;
+                        $suma += $notaPromedio;
+                    }
+                }
+
+                $notasPorTrimestre['Trimestre ' . ($i + 1)] = $notasPorTema;
+            }
+
+            // Calcular el promedio y el estado del estudiante
+            $promedio = round($suma / count($trimestres), 2);
+            $estado = $promedio < 51 ? 'reprobado' : 'aprobado';
+
+            $notasPorTrimestrePorEstudiante[$estudianteId] = [
+                'notas' => $notasPorTrimestre,
+                'promedio' => $promedio,
+                'estado' => $estado,
+            ];
+        }
+
+        $notas = $notasPorTrimestrePorEstudiante;
+        return $notas;
+    }
+    public function generarPDF2($status = null)
+    {
+        $data = [];
+        $data['logo'] = asset('storage/imagenes/Escudo_Oliverio.png');
+        // Obtén las notas
+        $notas = $this->calcularNotasPorTrimestrePorEstudiante();
+
+        // Filtra las notas por estado si se proporcionó un estado
+        if ($status) {
+            $notas = array_filter($notas, function ($nota) use ($status) {
+                return $nota['estado'] == $status;
+            });
+        }
+        $data['notas'] = $notas;
+
+        // Agrega la fecha y hora actual al array $data
+        $data['date'] = now()->format('d-m-Y H:i:s');
+
+        // Crea la vista del PDF
+        $pdf = PDF::loadView('admin.notes.pdf2', $data);
+        $pdf->setPaper('letter');
+        return $pdf->download('lista-de-notas-por-trimestre.pdf');
     }
 }

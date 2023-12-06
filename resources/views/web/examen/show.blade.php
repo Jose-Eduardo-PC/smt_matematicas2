@@ -45,7 +45,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="examModalLabel"> {{ $test->id }} Examen</h5>
+                                <h5 class="modal-title" id="examModalLabel">Examen</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -58,7 +58,6 @@
                                         <div class="question" id="question{{ $index + 1 }}" style="display: none;">
                                             <ul>
                                                 <h4>{{ $question->statement }}</h4>
-                                                {{ $question->id }}
                                                 @foreach ($question->options as $option => $value)
                                                     <li>
                                                         <label>

@@ -1,7 +1,7 @@
 <footer class="footer-fondo pt-0">
     <div class="row align-items-center justify-content-lg-between">
         <div class="col-lg-6">
-            <div class="copyright text-center  text-lg-left  text-muted">
+            <div class="copyright text-center text-lg-left text-muted">
                 © 2023 <a href="https://www.uajms.edu.bo/" class="font-weight-bold ml-1" target="_blank">Universidad
                     UAJMS</a>
             </div>

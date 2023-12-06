@@ -49,6 +49,9 @@
                         <option value="sin">Seno</option>
                         <option value="cos">Coseno</option>
                         <option value="tan">Tangente</option>
+                        <option value="asin">Arcoseno</option>
+                        <option value="acos">Arcocoseno</option>
+                        <option value="cot">Cotangente</option>
                     </select>
                 </div>
                 <div class="input-container col-2">
@@ -92,11 +95,23 @@
                         yValues.push(amplitude * Math.cos((2 * Math.PI / period) * x));
                         break;
                     case 'tan':
-                        // Para evitar discontinuidades en la gráfica de la tangente, no calculamos los valores en los múltiplos de π
                         if (x % Math.PI === 0) {
                             yValues.push(null);
                         } else {
                             yValues.push(amplitude * Math.tan((2 * Math.PI / period) * x));
+                        }
+                        break;
+                    case 'asin':
+                        yValues.push(amplitude * Math.asin((2 * Math.PI / period) * x));
+                        break;
+                    case 'acos':
+                        yValues.push(amplitude * Math.acos((2 * Math.PI / period) * x));
+                        break;
+                    case 'cot':
+                        if (x % Math.PI === 0) {
+                            yValues.push(null);
+                        } else {
+                            yValues.push(amplitude / Math.tan((2 * Math.PI / period) * x));
                         }
                         break;
                 }
@@ -115,12 +130,12 @@
                     title: 'x'
                 },
                 yaxis: {
-                    title: 'y'
+                    title: 'y',
+                    range: [-amplitude, amplitude]
                 }
             };
 
             Plotly.react('trigFunctionContainer', [trace], layout);
-
         }
 
         plotTrigFunction();

@@ -188,10 +188,10 @@
             </div>
         </div>
         {{-- <!-- Table Themes  --> --}}
-        <h2>Temas Nuevos</h2>
+        <h2>Temas Mas visitados</h2>
         <div class="card">
             <div class="card-header">
-                <table id="table" class="table table align-items-center">
+                <table id="table" class="table table-small align-items-center table-responsive">
                     <thead class="thead-light">
                         <tr>
                             <th>Id</th>
@@ -250,6 +250,11 @@
         }
     </style>
     <style>
+        .table-responsive {
+            width: 100% !important;
+            overflow-x: auto !important;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -259,7 +264,7 @@
         th,
         td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 6px;
             text-align: left;
         }
 
@@ -300,6 +305,11 @@
             position: absolute;
             color: #ccc;
             /* Color de fondo de la media estrella */
+        }
+    </style>
+    <style>
+        .table-small {
+            font-size: 0.8em;
         }
     </style>
 @endsection

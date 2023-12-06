@@ -21,7 +21,10 @@ class Test_user extends Model
     {
         return $this->belongsTo((User::class));
     }
-
+    public function theme()
+    {
+        return $this->belongsTo(Theme::class);
+    }
     public function test()
     {
         return $this->belongsTo((Test::class));
