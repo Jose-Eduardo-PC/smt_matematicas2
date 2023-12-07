@@ -93,7 +93,6 @@ class NoteController extends Controller
         return view('admin.notes.index', compact('exams', 'users', 'notas'));
     }
 
-
     public function show($testUserId)
     {
         $testUser = Test_user::find($testUserId);
@@ -144,6 +143,9 @@ class NoteController extends Controller
             },
         ]);
 
+        // Convertir el array agrupado en una colección
+        $examenesPorUsuarioPorTema = collect($examenesPorUsuarioPorTema);
+
         // Crear un array para almacenar los exámenes de cada usuario por tema
         $examenesPorEstudiantePorTema = [];
 
@@ -152,6 +154,9 @@ class NoteController extends Controller
             $examenesDelEstudiante = $examenesPorUsuarioPorTema->get($estudiante->id);
             if ($examenesDelEstudiante) {
                 $examenesPorEstudiantePorTema[$estudiante->name] = $examenesDelEstudiante;
+            } else {
+                // Si el estudiante no tiene exámenes, inicializar su entrada con un array vacío
+                $examenesPorEstudiantePorTema[$estudiante->name] = [];
             }
         }
 
@@ -173,26 +178,32 @@ class NoteController extends Controller
         // Para cada estudiante, calcular las notas por trimestre
         foreach ($examenesPorEstudiantePorTema as $estudianteId => $examenesPorTema) {
             $notasPorTrimestre = [];
-            $suma = 0;
+            $sumaTrimestres = 0;
 
             // Para cada trimestre, calcular la nota promedio de los exámenes correspondientes
             foreach ($trimestres as $i => $temasDelTrimestre) {
                 $notasPorTema = [];
+                $sumaTemas = 0;
+                $contadorTemas = 0;
 
                 foreach ($temasDelTrimestre as $tema) {
+                    $examenesPorTema = collect($examenesPorTema);
                     $examenesDelTema = $examenesPorTema->get($tema->id);
                     if ($examenesDelTema) {
                         $notaPromedio = $examenesDelTema->avg('points');
                         $notasPorTema[$tema->name] = $notaPromedio;
-                        $suma += $notaPromedio;
+                        $sumaTemas += $notaPromedio;
+                        $contadorTemas++;
                     }
                 }
 
-                $notasPorTrimestre['Trimestre ' . ($i + 1)] = $notasPorTema;
+                $promedioTemas = $contadorTemas > 0 ? round($sumaTemas / $contadorTemas, 2) : 0;
+                $notasPorTrimestre['Trimestre ' . ($i + 1)] = $promedioTemas;
+                $sumaTrimestres += $promedioTemas;
             }
 
             // Calcular el promedio y el estado del estudiante
-            $promedio = round($suma / count($trimestres), 2);
+            $promedio = round($sumaTrimestres / count($trimestres), 2);
             $estado = $promedio < 51 ? 'reprobado' : 'aprobado';
 
             $notasPorTrimestrePorEstudiante[$estudianteId] = [
@@ -202,9 +213,9 @@ class NoteController extends Controller
             ];
         }
 
-        $notas = $notasPorTrimestrePorEstudiante;
-        return $notas;
+        return $notasPorTrimestrePorEstudiante;
     }
+
     public function generarPDF2($status = null)
     {
         $data = [];

@@ -48,7 +48,7 @@
         <div class="card-body">
             <h2>Listado de Estudiantes y Notas Trimestrales</h2>
             <br>
-            <a id="pdf-link2" href="{{ route('generar-pdf2') }}" class="btn btn-primary">Generar PDF2</a><br>
+            <a id="pdf-link2" href="{{ route('generar-pdf2') }}" class="btn btn-primary">Generar PDF</a><br>
             <br>
             <div class="filter-section">
                 <label for="status">Filtrar por estado:</label>
@@ -77,23 +77,10 @@
                         @endphp
                         <tr class="{{ $claseEstado }}">
                             <td>{{ $estudianteId }}</td>
-                            @foreach ($datos['notas'] as $trimestre => $notasPorTema)
+                            @foreach ($datos['notas'] as $trimestre => $notaPromedio)
                                 <td>
-                                    @if (count($notasPorTema) > 0)
-                                        @foreach ($notasPorTema as $tema => $nota)
-                                            @php
-                                                $claseNota = '';
-                                                if ($nota < 50) {
-                                                    $claseNota = 'nota-baja';
-                                                } elseif ($nota < 80) {
-                                                    $claseNota = 'nota-media';
-                                                } else {
-                                                    $claseNota = 'nota-alta';
-                                                }
-                                            @endphp
-                                            <p class="{{ $claseNota }}"><strong>{{ $tema }}:</strong>
-                                                {{ $nota }}</p>
-                                        @endforeach
+                                    @if ($notaPromedio > 0)
+                                        <p>{{ $notaPromedio }}</p>
                                     @else
                                         <p>N/A</p>
                                     @endif
@@ -101,11 +88,13 @@
                             @endforeach
                             <td>{{ $datos['promedio'] }}</td>
                             <td>
-                                {{ $datos['estado'] == 'reprobado' ? 'Reprobado' : 'Aprobado' }}</td>
+                                {{ $datos['estado'] == 'reprobado' ? 'Reprobado' : 'Aprobado' }}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

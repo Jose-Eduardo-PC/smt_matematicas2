@@ -61,7 +61,7 @@
                     <td>{{ $estudianteId }}</td>
                     @foreach ($datos['notas'] as $trimestre => $notasPorTema)
                         <td>
-                            @if (count($notasPorTema) > 0)
+                            @if (is_array($notasPorTema) || $notasPorTema instanceof Countable ? count($notasPorTema) > 0 : 0)
                                 @foreach ($notasPorTema as $tema => $nota)
                                     <p><strong>{{ $tema }}</strong> {{ $nota }}</p>
                                 @endforeach

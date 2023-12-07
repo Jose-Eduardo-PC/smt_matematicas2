@@ -153,6 +153,30 @@
                 </div>
             </div>
         </div>
+        {{-- <!-- Porcetaje de aprobados y reprobados  --> --}}
+        <h2>Porcentaje de Aprobados y Reprobados</h2>
+        <div class="card">
+            <div class="card-header">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Trimestre</th>
+                            <th>% Aprobados</th>
+                            <th>% Reprobados</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($porcentaje as $trimestre => $datos)
+                            <tr>
+                                <td>{{ $trimestre }}</td>
+                                <td style="color: green;">{{ $datos['aprobados'] }}%</td>
+                                <td style="color: red;">{{ $datos['reprobados'] }}%</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
         {{-- <!-- Table Themes  --> --}}
         <h2>Calificacion de Herramientas</h2>
         <div class="card">
