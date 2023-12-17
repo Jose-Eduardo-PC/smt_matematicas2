@@ -8,6 +8,7 @@ use App\Models\Test_user;
 use App\Models\User;
 use App\Models\Test;
 use App\Models\Theme;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -63,6 +64,7 @@ class NoteController extends Controller
     {
         $examId = request('exam_id'); // Obtiene el examen seleccionado
         $userId = request('user_id'); // Obtiene el usuario seleccionado
+        $year = request('year'); // Obtiene el año seleccionado
 
         $query = User::join('test_users', 'users.id', '=', 'test_users.user_id')
             ->join('tests', 'tests.id', '=', 'test_users.test_id')
@@ -76,6 +78,10 @@ class NoteController extends Controller
             $query->where('users.id', $userId);
         }
 
+        if ($year) { // Si se seleccionó un año, filtra los datos
+            $query->whereYear('test_users.created_at', $year);
+        }
+
         $users = $query->get();
 
         return DataTables::of($users)
@@ -84,14 +90,20 @@ class NoteController extends Controller
             ->make(true);
     }
 
+
     public function index()
     {
         $exams = Test::all();
         $users = User::all();
         $notas = $this->calcularNotasPorTrimestrePorEstudiante();
 
-        return view('admin.notes.index', compact('exams', 'users', 'notas'));
+        // Obtiene los años únicos de la tabla 'Test_user'
+        $years = DB::table('Test_users')->select(DB::raw('YEAR(created_at) as year'))->distinct()->get();
+
+        // Pasa los años a la vista
+        return view('admin.notes.index', compact('exams', 'users', 'notas', 'years'));
     }
+
 
     public function show($testUserId)
     {
@@ -122,7 +134,11 @@ class NoteController extends Controller
     {
         $temas = Theme::all();
 
-        $trimestres = $temas->chunk(4);
+        // Calcula el número de temas por trimestre.
+        // La función ceil() redondea hacia arriba, asegurando que todos los temas se incluyan.
+        $temasPorTrimestre = ceil($temas->count() / 3);
+
+        $trimestres = $temas->chunk($temasPorTrimestre);
 
         return $trimestres;
     }

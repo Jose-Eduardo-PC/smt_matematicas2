@@ -52,6 +52,7 @@
     <script src="{{ asset('admin/assets/vendor/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
     <script>
         $('#table-activitys').DataTable({
+            "responsive": true,
             "processing": true,
             "serverSide": true,
             "ajax": "/api/activitys",

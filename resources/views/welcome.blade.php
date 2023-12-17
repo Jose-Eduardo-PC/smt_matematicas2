@@ -1,5 +1,11 @@
 @extends('layouts.user')
 @section('content')
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-text"></p>
+        </div>
+    </div>
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -25,6 +31,30 @@
             </div>
         </div>
     </div>
+    <script>
+        window.onload = function() {
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+
+            if ("{{ session('error') }}") {
+                document.getElementById("modal-text").innerText = "{{ session('error') }}";
+                modal.style.display = "block";
+                setTimeout(function() {
+                    modal.style.display = "none";
+                }, 3000);
+            }
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+    </script>
 @endsection
 
 @section('css')
@@ -36,6 +66,41 @@
 
         p {
             font-size: 17px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            animation-name: animatetop;
+            animation-duration: 0.4s;
+        }
+
+        @keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
         }
     </style>
 @endsection

@@ -1,9 +1,20 @@
 function showTable(url, columns) {
     $('#table').DataTable({
+        "responsive": {
+            details: {
+                type: 'column',
+                target: -1
+            }
+        },
         "processing": true,
         "serverSide": true,
         "ajax": url,
         "columns": columns,
+        columnDefs: [{
+            className: 'control',
+            orderable: false,
+            targets: -1
+        }],
         language: {
             "decimal": "",
             "emptyTable": "No hay información",

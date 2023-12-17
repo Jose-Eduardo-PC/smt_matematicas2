@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::group(['middleware' => ['role:SuperAdministrador|Profesor']], function () {
+Route::group(['middleware' => ['check.role:SuperAdministrador|Profesor']], function () {
 
     //rutas generales
     Route::resource('roles', RolController::class);
@@ -34,13 +34,17 @@ Route::group(['middleware' => ['role:SuperAdministrador|Profesor']], function ()
     Route::resource('questions', QuestionController::class)->except('create');
     Route::get('/test_show/{testUserId}', [NoteController::class, 'show'])->name('test_show2');
 
-
-
     //rutas especificas
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/content/create', [ContentController::class, 'create'])->name('content.create-form');
     Route::get('/example/create', [ExampleController::class, 'create'])->name('example.create-form');
     Route::get('/question/create', [QuestionController::class, 'create'])->name('question.create-form');
+
+    //demas cosas
+    Route::get('/generar-pdf/{exam_id?}/{user_id?}', 'App\Http\Controllers\Admin\NoteController@generarPDF')->name('generar-pdf');
+    Route::get('/generar-pdf2/{status?}', 'App\Http\Controllers\Admin\NoteController@generarPDF2')->name('generar-pdf2');
+    Route::get('/backup', 'App\Http\Controllers\HomeController@create')->name('backup');
+    Route::get('/backup-status', 'App\Http\Controllers\HomeController@checkBackupStatus');
 });
 
 //rutas para las tablas
@@ -108,9 +112,5 @@ Route::post('/user-activity/like', [App\Http\Controllers\Web\UserController::cla
 //recursos multimedia
 Route::get('/media', [App\Http\Controllers\Web\UserController::class, 'index_media'])->name('media_index');
 Route::get('/media/{media}', [App\Http\Controllers\Web\UserController::class, 'show_media'])->name('media_show');
-Route::get('/generar-pdf/{exam_id?}/{user_id?}', 'App\Http\Controllers\Admin\NoteController@generarPDF')->name('generar-pdf');
-Route::get('/generar-pdf2/{status?}', 'App\Http\Controllers\Admin\NoteController@generarPDF2')->name('generar-pdf2');
-Route::get('/backup', 'App\Http\Controllers\HomeController@create')->name('backup');
-Route::get('/backup-status', 'App\Http\Controllers\HomeController@checkBackupStatus');
 Route::get('/notas-por-trimestre', [NoteController::class]);
 Route::get('/notas-por-trimestre', [\App\Http\Controllers\Admin\NoteController::class, 'calcularNotasPorTrimestrePorEstudiante']);

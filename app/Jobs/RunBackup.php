@@ -35,8 +35,8 @@ class RunBackup implements ShouldQueue
         // Antes de iniciar el backup
         Cache::put('backup-status', 'El backup está en progreso...', now()->addMinutes(10));
 
-        // Realiza el backup
-        Artisan::call('backup:run');
+        // Realiza el backup solo de la base de datos
+        Artisan::call('backup:run --only-db');
 
         // Después de que el backup se haya completado
         Cache::put('backup-status', 'El backup se ha completado.', now()->addMinutes(10));

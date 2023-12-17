@@ -5,10 +5,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
-                        <h4>Bienvenido Al Sistema Multimedia de Matematicas</h4>
+                        <h4>Bienvenido Al Sistema Gestor de contenidos de Matematicas</h4>
                         <p>cada dia nos enfrentamos a nuevos retos y etapas en nuestra vida escolar en la que espero poder
                             ayudar con entusiasmo y compromiso para mejorar
-                            y seguir ofreciendo un sistema multimedia que pueda mejorar la calidad de la enseñansa y un reto
+                            y seguir ofreciendo un sistema gestor que pueda mejorar la calidad de la enseñansa y un reto
                             de
                             adaptarse al uso de nuevas tecnologias digitales, seguir cosechando logros y trabajar en equipo
                             para

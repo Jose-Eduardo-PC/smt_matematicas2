@@ -26,6 +26,12 @@
                         <option value="{{ $user->id }}">{{ $user->name }}</option>
                     @endforeach
                 </select>
+                <select id="year-select">
+                    <option value="">Selecciona un año</option>
+                    @foreach ($years as $year)
+                        <option value="{{ $year->year }}">{{ $year->year }}</option>
+                    @endforeach
+                </select>
             </div>
             <br>
             <div>
@@ -115,8 +121,22 @@
 
         $(document).ready(function() {
             $("#status").on("change", filtrarEstudiantes);
-            // Llama a filtrarEstudiantes cada vez que los datos de la tabla cambien
-            // Por ejemplo, podrías hacerlo en el callback de una petición AJAX
+
+            $("#estudiantes tbody tr").each(function() {
+                var notas = $(this).find('td:not(:last)');
+                notas.each(function() {
+                    var nota = parseInt($(this).text().trim());
+                    if (!isNaN(nota)) {
+                        if (nota < 51) {
+                            $(this).addClass('nota-baja');
+                        } else if (nota >= 51 && nota <= 78) {
+                            $(this).addClass('nota-media');
+                        } else if (nota >= 79 && nota <= 100) {
+                            $(this).addClass('nota-alta');
+                        }
+                    }
+                });
+            });
         });
     </script>
 @endsection
@@ -124,37 +144,35 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
-        document.getElementById('exam-select').addEventListener('change', function() {
+        document.getElementById('year-select').addEventListener('change', function() {
             updatePdfLink();
-        });
-
-        document.getElementById('user-select').addEventListener('change', function() {
-            updatePdfLink();
-        });
-        document.getElementById('status').addEventListener('change', function() {
             updatePdfLink2();
         });
 
         function updatePdfLink() {
             var examSelectValue = document.getElementById('exam-select').value;
             var userSelectValue = document.getElementById('user-select').value;
+            var yearSelectValue = document.getElementById('year-select').value; // Obtiene el año seleccionado
             var pdfLink = document.getElementById('pdf-link');
 
             // Aquí debes reemplazar 'ruta-a-generar-pdf' con la ruta real a tu script de generación de PDF
-            pdfLink.href = 'generar-pdf/' + examSelectValue + '/' + userSelectValue;
+            pdfLink.href = 'generar-pdf/' + examSelectValue + '/' + userSelectValue + '/' +
+                yearSelectValue; // Incluye el año en la URL
 
             console.log('Enlace a PDF actualizado: ' + pdfLink.href);
         }
 
         function updatePdfLink2() {
             var statusSelectValue = document.getElementById('status').value;
+            var yearSelectValue = document.getElementById('year-select').value; // Obtiene el año seleccionado
             var pdfLink2 = document.getElementById('pdf-link2');
 
             // Aquí debes reemplazar 'ruta-a-generar-pdf2' con la ruta real a tu script de generación de PDF
-            pdfLink2.href = 'generar-pdf2/' + statusSelectValue;
+            pdfLink2.href = 'generar-pdf2/' + statusSelectValue + '/' + yearSelectValue; // Incluye el año en la URL
 
             console.log('Enlace a PDF2 actualizado: ' + pdfLink2.href);
         }
+
         //
     </script>
 @endsection
@@ -248,6 +266,19 @@
         }
 
         #exam-select:hover {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        #year-select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        #year-select:hover {
             background-color: #f2f2f2;
             color: #333;
         }

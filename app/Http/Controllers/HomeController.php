@@ -105,7 +105,11 @@ class HomeController extends Controller
     {
         $temas = Theme::all();
 
-        $trimestres = $temas->chunk(4);
+        // Calcula el número de temas por trimestre.
+        // La función ceil() redondea hacia arriba, asegurando que todos los temas se incluyan.
+        $temasPorTrimestre = ceil($temas->count() / 3);
+
+        $trimestres = $temas->chunk($temasPorTrimestre);
 
         return $trimestres;
     }
